@@ -6,9 +6,9 @@ class ProjectGroup < ActiveRecord::Base
 
   attr_accessible :project_creator, :project_editor, :project_administrator, :project_id, :user_id, :email, :access_level
 
-  #validation
-  validates :project, :presence => true
-  validates :user, :presence => true
+  #validation => makes 'create plan' fail in projects_controller
+  #validates :project, :presence => true
+  #validates :user, :presence => true
 
   def email
   	unless user.nil?
