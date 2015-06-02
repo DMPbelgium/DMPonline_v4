@@ -15,6 +15,10 @@ class Project < ActiveRecord::Base
 
 	after_create :create_plans
 
+  #validation
+  validates :dmptemplate,:presence => true
+  validates :organisation, :presence => true
+
 	def funder_id=(new_funder_id)
 		if new_funder_id != "" then
 			new_funder = Organisation.find(new_funder_id);

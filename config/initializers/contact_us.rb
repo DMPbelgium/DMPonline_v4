@@ -6,10 +6,10 @@ ContactUs.setup do |config|
   # Configure the e-mail address which email notifications should be sent from.  If emails must be sent from a verified email address you may set it here.
   # Example:
   # config.mailer_from = "contact@please-change-me.com"
-  config.mailer_from = nil
+  config.mailer_from = "nicolas.franck@ugent.be"
 
   # Configure the e-mail address which should receive the contact form email notifications.
-  config.mailer_to = "dmponline@dcc.ac.uk"
+  config.mailer_to = "nicolas.franck@ugent.be"
 
   # ==> Form Configuration
 

@@ -3,4 +3,7 @@ class OrganisationType < ActiveRecord::Base
 
   has_many :organisations
 
+  #validation
+  validates :name, :length => { :minimum => 1 }
+
 end

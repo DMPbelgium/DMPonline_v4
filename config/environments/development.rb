@@ -38,16 +38,16 @@ DMPonline4::Application.configure do
   #devise config
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
-  
-  ActionMailer::Base.default :from => 'address@example.com'
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 25 }
+
+  ActionMailer::Base.default :from => 'nicolas.franck@ugent.be'
   ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = { :address => "localhost", :port => 1025 }
-  
-  
+  ActionMailer::Base.smtp_settings = { :address => "localhost", :port => 25 }
+
+
 	# Add the fonts path
 	config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
-	
+
 	# Precompile additional assets
 	config.assets.precompile += %w( .svg .eot .woff .ttf )
 
@@ -55,12 +55,12 @@ DMPonline4::Application.configure do
 	 config.middleware.use ExceptionNotification::Rack,
 	  :email => {
 	    :email_prefix => "[DMPonline4 ERROR] ",
-	    :sender_address => %{"No-reply" <noreply@dcc.ac.uk>},
-	    :exception_recipients => %w{dmponline@dcc.ac.uk}
+	    :sender_address => %{"Nicolas Franck" <nicolas.franck@ugent.be>},
+	    :exception_recipients => %w{nicolas.franck@ugent.be}
 	  }
-	  
-	
+
+
 config.action_mailer.perform_deliveries = true
 #config.action_mailer.raise_delivery_errors = true
-	  
+
 end

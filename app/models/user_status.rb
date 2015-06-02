@@ -3,4 +3,7 @@ class UserStatus < ActiveRecord::Base
 
   #associations between tables
   has_many :users
+
+  #validation
+  validates :name,:length => { :minimum => 1}, :uniqueness => true
 end

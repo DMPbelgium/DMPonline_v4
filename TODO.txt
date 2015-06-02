@@ -1,0 +1,59 @@
+- read 
+    https://github.com/softwaresaved/smp-service/blob/smp-docs/DMPonlineDeployUseReview.md
+    https://github.com/softwaresaved/smp-service/blob/smp-docs/DMPonlineDeployersGuide.md
+
+  which is a fork of DMPonline_v4 (once in a time)
+
+  fixed seed file: https://github.com/softwaresaved/smp-service/blob/eaea66804be50feaab12a5b01b58a6121eef94c2/db/seeds.rb
+
+  referenced seed is actually better than the seed from dmponline!
+  when issuing db:seed and error occurs (see following)
+
+- fix gem lederman/rails-settings
+
+  case: bundle exec rake db:seed throws this error:
+
+    ActiveModel::MassAssignmentSecurity::Error: Can't mass-assign protected attributes: var, target
+
+  cause: gem protected_attributes
+  fixes:
+    https://github.com/ledermann/rails-settings/issues/59 (works)
+
+      create initializer and put this code in it:
+
+        RailsSettings::SettingObject.class_eval do
+          attr_accessible :var, :target
+        end
+
+    https://github.com/ledermann/rails-settings/issues/65
+
+- add yourself as super-admin
+
+  User.first.roles << Role.create(:name => "admin")
+
+- add yourself as org_admin
+
+  User.first.roles << Role.create(:name => "org_admin")
+
+- create template without organisation: the index page of dmptemplate fails to render!
+
+- too much manual linking of data in the admin interface (error prone)
+
+  e.g. there should be a button "add phase to template", which includes the id of the parent template (like in the modals in rails_admin)
+       now you have to add a phase, and find the appropriate template for it.
+       phases should not have their own form, only a subform, for they exist only as children.
+
+- disable shiboleth in config/application.rb
+
+  config.shibboleth_enabled = false
+
+  => maar dit doet niets (links blijven bestaan)
+  config.shibboleth_login blijft nodig!
+
+- read https://github.com/softwaresaved/smp-service/blob/smp-docs/ConceptsDataModel.md for conceptual guidance
+- when model validation fails in the interface, there is no visual feedback in the interface (simply reloads the form)
+  e.g. add phase without template selected
+
+- export plan:
+
+  docx fails (xslt in gem not found)
