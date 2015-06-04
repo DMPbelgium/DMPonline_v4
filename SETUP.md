@@ -8,8 +8,11 @@ It is based upon a [previous guide](https://github.com/softwaresaved/smp-service
 # Installation
 ## Dependencies for Scientific Linux 6
 - for Rails:
+- 
         $ sudo yum install nodejs
+
 - for DMPonline:
+- 
         $ sudo yum install wkhtmltopdf
         $ wkhtmltopdf -V
         Name:
