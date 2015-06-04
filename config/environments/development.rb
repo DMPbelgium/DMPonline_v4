@@ -36,31 +36,31 @@ DMPonline4::Application.configure do
   config.assets.debug = true
 
   #devise config
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 25 }
-
-  ActionMailer::Base.default :from => 'nicolas.franck@ugent.be'
+  config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+  
+  ActionMailer::Base.default :from => ENV['DMP_EMAIL_FROM']
   ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = { :address => "localhost", :port => 25 }
-
-
+  ActionMailer::Base.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+  
+  
 	# Add the fonts path
 	config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
-
+	
 	# Precompile additional assets
 	config.assets.precompile += %w( .svg .eot .woff .ttf )
 
 	# Error notifications by email
 	 config.middleware.use ExceptionNotification::Rack,
 	  :email => {
-	    :email_prefix => "[DMPonline4 ERROR] ",
-	    :sender_address => %{"Nicolas Franck" <nicolas.franck@ugent.be>},
-	    :exception_recipients => %w{nicolas.franck@ugent.be}
+	    :email_prefix => ENV['DMP_ERR_EMAIL_PREFIX'],
+	    :sender_address => ENV['DMP_ERR_EMAIL_SENDER_ADDRESS'],
+	    :exception_recipients => JSON.parse(ENV['DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS'])
 	  }
-
-
+	  
+	
 config.action_mailer.perform_deliveries = true
 #config.action_mailer.raise_delivery_errors = true
-
+	  
 end

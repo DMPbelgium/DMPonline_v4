@@ -22,7 +22,7 @@ DMPonline4::Application.configure do
 
 	# Add the fonts path
 	config.assets.paths << Rails.root.join('app', 'assets', 'fonts', 'videos')
-
+	
 	# Precompile additional assets
 	config.assets.precompile += %w( .svg .eot .woff .ttf )
 
@@ -68,20 +68,16 @@ DMPonline4::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-
+	
 	 # Error notifications by email
 	 config.middleware.use ExceptionNotification::Rack,
 	  :email => {
-	    :email_prefix => "[DMPonline4 ERROR] ",
-	    :sender_address => %{"No-reply" <noreply@dcc.ac.uk>},
-	    :exception_recipients => %w{dmponline@dcc.ac.uk}
+	    :email_prefix => ENV['DMP_ERR_EMAIL_PREFIX'],
+	    :sender_address => ENV['DMP_ERR_EMAIL_SENDER_ADDRESS'],
+	    :exception_recipients => JSON.parse(ENV['DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS'])
 	  }
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-
-
-  config.paths['log'] = "/var/log/DMPonline_v4_ugent/access.log"
-
 end

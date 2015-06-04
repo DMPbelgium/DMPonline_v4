@@ -100,10 +100,10 @@ class ProjectsController < ApplicationController
                respond_to do |format|
 				format.html { redirect_to edit_user_registration_path }
 			end
-		else
+		else 
 			respond_to do |format|
 				format.html { render action: "export" }
-
+                
 			end
 		end
 	end
@@ -133,7 +133,6 @@ class ProjectsController < ApplicationController
 					format.html { redirect_to({:action => "show", :id => @project.slug, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }
 					format.json { render json: @project, status: :created, location: @project }
 				else
-          $stderr.puts "could not save project: #{@project.errors.messages.inspect}"
 					format.html { render action: "new" }
 					format.json { render json: @project.errors, status: :unprocessable_entity }
 				end
@@ -224,8 +223,8 @@ class ProjectsController < ApplicationController
 		end
 		excluded_orgs = orgs_of_type(t('helpers.org_type.funder')) + orgs_of_type(t('helpers.org_type.institution')) + Organisation.orgs_with_parent_of_type(t('helpers.org_type.institution'))
 		guidance_groups = {}
-		ggs = GuidanceGroup.guidance_groups_excluding(excluded_orgs)
-
+		ggs = GuidanceGroup.guidance_groups_excluding(excluded_orgs) 
+	
 		ggs.each do |gg|
 			guidance_groups[gg.id] = gg.name
 		end
@@ -234,7 +233,7 @@ class ProjectsController < ApplicationController
 			optional_gg.each do|optional|
 				guidance_groups[optional.id] = optional.name
 			end
-
+			
 			institution.children.each do |o|
 				o.guidance_groups.each do |gg|
 					include = false
@@ -254,7 +253,7 @@ class ProjectsController < ApplicationController
 			format.json { render json: guidance_groups.to_json }
 		end
 	end
-
+	
 	private
 
 	def orgs_of_type(org_type_name, published_templates = false)

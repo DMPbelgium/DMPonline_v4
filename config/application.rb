@@ -60,31 +60,31 @@ module DMPonline4
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.precompile += %w(plans.js)
-    config.assets.precompile += %w(projects.js)
+    config.assets.precompile += %w(projects.js)    
     config.assets.precompile += %w(jquery.placeholder.js)
     config.assets.precompile += %w(jquery.tablesorter.js)
     config.assets.precompile += %w(export_configure.js)
     config.assets.precompile += %w(toolbar.js)
     config.assets.precompile += %w(admin.js)
     config.assets.precompile += %w(admin.css)
-
+    
     config.autoload_paths += %W(#{config.root}/lib)
 
     # Set the default host for mailer URLs
-    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+    config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
     config.active_record.whitelist_attributes = true
 
      # Enable shibboleth as an alternative authentication method
     # Requires server configuration and omniauth shibboleth provider configuration
     # See config/initializers/omniauth.rb
-    config.shibboleth_enabled = false
+    config.shibboleth_enabled = ENV['SHIBBOLETH_ENABLED']
 
     # Absolute path to Shibboleth SSO Login
-    config.shibboleth_login = 'https://localhost/Shibboleth.sso/Login'
+    config.shibboleth_login = ENV['SHIBBOLETH_LOGIN']
 
     WickedPdf.config = {
-      :exe_path => '/usr/bin/wkhtmltopdf'
-    }
+	  :exe_path => ENV['WICKED_PDF_EXE']
+	}
 
   end
 end

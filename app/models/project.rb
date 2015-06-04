@@ -15,10 +15,9 @@ class Project < ActiveRecord::Base
 
 	after_create :create_plans
 
-  #validation
+  #validation - start
   validates :dmptemplate,:presence => true
-  #makes projects_controller fail..
-  #validates :organisation, :presence => true
+  #validation - end
 
 	def funder_id=(new_funder_id)
 		if new_funder_id != "" then

@@ -6,9 +6,9 @@ class Question < ActiveRecord::Base
   has_many :suggested_answers, :dependent => :destroy
   has_many :guidances
   has_many :comments
-
-  has_and_belongs_to_many :themes, join_table: "questions_themes"
-
+  
+  has_and_belongs_to_many :themes, join_table: "questions_themes"  
+  
 
   belongs_to :section
   belongs_to :question_format
@@ -25,22 +25,22 @@ class Question < ActiveRecord::Base
   								:number, :parent_id, :suggested_answer, :text, :section_id,
   								:question_format_id,:options_attributes,
   								:suggested_answers_attributes
-
-  #validation
+  #validation - start
   validates :section, :presence => true
   validates :question_format, :presence => true
   validates :text, :length => { :minimum => 1 }
   validates :number,numericality: { only_integer: true, :greater_than => 0 }
+  #validation - end
 
 	def to_s
-      "#{text}"
-  end
+        "#{text}"
+    end
 
-  amoeba do
-      include_field :options
-      include_field :suggested_answers
-      clone [:themes]
-  end
+    amoeba do
+        include_field :options
+        include_field :suggested_answers
+        clone [:themes]
+    end
 
 	#def question_type?
 	#	type_label = {}
@@ -97,7 +97,7 @@ class Question < ActiveRecord::Base
 		return guidances
  	end
 
-
+    
  	#get suggested answer belonging to the currents user for this question
  	def get_suggested_answer(org_id)
  		suggested_answer = suggested_answers.find_by_organisation_id(org_id)
