@@ -8,11 +8,11 @@ It is based upon a [previous guide](https://github.com/softwaresaved/smp-service
 # Installation
 ## Dependencies for Scientific Linux 6
 - for Rails:
-- 
+
         $ sudo yum install nodejs
 
 - for DMPonline:
-- 
+
         $ sudo yum install wkhtmltopdf
         $ wkhtmltopdf -V
         Name:
@@ -98,6 +98,17 @@ Configure:
     Reload privilege tables now? [Y/n] Y
 
 ##Install DMPonline
+
+### Configure Figaro
+
+[Figaro](https://github.com/laserlemon/figaro) is a ruby gem that loads values from config/application.yml into your environment. 
+
+We added this gem to keep all configuration in one place, and refer to it (e.g. in initializers) by use of the environment variable ENV.
+
+        $ cp config/application_example.yml config/application.yml
+        
+See below for the configuration keys.
+
 ### Configure database
 
 Copy database configuration:
@@ -114,75 +125,120 @@ Edit config/database.yml and update:
 
 Edit the following lines in config/environments/development.rb. Provide your own SMTP server URL and port:
 
-    config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
-    ActionMailer::Base.smtp_settings = { :address => "localhost", :port => 1025 }
+        config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+        ActionMailer::Base.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+    
+Or set these keys in config/application.yml:
+        
+        DMP_SMTP_ADDRESS: "localhost"
+        DMP_SMTP_PORT: 25
 
 ### Configure e-mails
 
 Edit config/initializers/contact_us.rb. Update this value which is used to set the To: field in e-mails sent when the form on the /contact-us page is submitted:
 
-    config.mailer_to = "dmponline@dcc.ac.uk"
+        config.mailer_to = ENV['DMP_CONTACT_US_EMAIL_FROM']
+    
+And set the appropriate value in config/application.yml:
+
+        DMP_CONTACT_US_EMAIL_FROM: "dmponline@dcc.ac.uk"
 
 Edit app/mailers/user_mailer.rb. Update this value which is used to set the From: field in e-mails sent to users relating to change in their plan permissions (e.g. they are added as a collaborator):
 
-    default from: 'info@dcc.ac.uk'
+        default from: ENV['USER_MAILER_EMAIL_FROM']
+    
+And set the appropriate value in config/application.yml:
+
+        DMP_USER_MAILER_EMAIL_FROM: "info@dcc.ac.uk"
 
 Edit config/initializers/devise.rb. Update this value which is used to set the Reply-To: field in e-mails sent to users when they register, or have forgotten their password:
 
-    config.mailer_sender = "info@dcc.ac.uk"
+        config.mailer_sender = ENV['DEVISE_EMAIL_FROM']
+        
+And set the appropriate value in config/application.yml:
+
+        DEVISE_EMAIL_FROM: "info@dcc.ac.uk"
 
 Edit config/environments/development.rb. Update these values which are used to set the From:, Subject: and To: fields in error report e-mails:
 
-    :email_prefix => "[DMPonline4 ERROR] ",
-    :sender_address => %{"No-reply" <noreply@dcc.ac.uk>},
-    :exception_recipients => %w{dmponline@dcc.ac.uk}
+        :email_prefix => ENV['DMP_ERR_EMAIL_PREFIX'],
+        :sender_address => ENV['DMP_ERR_EMAIL_SENDER_ADDRESS'],
+        :exception_recipients => JSON.parse(ENV['DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS'])
+        
+And set the appropriate value in config/application.yml:
+
+        DMP_ERR_EMAIL_PREFIX: "[DMPonline4 ERROR] "
+        DMP_ERR_EMAIL_SENDER_ADDRESS: "\"No-reply\" <noreply@dcc.ac.uk>"
+        DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS: "[\"dmponline@dcc.ac.uk\"]"
+        
+Make sure that DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS is a json string!
 
 Update this value which is is used to set the From: field in e-mails sent to users when they register, or have forgotten their password:
 
-    ActionMailer::Base.default :from => 'address@example.com'
+        ActionMailer::Base.default :from => ENV['DMP_EMAIL_FROM']
+        
+And set the appropriate value in config/application.yml:
+
+        DMP_EMAIL_FROM: "nicolas.franck@ugent.be"
 
 Update this value which, when running in development-mode, is used in e-mails sent to users when they register, have forgotten their password, or when there are changes in plan permissions, to provide a link to the relevant page of DMPonline:
 
-    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+        config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
+
+And set the appropriate value in config/application.yml:
+
+        DMP_HOST: "localhost:3000"
 
 Edit config/application.rb. Update this value which, when running in production-mode, is used in e-mails sent to users when they register, have forgotten their password, or when there are changes in plan permissions, to provide a link to the relevant page of DMPonline:
 
-    config.action_mailer.default_url_options = { :host => 'dmponline.example.com' }
+        config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
 
 ### Configure security tokens
 
 Create a security token:
 
-    $ irb
-    > require 'securerandom'
-    > SecureRandom.hex(64)
+        $ irb
+        > require 'securerandom'
+        > SecureRandom.hex(64)
 
 Or:
 
-    $ bundle exec rake secret
+        $ bundle exec rake secret
 
 Edit config/initializers/devise.rb. Copy the security token into the pepper:
 
-    config.pepper = "de451fa8d44af2c286d922f753d1b10fd23b99c10747143d9ba118988b9fa9601fea66bfe31266ffc6a331dc7331c71ebe845af8abcdb84c24b42b8063386530"
+        config.pepper = ENV['DEVISE_PEPPER']
+    
+or set the appropriate value in config/application.yml:
+
+        DEVISE_PEPPER: "de451fa8d44af2c286d922f753d1b10fd23b99c10747143d9ba118988b9fa9601fea66bfe31266ffc6a331dc7331c71ebe845af8abcdb84c24b42b8063386530"
 
 Create another security token, as above.
 
 Edit config/initializers/secret_token.rb. Copy in the security token:
 
-    DMPonline4::Application.config.secret_token = '4eca200ee84605da3c8b315a127247d1bed3af09740090e559e4df35821fbc013724fbfc61575d612564f8e9c5dbb4b83d02469bfdeb39489151e4f9918598b2'
+        DMPonline4::Application.config.secret_token = ENV['SECRET_TOKEN']
+    
+or set the appropriate value in config/application.yml:
+
+        SECRET_TOKEN: "4eca200ee84605da3c8b315a127247d1bed3af09740090e559e4df35821fbc013724fbfc61575d612564f8e9c5dbb4b83d02469bfdeb39489151e4f9918598b2"
 
 ### Declare path to wkhtmltopdf
 
 Find the path to wkhtmltopdf:
 
-    $ which wkhtmltopdf
-    /usr/local/bin/wkhtmltopdf
+        $ which wkhtmltopdf
+        /usr/local/bin/wkhtmltopdf
 
 Edit config/application.rb. If necessary, update the path to wkhtmltopdf:
 
-    WickedPdf.config = {
-        :exe_path => '/usr/local/bin/wkhtmltopdf'
-    }
+        WickedPdf.config = {
+                :exe_path => ENV['WICKED_PDF_EXE']
+        }
+    
+or set the appropriate value in config/application.yml:
+
+        WICKED_PDF_EXE: "/usr/local/bin/wkhtmltopdf"
 
 ### Configure reCAPTCHA
 
@@ -210,8 +266,8 @@ This fork contains a fixed version of the seed file, found at
 
 It is possible that this command fails:
 
-    $ bundle exec rake db:seed
-    ActiveModel::MassAssignmentSecurity::Error: Can't mass-assign protected attributes: var, target
+        $ bundle exec rake db:seed
+        ActiveModel::MassAssignmentSecurity::Error: Can't mass-assign protected attributes: var, target
 
 The [cause](https://github.com/ledermann/rails-settings/issues/59) is ruby gem protected_attributes.
 This is fixed in the initializer config/initializer/rails_settings.rb.
