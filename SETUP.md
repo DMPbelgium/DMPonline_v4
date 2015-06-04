@@ -21,11 +21,16 @@ It is based upon a [previous guide](https://github.com/softwaresaved/smp-service
 
 ## Dependencies for Ubuntu 14.04.1 LTS
 - general:
+
         $ sudo apt-get install git
         $ sudo apt-get install curl
+        
 - for Rails:
+
         $ sudo apt-get install nodejs
+        
 - for DMPonline:
+
         $ sudo apt-get install wkhtmltopdf
         $ wkhtmltopdf -V
         Name:
