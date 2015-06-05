@@ -103,6 +103,11 @@ Configure:
 
         $ git clone https://github.com/DigitalCurationCentre/DMPonline_v4
         $ cd DMPonline_v4
+        
+### Install Ruby gems
+
+    $ gem install bundler
+    $ bundle install
 
 ### Configure Figaro
 
@@ -276,12 +281,6 @@ It is possible that this command fails:
 
 The [cause](https://github.com/ledermann/rails-settings/issues/59) is ruby gem protected_attributes.
 This is fixed in the initializer config/initializer/rails_settings.rb.
-
-
-### Install Ruby gems
-
-    $ gem install bundler
-    $ bundle install
 
 ### Create database
 
