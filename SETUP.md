@@ -99,6 +99,11 @@ Configure:
 
 ##Install DMPonline
 
+### Clone repository
+
+        $ git clone https://github.com/DigitalCurationCentre/DMPonline_v4
+        $ cd DMPonline_v4
+
 ### Configure Figaro
 
 [Figaro](https://github.com/laserlemon/figaro) is a ruby gem that loads values from config/application.yml into your environment. 
