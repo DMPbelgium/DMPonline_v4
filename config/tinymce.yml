@@ -6,7 +6,7 @@ plugins:
   - autoresize
   - link
   - paste
-target_list: false 
+target_list: false
 autoresize_min_height: 130
 extended_valid_elements: "iframe[tooltip] , a[href|target=_blank]"
 extended_valid_elements: "a[href|target=_blank]"
@@ -17,3 +17,4 @@ paste_convert_middot_lists: true
 paste_remove_styles_if_webkit: true
 paste_remove_spans: true
 paste_strip_class_attributes: "all"
+entity_encoding: numeric

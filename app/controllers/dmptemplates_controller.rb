@@ -287,6 +287,7 @@ class DmptemplatesController < ApplicationController
                 @old_version = Version.find(params[:version_id])
 				@version = @old_version.amoeba_dup
 				@phase = @version.phase
+        @sections = @version.sections
 
 		    respond_to do |format|
 		      if @version.save

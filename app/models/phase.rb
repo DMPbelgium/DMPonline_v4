@@ -10,7 +10,7 @@ class Phase < ActiveRecord::Base
 	#associations between tables
 	belongs_to :dmptemplate
 	
-	has_many :versions, :dependent => :destroy
+	has_many :versions, :dependent => :destroy, :inverse_of => :phase
 	has_many :sections, :through => :versions, :dependent => :destroy
     has_many :questions, :through => :sections, :dependent => :destroy
   

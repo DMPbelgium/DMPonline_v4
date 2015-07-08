@@ -3,7 +3,7 @@ class Version < ActiveRecord::Base
   #associations between tables
   belongs_to :phase
   
-  has_many :sections, :dependent => :destroy
+  has_many :sections, :dependent => :destroy, :inverse_of => :version
   has_many :questions, :through => :sections, :dependent => :destroy
   has_many :plans
   
