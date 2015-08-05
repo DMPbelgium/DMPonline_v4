@@ -187,12 +187,7 @@
                     <div class="accordion-heading">
                         <a class="accordion-guidance-link" data-toggle="collapse" data-parent="#<%= question.id %>-guidance" href="#collapse-guidance-<%= question.id%>">
                             <div class="accordion_heading_text">
-                                <%= question.section.organisation.abbreviation %> 
-                                <%if question.section.organisation.abbreviation == "EPSRC" then %>
-                                    <%= t('helpers.policy_expectations')%>
-                                <%else%>
-                                    <%= t('helpers.guidance')%>
-                                <%end%>    
+                                <%= t('helpers.guidance')%>
                             </div>
                             <span class="plus-laranja"> </span></a>
                     </div>
