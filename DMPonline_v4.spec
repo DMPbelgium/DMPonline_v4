@@ -5,7 +5,7 @@ Version: 1.0
 Release: X
 BuildArch: noarch
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-Requires: Percona-Server-55, Percona-Server-devel-55, httpd, wkhtmltox
+Requires: Percona-Server-server-55, Percona-Server-client-55, Percona-Server-devel-55, httpd, wkhtmltox
 Source: %{name}.tar.gz
 
 %description
