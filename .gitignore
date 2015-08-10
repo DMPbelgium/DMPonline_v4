@@ -4,69 +4,21 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
-# Ignore bundler config
+# Ignore bundler config.
 /.bundle
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
+/db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
 
-public/assets/*
+# Ignore application configuration
+/config/application.yml
+/vendor/bundle
+/config/database.yml
+/public/assets
 
-public/assets/application.js.gz
-
-public/assets/application.js
-
-public/assets/application.js
-
-public/assets/application.css.gz
-
-public/assets/application-d7a55927ebc82a139b122d77d4a8a9c7.css.gz
-
-public/assets/jquery.min.map
-
-public/assets/manifest.yml
-
-Gemfile.lock
-
-public/assets/application-d7a55927ebc82a139b122d77d4a8a9c7.css
-
-public/assets/application.css
-
-public/assets/application.css.gz
-
-public/assets/application.js
-
-public/assets/application.js.gz
-
-public/assets/jquery.min.map
-
-public/assets/manifest.yml
-
-public/assets/rails-a3386665c05a2d82f711a4aaa72d247c.png
-
-public/assets/rails.png
-
-db/schema.rb
-
-config/database.yml
-
-config/initializers/recaptcha.rb
-
-config/initializers/devise.rb
-
-config/initializers/secret_token.rb
-
-config/initializers/contact_us.rb
-
-config/environments/*.rb
-
-config/environments/development.rb
-config/environments/development.rb
-config/environments/development.rb
-db/schema.rb
-
-config/application.yml
+/app/assets/stylesheets/.sass-cache
