@@ -36,9 +36,8 @@ rm -rf %{buildroot}
 %defattr(-,dmponline,dmponline,-)
 /opt/%{name}/
 /var/log/%{name}/
-%defattr(0664,root,root,-)
-/opt/%{name}/.ruby-version
-/opt/%{name}/.ruby-gemset
+%attr(0664,root,root) /opt/%{name}/.ruby-version
+%attr(0664,root,root) /opt/%{name}/.ruby-gemset
 
 %doc
 

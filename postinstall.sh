@@ -8,7 +8,9 @@ cd /opt/DMPonline_v4 &&
 gem install bundler &&
 bundle install --deployment &&
 bundle exec rake db:migrate &&
-#bundle exec rake assets:precompile
+#sprocket cache hanging around for no good reason
+rm -rf tmp/cache/* &&
+bundle exec rake assets:precompile &&
 touch tmp/restart.txt
 
 # Generate .assets-version file
