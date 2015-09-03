@@ -14,3 +14,12 @@
  *= require bootstrap_and_overrides.css.less
  *= require select2.css
  */
+footer a#footer_right_dcc {
+  float: right !important;
+  width: 26% !important;
+}
+footer a#footer_right_jisc {
+  float: right !important;
+  width: 12% !important;
+  padding-right: 5px;
+}
