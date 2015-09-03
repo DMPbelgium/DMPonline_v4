@@ -89,7 +89,8 @@ class ExportedPlan < ActiveRecord::Base
   end
 
   def as_txt
-    output = "#{self.plan.project.title}\n\n#{self.plan.version.phase.title}\n"
+    #output = "#{self.plan.project.title}\n\n#{self.plan.version.phase.title}\n"
+    output = "#{self.plan.project.try(:title)}\n\n#{self.plan.title}\n"
 
     self.sections.each do |section|
       output += "\n#{section.title}\n"
@@ -111,7 +112,7 @@ class ExportedPlan < ActiveRecord::Base
   end
 
   def html_for_docx
-    docx_html_source = "<html><head></head><body><div><h1>#{self.plan.project.title}</h1><h2>#{self.plan.title}</h2>"
+    docx_html_source = "<html><head></head><body><div><h1>#{self.plan.project.try(:title)}</h1><h2>#{self.plan.title}</h2>"
     if self.admin_details.present?
         docx_html_source << "<div><h3>Admin Details</h3>"
         self.admin_details.each do |field|

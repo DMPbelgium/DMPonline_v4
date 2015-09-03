@@ -21,7 +21,9 @@
 		</style>
 	</head>
 	<body>
-		<h1><%= @plan.title %></h1>
+		<h1><%= @plan.project.try(:title) %></h1>
+    <h2><%= @plan.title %></h2>
+    <h3>Admin details</h3>
 		<% @exported_plan.admin_details.each do |field|
 		     value = @exported_plan.send(field)
 		     if value.present?

@@ -191,6 +191,9 @@ class PlansController < ApplicationController
 				end
                 format.pdf do
                     @formatting = @plan.settings(:export).formatting
+                    $stderr.puts "render to #{file_name}"
+                    $stderr.puts "foot text: #{ t('helpers.plan.export.pdf.generated_by') }"
+                    $stderr.puts "formatting: #{@formatting[:margin][:bottom].inspect}"
                     render pdf: file_name,
 			  	            margin: @formatting[:margin],
 			  	            footer: {
