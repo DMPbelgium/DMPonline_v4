@@ -1,36 +1,35 @@
 # [+Project:+] DMPonline v4
-# [+Description:+] 
-#   
+# [+Description:+]
+#
 # [+Created:+] 03/09/2014
-# [+Copyright:+] Digital Curation Centre 
+# [+Copyright:+] Digital Curation Centre
 
 ActiveAdmin.register Version do
 
 	menu :priority => 1, :label => proc{I18n.t('admin.version')}, :parent =>  "Templates management"
 
 	index do   # :description, :number, :published, :title, :phase_id
-        column I18n.t('admin.title'), :sortable => :title  do |version_used|
-            if !version_used.title.nil? then
-                 link_to version_used.title, [:admin, version_used]
-           end
-        end
-        column I18n.t('admin.version_numb'), :number
-        column :published
-        column I18n.t('admin.phase'), :sortable => :phase_id do |phase_title|
-	  		if !phase_title.phase_id.nil? then
-                link_to phase_title.phase.title, [:admin, phase_title.phase]
-            else 
-                '-'
-	   		end
-     	end
-            
-        default_actions
+    column I18n.t('admin.title'), :sortable => :title  do |version_used|
+      if !version_used.title.nil? then
+           link_to version_used.title, [:admin, version_used]
       end
-  
+    end
+    column I18n.t('admin.version_numb'), :number
+    column :published
+    column I18n.t('admin.phase'), :sortable => :phase_id do |phase_title|
+      if !phase_title.phase_id.nil? then
+        link_to phase_title.phase.title, [:admin, phase_title.phase]
+      else
+        '-'
+      end
+    end
+    default_actions
+  end
+
   #show details of a version
-  show do 
+  show do
 		attributes_table do
-			row :title
+		  row :title
 	 		row	:number
 	 		row :description do |descr|
 	  		if !descr.description.nil? then
@@ -39,42 +38,40 @@ ActiveAdmin.register Version do
 	  	end
 	  	row I18n.t('admin.phase'), :sortable => :phase_id do |phase_title|
 	  		if !phase_title.phase_id.nil? then
-                link_to phase_title.phase.title, [:admin, phase_title.phase]	  
+          link_to phase_title.phase.title, [:admin, phase_title.phase]
 	   		end
      	end
      	row :published
      	row :created_at
      	row :updated_at
-		 end
-		 
-		end 
-  
+    end
+  end
+
   #sections sidebar  (:organisation_id, :description, :number, :title, :version_id)
- 		sidebar I18n.t('admin.sections'), :only => :show, :if => proc { version.sections.count >= 1}  do
- 		 	table_for version.sections.order("number asc") do |temp_phases|
- 		 		column :number
- 		 		column :title do |row|
-      		link_to row.title, [:admin, row]
-      	end	
-      	column I18n.t('admin.org_title'), :sortable => :organisation_id do |org_title|
-       		link_to org_title.organisation.name, [:admin, org_title.organisation]
-    		end
-      	
- 		 	end
+ 	sidebar I18n.t('admin.sections'), :only => :show, :if => proc { version.sections.count >= 1}  do
+ 		table_for version.sections.order("number asc") do |temp_phases|
+ 		 	column :number
+ 		 	column :title do |row|
+        link_to row.title, [:admin, row]
+      end
+      column I18n.t('admin.org_title'), :sortable => :organisation_id do |org_title|
+       	link_to org_title.organisation.name, [:admin, org_title.organisation]
+    	end
  		end
-  
- 	#form 	
+ 	end
+
+ 	#form
  	form do |f|
   	f.inputs "Details" do
   		f.input :title
   		f.input :number
   		f.input :description
-  		f.input :phase, :label => I18n.t('admin.phase_title'), 
-  						:as => :select, 
-  						:collection => Phase.find(:all, :order => 'title ASC').map{|ph|[ph.title, ph.id]}
-  		f.input :published  
+  		f.input :phase, :label => I18n.t('admin.phase_title'),
+  			:as => :select,
+  			:collection => Phase.find(:all, :order => 'title ASC').map{|ph|[ph.title, ph.id]}
+  		f.input :published
   	end
-  	f.actions  
-  end		
+  	f.actions
+  end
 
 end

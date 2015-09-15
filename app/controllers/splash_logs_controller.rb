@@ -3,6 +3,7 @@ class SplashLogsController < ApplicationController
 	# POST /answers
 	# POST /answers.json
 	def create
+    authorize! :create,SplashLog
 		@splash_log = SplashLog.new()
 		@splash_log.destination = params[:destination]
 		respond_to do |format|

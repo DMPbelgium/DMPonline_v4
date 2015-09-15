@@ -2,6 +2,7 @@ class OrganisationsController < ApplicationController
   # GET /organisations
   # GET /organisations.json
   def index
+    authorize! :index, Organisation
     @organisations = Organisation.all
 
     respond_to do |format|
@@ -13,22 +14,19 @@ class OrganisationsController < ApplicationController
   # GET /organisations/1
   # GET /organisations/1.json
   def admin_show
-  	if user_signed_in? && current_user.is_org_admin? then
-	    @organisation = Organisation.find(params[:id])
-	
-	    respond_to do |format|
-	      format.html # show.html.erb
-	      format.json { render json: @organisation }
-	    end
-    else
-			render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
-		end 
-		
+	  @organisation = Organisation.find(params[:id])
+    authorize! :admin_show,@organisation
+
+	  respond_to do |format|
+	    format.html # show.html.erb
+	    format.json { render json: @organisation }
+	  end
   end
 
   # GET /organisations/new
   # GET /organisations/new.json
   def new
+    authorize! :new, Organisation
     @organisation = Organisation.new
 
     respond_to do |format|
@@ -39,21 +37,19 @@ class OrganisationsController < ApplicationController
 
   # GET /organisations/1/edit
   def admin_edit
-  	if user_signed_in? && current_user.is_org_admin? then
-	    	@organisation = Organisation.find(params[:id])
-	    	
-	    	respond_to do |format|
-	      	format.html # edit.html.erb
-	      	format.json { render json: @organisation }
-	      end
-	   else
-			render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
-		end  	
+	  @organisation = Organisation.find(params[:id])
+    authorize! :admin_edit,@organisation
+
+	  respond_to do |format|
+	    format.html # edit.html.erb
+	    format.json { render json: @organisation }
+	  end
   end
 
   # POST /organisations
   # POST /organisations.json
   def create
+    authorize! :create, Organisation
     @organisation = Organisation.new(params[:organisation])
 
     respond_to do |format|
@@ -71,26 +67,24 @@ class OrganisationsController < ApplicationController
   # PUT /organisations/1.json
   def admin_update
     @organisation = Organisation.find(params[:id])
-		
-		if user_signed_in? && current_user.is_org_admin? then
-	    respond_to do |format|
-	      if @organisation.update_attributes(params[:organisation])
-	        format.html { redirect_to admin_show_organisation_path(params[:id]), notice: I18n.t("admin.org_updated_message")  }
-	        format.json { head :no_content }
-	      else
-	        format.html { render action: "edit" }
-	        format.json { render json: @organisation.errors, status: :unprocessable_entity }
-	      end
+    authorize! :admin_update,@organisation
+
+	  respond_to do |format|
+	    if @organisation.update_attributes(params[:organisation])
+	      format.html { redirect_to admin_show_organisation_path(params[:id]), notice: I18n.t("admin.org_updated_message")  }
+	      format.json { head :no_content }
+	    else
+	      format.html { render action: "edit" }
+	      format.json { render json: @organisation.errors, status: :unprocessable_entity }
 	    end
-  	else
-  	  render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
-		end  	
+	  end
   end
 
   # DELETE /organisations/1
   # DELETE /organisations/1.json
   def destroy
     @organisation = Organisation.find(params[:id])
+    authorize! :destroy, @organisation
     @organisation.destroy
 
     respond_to do |format|
@@ -98,16 +92,18 @@ class OrganisationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
+  #TODO: ?
   def parent
   	@organisation = Organisation.find(params[:id])
+    authorize! :parent, @organisation
   	parent_org = @organisation.find_by {|o| o.parent_id }
   	return parent_org
   end
-  
+
 	def children
+    authorize! :children, Organisation
 		@organisation = Organisation.find(params[:id])
-		#if user_signed_in? then
 		children = {}
 		@organisation.children.each do |child|
 			children[child.id] = child.name
@@ -115,14 +111,11 @@ class OrganisationsController < ApplicationController
 		respond_to do |format|
 			format.json { render json: children.to_json }
 		end
-# 		else
-# 			render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
-# 		end
 	end
-  
+
 	def templates
+    authorize! :templates, Organisation
 		@organisation = Organisation.find(params[:id])
-		#if user_signed_in? then
 		templates = {}
 		@organisation.dmptemplates.each do |template|
 			if template.is_published? then
@@ -132,8 +125,5 @@ class OrganisationsController < ApplicationController
 		respond_to do |format|
 			format.json { render json: templates.to_json }
 		end
-# 		else
-# 			render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
-# 		end
 	end
 end

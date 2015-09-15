@@ -2,6 +2,7 @@ class UserRoleTypesController < ApplicationController
   # GET /user_role_types
   # GET /user_role_types.json
   def index
+    authorize! :index,UserRoleType
     @user_role_types = UserRoleType.all
 
     respond_to do |format|
@@ -14,6 +15,7 @@ class UserRoleTypesController < ApplicationController
   # GET /user_role_types/1.json
   def show
     @user_role_type = UserRoleType.find(params[:id])
+    authorize! :show,@user_role_type
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,6 +26,7 @@ class UserRoleTypesController < ApplicationController
   # GET /user_role_types/new
   # GET /user_role_types/new.json
   def new
+    authorize! :new,UserRoleType
     @user_role_type = UserRoleType.new
 
     respond_to do |format|
@@ -35,11 +38,14 @@ class UserRoleTypesController < ApplicationController
   # GET /user_role_types/1/edit
   def edit
     @user_role_type = UserRoleType.find(params[:id])
+    authorize! :edit,@user_role_type
   end
 
   # POST /user_role_types
   # POST /user_role_types.json
   def create
+    authorize! :create,UserRoleType
+
     @user_role_type = UserRoleType.new(params[:user_role_type])
 
     respond_to do |format|
@@ -57,6 +63,7 @@ class UserRoleTypesController < ApplicationController
   # PUT /user_role_types/1.json
   def update
     @user_role_type = UserRoleType.find(params[:id])
+    authorize! :update,@user_role_type
 
     respond_to do |format|
       if @user_role_type.update_attributes(params[:user_role_type])
@@ -73,6 +80,8 @@ class UserRoleTypesController < ApplicationController
   # DELETE /user_role_types/1.json
   def destroy
     @user_role_type = UserRoleType.find(params[:id])
+    authorize! :destroy,@user_role_type
+
     @user_role_type.destroy
 
     respond_to do |format|

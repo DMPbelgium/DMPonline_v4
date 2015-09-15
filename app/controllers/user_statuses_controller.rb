@@ -2,6 +2,7 @@ class UserStatusesController < ApplicationController
   # GET /user_statuses
   # GET /user_statuses.json
   def index
+    authorize! :index,UserStatus
     @user_statuses = UserStatus.all
 
     respond_to do |format|
@@ -14,6 +15,7 @@ class UserStatusesController < ApplicationController
   # GET /user_statuses/1.json
   def show
     @user_status = UserStatus.find(params[:id])
+    authorize! :show,@user_status
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,6 +26,7 @@ class UserStatusesController < ApplicationController
   # GET /user_statuses/new
   # GET /user_statuses/new.json
   def new
+    authorize! :new,UserStatus
     @user_status = UserStatus.new
 
     respond_to do |format|
@@ -35,11 +38,13 @@ class UserStatusesController < ApplicationController
   # GET /user_statuses/1/edit
   def edit
     @user_status = UserStatus.find(params[:id])
+    authorize! :edit,@user_status
   end
 
   # POST /user_statuses
   # POST /user_statuses.json
   def create
+    authorize! :create,UserStatus
     @user_status = UserStatus.new(params[:user_status])
 
     respond_to do |format|
@@ -57,6 +62,7 @@ class UserStatusesController < ApplicationController
   # PUT /user_statuses/1.json
   def update
     @user_status = UserStatus.find(params[:id])
+    authorize! :update,@user_status
 
     respond_to do |format|
       if @user_status.update_attributes(params[:user_status])
@@ -73,6 +79,7 @@ class UserStatusesController < ApplicationController
   # DELETE /user_statuses/1.json
   def destroy
     @user_status = UserStatus.find(params[:id])
+    authorize! :destroy,@user_status
     @user_status.destroy
 
     respond_to do |format|

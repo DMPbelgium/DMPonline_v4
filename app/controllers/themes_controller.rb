@@ -2,9 +2,11 @@ class ThemesController < ApplicationController
   # GET /themes
   # GET /themes.json
   def index
+    authorize! :index,Theme
     @themes = Theme.all
 
     respond_to do |format|
+      #TEMPLATE REMOVED?????
       format.html # index.html.erb
       format.json { render json: @themes }
     end
@@ -14,6 +16,7 @@ class ThemesController < ApplicationController
   # GET /themes/1.json
   def show
     @theme = Theme.find(params[:id])
+    authorize! :show,@theme
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,6 +27,7 @@ class ThemesController < ApplicationController
   # GET /themes/new
   # GET /themes/new.json
   def new
+    authorize! :new,Theme
     @theme = Theme.new
 
     respond_to do |format|
@@ -35,11 +39,13 @@ class ThemesController < ApplicationController
   # GET /themes/1/edit
   def edit
     @theme = Theme.find(params[:id])
+    authorize! :edit,@theme
   end
 
   # POST /themes
   # POST /themes.json
   def create
+    authorize! :create,Theme
     @theme = Theme.new(params[:theme])
 
     respond_to do |format|
@@ -57,6 +63,7 @@ class ThemesController < ApplicationController
   # PUT /themes/1.json
   def update
     @theme = Theme.find(params[:id])
+    authorize! :update,@theme
 
     respond_to do |format|
       if @theme.update_attributes(params[:theme])
@@ -73,6 +80,7 @@ class ThemesController < ApplicationController
   # DELETE /themes/1.json
   def destroy
     @theme = Theme.find(params[:id])
+    authorize! :destroy,@theme
     @theme.destroy
 
     respond_to do |format|

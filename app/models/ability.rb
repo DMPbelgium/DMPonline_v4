@@ -2,36 +2,65 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
-    #
-      user ||= User.new # guest user (not logged in)
-      if user.has_role? :admin
-        can :manage, :all
-      else
-        can :read, :all
+    user ||= User.new
+
+    #/answers
+    can :create,SplashLog
+
+    can :manage,Theme
+    can :manage,UserOrgRole
+    can :manage,UserRoleType
+    can :manage,User
+    can :manage,UserStatus
+    can :manage,UserType
+
+    if user.roles.any?
+
+      can [:index,:new,:create,:destroy,:parent,:children,:templates], Organisation
+      can [:edit,:update,:delete_recent_locks,:unlock_all_sections,:lock_section,:unlock_section], Plan do |plan|
+        plan.editable_by(user.id)
       end
 
-    can :manage_settings, User do |viewed_user|
-      viewed_user.present? && user.id == viewed_user.id
+      can [:status,:section_answers,:locked,:answer,:warning,:export], Plan do |plan|
+        plan.readable_by(user.id)
+      end
+
+      can :create,Answer do |answer|
+        answer.plan.editable_by(user.id)
+      end
+
+      can :index,Comment
+      can [:create,:show,:edit,:update,:archive],Comment
+      can :manage_settings, User do |viewed_user|
+        viewed_user.present? && user.id == viewed_user.id
+      end
+
+      can [:create,:update,:destroy], ProjectGroup do |pg|
+        pg.project.administerable_by(user.id)
+      end
+
+      can [:index,:new,:export,:create],Project
+      can :show,Project do |p|
+        p.readable_by(user.id)
+      end
+      can [:edit,:share,:update,:destroy],Project do |p|
+        p.editable_by(user.id)
+      end
+
+
+      if user.has_role? :admin
+
+        #TODO: all org_admin actions forbidden (actions that start with 'admin_'), for they load other resources based on the current_user?
+        can :manage, :all
+
+      elsif user.is_org_admin?
+
+        can :manage, Dmptemplate
+        can :manage, GuidanceGroup
+        can [:admin_show,:admin_edit,:admin_update],Organisation
+
+      end
+
     end
-    #
-    # The first argument to `can` is the action you are giving the user 
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. 
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details:
-    # https://github.com/ryanb/cancan/wiki/Defining-Abilities
-   
   end
 end

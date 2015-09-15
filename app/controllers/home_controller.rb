@@ -9,8 +9,6 @@ class HomeController < ApplicationController
   		end
   	end
   end
-  
   def about_us
   end
-
 end

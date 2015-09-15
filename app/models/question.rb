@@ -6,9 +6,9 @@ class Question < ActiveRecord::Base
   has_many :suggested_answers, :dependent => :destroy
   has_many :guidances
   has_many :comments
-  
-  has_and_belongs_to_many :themes, join_table: "questions_themes"  
-  
+
+  has_and_belongs_to_many :themes, join_table: "questions_themes"
+
 
   belongs_to :section
   belongs_to :question_format
@@ -37,8 +37,8 @@ class Question < ActiveRecord::Base
     end
 
     amoeba do
-        include_field :options
-        include_field :suggested_answers
+        include_association :options
+        include_association :suggested_answers
         clone [:themes]
     end
 
@@ -97,7 +97,7 @@ class Question < ActiveRecord::Base
 		return guidances
  	end
 
-    
+
  	#get suggested answer belonging to the currents user for this question
  	def get_suggested_answer(org_id)
  		suggested_answer = suggested_answers.find_by_organisation_id(org_id)

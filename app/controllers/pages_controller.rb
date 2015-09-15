@@ -1,3 +1,4 @@
+#DEPRECATED, not used anymore (table pages is removed)
 class PagesController < ApplicationController
   # GET /pages
   # GET /pages.json

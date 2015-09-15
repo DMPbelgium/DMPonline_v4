@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
- protect_from_forgery
-  
- # Override build_footer method in ActiveAdmin::Views::Pages
+  protect_from_forgery
+
+  #Override build_footer method in ActiveAdmin::Views::Pages
   require 'active_admin_views_pages_base.rb'
-  
- rescue_from CanCan::AccessDenied do |exception|
-     redirect_to root_url, :alert => exception.message
- end
- 
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
+
  	after_filter :store_location
 
 	def store_location
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 			request.fullpath != "/users/password" && \
             request.fullpath != "/users/sign_up?nosplash=true" && \
 			!request.xhr?) # don't store ajax calls
-		  session[:previous_url] = request.fullpath 
+		  session[:previous_url] = request.fullpath
    		end
 	end
 
@@ -28,15 +28,15 @@ class ApplicationController < ActionController::Base
 	def after_sign_up_path_for(resource)
 	  session[:previous_url] || root_path
 	end
-	
+
 	def after_sign_in_error_path_for(resource)
 	  session[:previous_url] || root_path
 	end
-	
+
 	def after_sign_up_error_path_for(resource)
 	  session[:previous_url] || root_path
 	end
-	
+
 	def authenticate_admin!
 		redirect_to root_path unless user_signed_in? && current_user.is_admin?
 	end

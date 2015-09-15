@@ -114,7 +114,7 @@ class Plan < ActiveRecord::Base
 	end
 
 	def add_guidance_to_array(guidance_array, guidance_group, theme, guidance)
-		
+
 		if guidance_array[guidance_group].nil? then
 			guidance_array[guidance_group] = {}
 		end
@@ -133,7 +133,7 @@ class Plan < ActiveRecord::Base
 				guidance_array[guidance_group][theme].push(guidance)
 			end
 		end
-		
+
         return guidance_array
 	end
 
@@ -287,6 +287,7 @@ class Plan < ActiveRecord::Base
 	end
 
 	def lock_section(section_id, user_id, release_time = 60)
+    $stderr.puts "lock_section called!!!!!!!!"
 		status = locked(section_id, user_id)
 		if ! status["locked"] then
 			plan_section = PlanSection.new

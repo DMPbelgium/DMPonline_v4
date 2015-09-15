@@ -1,4 +1,4 @@
-class ContactsController < ContactUs::ContactsController	
+class ContactsController < ContactUs::ContactsController
 	def create
 		@contact = ContactUs::Contact.new(params[:contact_us_contact])
 		if (!user_signed_in?)
@@ -25,6 +25,6 @@ class ContactsController < ContactUs::ContactsController
 			  	flash[:error] = t('contact_us.notices.error')
 			  	render_new_page
 			end
-		end		
+		end
 	end
 end

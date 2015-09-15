@@ -5,5 +5,5 @@ class UserOrgRole < ActiveRecord::Base
   belongs_to :user
   belongs_to :organisation
   belongs_to :user_role_type
-    
+
 end

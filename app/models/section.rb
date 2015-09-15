@@ -24,7 +24,7 @@ class Section < ActiveRecord::Base
   end
 
   amoeba do
-    include_field :questions
+    include_association :questions
   end
 
 end
