@@ -1,31 +1,30 @@
 class Dmptemplate < ActiveRecord::Base
 
-    attr_accessible :organisation_id, :description, :published, :title, :user_id, :locale, :is_default, :guidance_group_ids
+  attr_accessible :organisation_id, :description, :published, :title, :user_id, :locale, :is_default, :guidance_group_ids
 
-    #associations between tables
-    has_many :phases
-    has_many :versions, :through => :phases
-    has_many :sections, :through => :versions
-    has_many :questions, :through => :sections
-    has_many :projects
+  #associations between tables
+  has_many :phases
+  has_many :versions, :through => :phases
+  has_many :sections, :through => :versions
+  has_many :questions, :through => :sections
+  has_many :projects
 
-    #has_many :guidances                needs to be removed and checked
+  #has_many :guidances                needs to be removed and checked
 
-    belongs_to :organisation
-    #validation - start
-    #needed, for the index page fails otherwise
-    validates :organisation, :presence => true
-    #no empty title
-    validates :title, :length => { :minimum => 1 }
-    #validation - end
+  belongs_to :organisation
+  #validation - start
+  #needed, for the index page fails otherwise
+  validates :organisation, :presence => true
+  #no empty title
+  validates :title, :length => { :minimum => 1 }
+  #validation - end
 
 	has_and_belongs_to_many :guidance_groups, join_table: "dmptemplates_guidance_groups"
 
-    accepts_nested_attributes_for :guidance_groups
-    accepts_nested_attributes_for :phases
-    accepts_nested_attributes_for :organisation
-    accepts_nested_attributes_for :projects
-
+  accepts_nested_attributes_for :guidance_groups
+  accepts_nested_attributes_for :phases
+  accepts_nested_attributes_for :organisation
+  accepts_nested_attributes_for :projects
 
   has_settings :export, class_name: 'Settings::Dmptemplate' do |s|
     s.key :export, defaults: Settings::Dmptemplate::DEFAULT_SETTINGS
@@ -57,7 +56,6 @@ class Dmptemplate < ActiveRecord::Base
 
     return org_templates
 	end
-
 
 	#returns all institutional templates bellowing to the current user's org
 	def self.own_institutional_templates(org_id)
@@ -91,7 +89,6 @@ class Dmptemplate < ActiveRecord::Base
 				phase.versions.each do |version|
 					version.sections.each do |section|
 						return true if section.organisation_id == org_id
-
 					end
 				end
 				return false

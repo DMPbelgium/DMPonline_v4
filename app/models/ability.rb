@@ -7,12 +7,15 @@ class Ability
     #/answers
     can :create,SplashLog
 
-    can :manage,Theme
-    can :manage,UserOrgRole
-    can :manage,UserRoleType
-    can :manage,User
-    can :manage,UserStatus
-    can :manage,UserType
+    #USE of these controllers? ActiveAdmin has its own crud actions!
+    #better to switch them off, and put them back online when needed
+
+    #can :manage,Theme
+    #can :manage,UserOrgRole
+    #can :manage,UserRoleType
+    #can :manage,User
+    #can :manage,UserStatus
+    #can :manage,UserType
 
     if user.roles.any?
 

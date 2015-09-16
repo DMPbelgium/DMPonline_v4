@@ -126,9 +126,9 @@ class ExportedPlan < ActiveRecord::Base
     end
     self.sections.each do |section|
         docx_html_source << "<div><h3>#{section.title}</h3>"
-      
+
         self.questions_for_section(section.id).each do |question|
-        
+
             docx_html_source << "<div><h4>#{question.text}</h4>"
             answer = self.plan.answer(question.id, false)
             if answer.nil?
@@ -138,12 +138,12 @@ class ExportedPlan < ActiveRecord::Base
                 if q_format.title == I18n.t("helpers.checkbox") || q_format.title == I18n.t("helpers.multi_select_box") ||
                    q_format.title == I18n.t("helpers.radio_buttons") || q_format.title == I18n.t("helpers.dropdown") then
                     answer.options.each do |option|
-                        if !option.text.nil? 
+                        if !option.text.nil?
                             docx_html_source << "<p>- #{option.text}</p>"
-                        end    
+                        end
                     end
                 end
-          
+
             if !answer.text.nil?
                 docx_html_source << answer.text
             end

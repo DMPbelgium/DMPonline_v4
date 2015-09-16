@@ -6,5 +6,4 @@ class OrganisationType < ActiveRecord::Base
   #validation - start
   validates :name, :length => { :minimum => 1 }
   #validation - end
-
 end

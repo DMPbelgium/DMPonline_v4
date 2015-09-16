@@ -3,5 +3,4 @@ class FileUpload < ActiveRecord::Base
 
   #associations between tables
   belongs_to :file_type
-   
 end

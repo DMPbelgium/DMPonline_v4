@@ -3,15 +3,15 @@ class Organisation < ActiveRecord::Base
 	#associations between tables
 	belongs_to :organisation_type
 	has_many :guidance_groups
-    has_many :dmptemplates
+  has_many :dmptemplates
 	has_many :sections
 	has_many :users
 	has_many :option_warnings
 	has_many :suggested_answers
 
-    has_many :user_org_roles
+  has_many :user_org_roles
 
-    belongs_to :parent, :class_name => 'Organisation'
+  belongs_to :parent, :class_name => 'Organisation'
 	has_many :children, :class_name => 'Organisation', :foreign_key => 'parent_id'
 
 	accepts_nested_attributes_for :organisation_type
@@ -99,6 +99,5 @@ class Organisation < ActiveRecord::Base
 	def published_templates
 		return dmptemplates.find_all_by_published(1)
 	end
-
 
 end

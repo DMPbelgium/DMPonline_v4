@@ -23,7 +23,6 @@ class Version < ActiveRecord::Base
   validates :number,numericality: { only_integer: true, :greater_than => 0 }
   #validation - end
 
-
   def global_sections
   	sections.find_all_by_organisation_id(phase.dmptemplate.organisation_id)
   end
@@ -34,6 +33,5 @@ class Version < ActiveRecord::Base
     set :published => 'false'
     prepend :title => "Copy of "
   end
-
 
 end

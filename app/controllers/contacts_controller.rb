@@ -5,25 +5,25 @@ class ContactsController < ContactUs::ContactsController
 			if verify_recaptcha(:message => "You have not added the validation words correctly") && @contact.save
 				flash[:notice] = t('contact_us.notices.success')
 				if user_signed_in? then
-			  		redirect_to :controller => 'projects', :action => 'index'
-			  	else
-			  		redirect_to(root_path)
-			  	end
+          redirect_to :controller => 'projects', :action => 'index'
+			  else
+			    redirect_to(root_path)
+			  end
 			else
-			  	flash[:error] = t('contact_us.notices.error')
-			  	render_new_page
+			  flash[:error] = t('contact_us.notices.error')
+			  render_new_page
 			end
 		else
 			if @contact.save
 				flash[:notice] = t('contact_us.notices.success')
 				if user_signed_in? then
-			  		redirect_to :controller => 'projects', :action => 'index'
-			  	else
-			  		redirect_to(root_path)
-			  	end
+			    redirect_to :controller => 'projects', :action => 'index'
+		    else
+			    redirect_to(root_path)
+			  end
 			else
-			  	flash[:error] = t('contact_us.notices.error')
-			  	render_new_page
+			  flash[:error] = t('contact_us.notices.error')
+			  render_new_page
 			end
 		end
 	end

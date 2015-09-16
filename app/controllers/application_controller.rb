@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   require 'active_admin_views_pages_base.rb'
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    #cf. https://github.com/ryanb/cancan/wiki/Exception-Handling
+    #'message' can be changed in config/locales/en.yml
+    render :text => exception.message ,:status => 403
   end
 
  	after_filter :store_location
@@ -38,7 +40,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def authenticate_admin!
-		redirect_to root_path unless user_signed_in? && current_user.is_admin?
+		raise CanCan::AccessDenied.new unless user_signed_in? && current_user.is_admin?
 	end
 
 	def get_plan_list_columns

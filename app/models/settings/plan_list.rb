@@ -1,5 +1,6 @@
 module Settings
   class PlanList < RailsSettings::SettingObject
+    attr_accessible :columns
 
     # TODO: can these be taken from somewhere else rather than hard-coded here?
     DEFAULT_COLUMNS = %i( name owner shared last_edited )

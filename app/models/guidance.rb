@@ -8,21 +8,21 @@
 
 
 class Guidance < ActiveRecord::Base
-   #associations between tables
+  #associations between tables
 	attr_accessible :text, :question_id
-    attr_accessible :guidance_group_ids
-    attr_accessible :theme_ids
+  attr_accessible :guidance_group_ids
+  attr_accessible :theme_ids
 
-    belongs_to :question
+  belongs_to :question
 
-    #belongs_to :dmptemplate
+  #belongs_to :dmptemplate
 	#belongs_to :theme
 
-    has_and_belongs_to_many :guidance_groups, join_table: "guidance_in_group"
+  has_and_belongs_to_many :guidance_groups, join_table: "guidance_in_group"
 	has_and_belongs_to_many :themes, join_table: "themes_in_guidance"
 
-    accepts_nested_attributes_for :themes
-    accepts_nested_attributes_for :guidance_groups
+  accepts_nested_attributes_for :themes
+  accepts_nested_attributes_for :guidance_groups
 
   #validation - start
   validates :text, :length => { :minimum => 1 }
@@ -43,22 +43,17 @@ class Guidance < ActiveRecord::Base
 	def self.by_organisation(org_id)
 		all_guidance = Guidance.all
 		org_guidance = Array.new
-
 		all_guidance.each do |guidance|
 		   if guidance.in_group_belonging_to?(org_id) then
 				org_guidance << guidance
 		   end
 		end
-
 		return org_guidance
-
 	end
 
-
 	def get_guidance_group_templates? (guidance_group)
-			templates = guidancegroups.where("guidance_group_id (?)", guidance_group.id).template
-			return templates
-		end
-
+		templates = guidancegroups.where("guidance_group_id (?)", guidance_group.id).template
+		return templates
+	end
 
 end

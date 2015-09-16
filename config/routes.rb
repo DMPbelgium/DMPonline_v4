@@ -1,7 +1,6 @@
 DMPonline4::Application.routes.draw do
 
-
-  devise_for :users, :controllers => {:registrations => "registrations", :confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks'} do
+  devise_for :users, :controllers => {:confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks'} do
   	get "/users/sign_out", :to => "devise/sessions#destroy"
   end
   resources :contacts, :controllers => {:contacts => 'contacts'}
@@ -96,17 +95,18 @@ DMPonline4::Application.routes.draw do
   	end
   end
 
-  resources :phases
-  resources :versions
-  resources :sections
-  resources :questions
-  resources :question_themes
-
+  #only used in functional testing (see test/function)
+  #resources :phases
+  #resources :versions
+  #resources :sections
+  #resources :questions
+  #resources :question_themes
 
   resources :themes
 
   resources :answers
-  resources :plan_sections
+  #only used in functional testing (see test/functional/plan_sections_controller_test.rb)
+  #resources :plan_sections
   resources :comments do
     member do
       put 'archive'
@@ -141,8 +141,8 @@ DMPonline4::Application.routes.draw do
     end
   end
 
-
-  resources :project_partners
+  #only used in functional testing (see test/functional/project_partners_controller_test.rb)
+  #resources :project_partners
   resources :project_groups
 
   resources :users
@@ -152,69 +152,22 @@ DMPonline4::Application.routes.draw do
   resources :user_role_types
   resources :user_org_roles
 
+  #only used in functional testing (see test/functional/organisation_types_controller_test.rb)
+  #resources :organisation_types
 
-  resources :organisation_types
-  resources :pages
+  #deprecated: table pages removed, so PagesController and Page can be removed?
+  #resources :pages
 
-  resources :file_types
-  resources :file_uploads
+  #only used in functional testing (see test/functional/file_types_controller_test.rb)
+  #REMOVE?
+  #resources :file_types
+  #only used in functional testing (see test/functional/file_uploads_controller_test.rb)
+  #REMOVE?
+  #resources :file_uploads
 
   namespace :settings do
     resource :projects
     resources :plans
   end
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
-
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
 end
