@@ -3,6 +3,7 @@
 	<li>
 		<%= devise_error_messages! %>
 	</li>
+<!-- 
 	<li>
 		<%= f.email_field :email, placeholder: (t('helpers.user_name')  + ' *') , :as => :email%>
 	</li>
@@ -20,6 +21,7 @@
 	<li>
 		<%= f.submit t('helpers.sign_in'), :class => "btn btn-primary" %>
 	</li>
+ -->
     <% if request.fullpath != "/users/sign_up?nosplash=true" && session[:shibboleth_data].nil? then%>
         <li>
             <div class="institution_login_link">
@@ -30,5 +32,10 @@
     <%else%>
         <%= f.hidden_field :shibboleth_id, :value => session[:shibboleth_data][:uid] %>
     <%end%> 
+</ul>
+<ul>
+	<li>
+		Need your institutional login here? Check if you're part of the BELNET Identity Federation and contact us. 
+	</li>
 </ul>
 <% end %>

@@ -37,7 +37,7 @@ en:
   dmponline3_text: "DMPonline previous version"
   dcc_name: "Digital Curation Centre"
   welcome_title: "Welcome."
-  welcome_text: "<p>DMPonline has been developed by the <a href='http://dcc.ac.uk' target='_blank'>Digital Curation Centre</a> to help you write data management plans.</p>"
+  welcome_text: "<p>This instance of DMPonline is provided by <a href='http://lib.ugent.be' target='_blank'>Ghent University Library</a> to help you write data management plans.</p>"
   screencast_text: "Screencast on how to use DMPonline"
   screencast_error_text: "Your browser does not support the video tag."
 
