@@ -1,265 +1,6 @@
 en:
-  date:
-    formats:
-      # Use the strftime parameters for formats.
-      # When no format has been given, it uses default.
-      # You can provide other formats here if you like!
-      default: "%d-%m-%Y"
-      short: "%d/%m/%Y"
-      long: "%d %B, %Y"
-
-    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-
-    # Don't forget the nil at the beginning; there's no such thing as a 0th month
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-    # Used in date_select and datetime_select.
-    order:
-      - day
-      - month
-      - year
-
-  time:
-    formats:
-      default: "%a, %d %b %Y %H:%M:%S %z"
-      short: "%d %b %H:%M"
-      custom: "%d/%m/%Y %H:%M"
-      long: "%B %d, %Y %H:%M"
-    am: "am"
-    pm: "pm"
-
-  tool_title: "DMPonline"
-  dmponline3_text: "DMPonline previous version"
-  dcc_name: "Digital Curation Centre"
-  welcome_title: "Welcome."
-  welcome_text: "<p>This instance of DMPonline is provided by <a href='http://lib.ugent.be' target='_blank'>Ghent University Library</a> to help you write data management plans.</p>"
-  screencast_text: "Screencast on how to use DMPonline"
-  screencast_error_text: "Your browser does not support the video tag."
-
-  admin:
-    org_title: "Organisation name"
-    org: "Organisation"
-    orgs: "Organisations"
-    org_type: "Organisation type"
-    org_parent: "Parent organisation"
-    org_created_message: "Organisation was successfully created."
-    org_updated_message: "Organisation was successfully updated."
-    plans: "Plans"
-    title: "Title"
-    desc: "Description"
-    guidance_group: "Guidance group"
-    no_guidance_group: "No guidance group"
-    guidance: "Guidance"
-    name: "Name"
-    abbrev: "Abbreviation"
-    question: "Question"
-    question_format: "Question Format"
-    questions: "Questions"
-    template_title: "Template title"
-    section_title: "Section title"
-    phase_title: "Phase title"
-    version_title: "Version title"
-    user_name: "Username"
-    firstname: "First name"
-    surname: "Surname"
-    user: "User"
-    user_org_role: "User role on an Organisation"
-    user_role_type: "User role type"
-    user_role: "User role"
-    role: "Role"
-    user_status: "User status"
-    user_type: "User type"
-    last_logged_in: "Last logged in"
-    version_numb: "Version number"
-    details: "Details"
-    phases: "Phases"
-    phase: "Phase"
-    version: "Version"
-    versions: "Versions"
-    sections: "Sections"
-    section: "Section"
-    multi_options: "Multiple question options"
-    templates: "Templates"
-    template: "Template"
-    themes: "Themes"
-    theme: "Theme"
-    sug_answer: "Suggested answer"
-    sug_answers: "Suggested answers"
-    old_temp_field: "old template field"
-    old_theme_field: "old theme field"
-
-
-  org_admin:
-    admin_area: "Admin area"
-    template_label: "Templates"
-    user_list_label: "Users"
-    org_details_label:  "Organisation details"
-    org_text: "These are the basic details for your organisation."
-    org_abbr_help_text_html: "This is what displays as a label on your guidance, e.g. 'Glasgow guidance on Metadata'. It's best to use an abbreviation or short name."
-    users_list: "List of users"
-    user_full_name: "Name"
-    user_name: "Email address"
-    last_logged_in: "Last logged in"
-    how_many_plans: "How many plans?"
-    user_text_html: "Below is a list of users registered for your organisation. You can sort the data by each field."
-    org_name: "Name"
-    org_abbr: "Abbreviation"
-    org_desc: "Description"
-    org_target_url: "Website"
-    org_type: "Organisation type"
-    parent_org: "Main organisation"
-    last_updated: "Last updated"
-    desc_help_text_html: "<div class='tooltip_box'>Please enter information describing your organisation.</div>"
-    template_desc_help_text_html: "<div class='tooltip_box'>Enter a description that helps you to differentiate between templates e.g. if you have ones for different audiences.</div>"
-    abbre_help_text: "Please enter an abbreviation to your organisation's name."
-    target_url_help_text: "Please enter a web address valid."
-    name_help_text: "Please enter your organisation's name."
-    guidance_label: "Guidance"
-    templates_label: "Templates"
-    add_option_label: "Add option"
-    add_question_label: "Add question"
-    add_section_label: "Add section"
-    remove_option_label: "Remove"
-    option_order_label: "Order"
-    option_text_label: "Text"
-    option_default_label: "Default"
-    guidance:
-      guidance_list: "Guidance list"
-      text_label: "Text"
-      themes_label: "Themes"
-      question_label: "Question"
-      by_theme_or_by_question: "Should this guidance apply:"
-      by_themes_label: "by themes"
-      by_question_label: "by question"
-      template: "Template"
-      templates: "Templates"
-      guidance_group_label: "Guidance group"
-      created: "Created"
-      last_updated: "Last updated"
-      actions: "Actions"
-      add_guidance: "Add guidance"
-      created_message: "Guidance was successfully created."
-      updated_message: "Guidance was successfully updated."
-      help_text_html: "<div class='tooltip_box'>Please enter guidance text for this theme.</div>"
-      new_label: "New guidance"
-      view_all_guidance: "View all guidance"
-      text_help_text_html: "Enter your guidance here. You can include links where needed."
-      apply_to_help_text_html: "Decide whether your guidance should display by themes (default) or if it only pertains to a specific question in one of the funder templates."
-      by_themes_help_text_html: "Select which theme(s) this guidance relates to."
-      by_question_help_text_html: "Select the relevant template, phase, version, section and question from the following dropdown options to define which specific question this guidance should display on."
-      guidance_group_select_help_text_html: "Select which group this guidance relates to."
-      guidance_text_html: "<p>You can write pieces of guidance to be displayed by theme (e.g. generic guidance on storage and backup that should present across the board) or you can write guidance for specific questions. Writing generic guidance by theme saves you time and effort as your advice will be automatically displayed across all templates rather than having to write guidance to accompany each.</p>
-      <p>You will usually want your guidance to display on all templates, however there may be cases where you only want it to show for specific funders e.g. if you have specific instructions for applicants to BBSRC for example. This can be set too if needed.</p>"
-      delete_message_html: "You are about to delete '%{guidance_summary}'. Are you sure?"
-    guidance_group:
-      add_guidance_group: "Add guidance group"
-      guidance_group_list: "Guidance group list"
-      name_label: "Name"
-      subset: "Optional subset"
-      subset_eg: "e.g. School/ Department"
-      all_temp: "All templates"
-      help_text_add: "Please enter the group title"
-      subset_option_help_text: "If the guidance is only meant for a subset of users e.g. those in a specific college or institute, check this box.  Users will be able to select to display this subset guidance when answering questions in the 'create plan' wizard."
-      template_help_text_html: "Select which templates you want the guidance to display on. This will usually be all templates."
-      title_help_text_html: "Add an appropriate name for your guidance group e.g. Glasgow guidance. This name will be used to tell the end user where the guidance has come from e.g. 'Glasgow Guidance on Metadata'"
-      guidance_group_text_html: "<p>First create a guidance group. This could be institution wide or a subset e.g. a particular College / School, Institute or department. When you create guidance you'll be asked to assign it to a guidance group.</p>"
-      delete_message: "You are about to delete '%{guidance_group_name}'. This will affect guidance. Are you sure?"
-      created_message: "Guidance group was successfully created."
-      updated_message: "Guidance group was successfully updated."
-      destroyed_message: "Guidance group was successfully deleted."
-    templates:
-      create_template: "Create a template"
-      new_label: "New template"
-      template_details: "Template details"
-      edit_details: "Edit template details"
-      view_all_templates: "View all templates"
-      funders_temp: "Funders templates"
-      title_help_text: "Please enter a title for your template."
-      section_title_help_text: "Please enter section title"
-      help_text_html: "<div class='tooltip_box'>Please enter template description for this theme.</div>"
-      create_own_template_text_html: "<p>If you wish to add an institutional template for a Data Management Plan, use the 'create template' button. You can create more than one template if desired e.g. one for researchers and one for PhD students.</p>
-              <p>Your template will be presented to users within your institution when no funder templates apply. If you want to add questions to funder templates use the 'customise template' options below.</p>"
-      create_new_template_text_html: "<p>To create a new template, first enter a title and description. Once you have saved this you will be presented with options to add one or more phases. </p>"
-      desc_help_text_html: "Enter a description that helps you to differentiate between templates e.g. if you have ones for different audiences"
-      own_temp: "Own templates"
-      add_phase_label: "Add new phase +"
-      view_phase_label: "View phase"
-      edit_phase_label: "Edit phase"
-      back_to_edit_phase_label: "Back to edit view"
-      edit_phase_details_label: "Edit phase details"
-      phase_details_label: "Phase details"
-      phase_order_label: "Order of display"
-      phase_details_text_html: "<p>Here you set the title that users will see. If you intend to have multiple phases for you DMP, this should be clear in the title and description.<p/>"
-      phase_title_help_text: "Enter a title for the phase e.g. intial DMP, full DMP... This is what users will see in the tabs when completing a plan. If you only have one phase, call it something generic e.g. Glasgow DMP"
-      phase_number_help_text: "This allows you to order the phases of your template."
-      phase_desc_help_text_html: "Enter a basic description. This will be presented to users above the summary of the sections and questions they will be asked to answer."
-      phase_delete_message: "You are about to delete '%{phase_title}'. This will affect versions, sections and questions linked to this phase. Are you sure?"
-      phase_new_text_html: "When you create a new phase for your template, a version will automatically be created. Once you complete the form below you will be provided with options to create sections and questions."
-      versions_label: "Versions"
-      version_details_label: "Version details"
-      add_section: "Add section"
-      new_section: "New section title"
-      section_title_placeholder: "New section title"
-      section_desc_help_text_html: "<div class='tooltip_box'>Enter a basic description. This could be a summary of what is covered in the section or instructions on how to answer. This text will be displayed in the coloured banner once a section is opened to edit.</div>"
-      section_number_help_text: "This allows you to order sections."
-      add_question: "Add question"
-      created: "Created at"
-      last_updated: "Last updated"
-      published_label: "Published"
-      cannot_publish: "Please ensure you have created at least one phase with a published version."
-      title_label: "Title"
-      desc_label: "Description"
-      actions: "Actions"
-      customise: "Customise"
-      edit_customisation: "Edit customisation"
-      created_message: "Information was successfully created."
-      updated_message: "Information was successfully updated."
-      destroyed_message: "Information was successfully deleted."
-      section_delete_message: "You are about to delete '%{section_title}'. This will affect questions linked to this section. Are you sure?"
-    versions:
-      clone_versions_label: "Make big changes"
-      edit_versions_label: "Make small changes"
-      edit_label: "Edit"
-      versions_text_html: "A first version is created automatically. If you want to make major changes to published versions later (e.g. add section or questions) please create a new version. If you only want to fix typos or make small changes that do not alter meanings, edit the current version."
-      desc_help_text_html: "Enter a basic description."
-      delete_message: "You are about to delete '%{version_title}'. This will affect sections and questions linked to this version. Are you sure?"
-      edit_alert_label: "Edit alert"
-      edit_alert_text: "Please consider the kind of changes you are about to make as this plan is already published and might be in use"
-    questions:
-      question_text_label: "Question text"
-      question_number_label: "Question number"
-      question_edit_button: "Edit question"
-      question_delete_button: "Delete question"
-      answer_format_label: "Answer format"
-      example_answer_label: "Example of answer"
-      suggested_answer_label: "Suggested answer"
-      suggested_answer_help_text_html: "You can add an example or suggested answer to help users respond. These will be presented above the answer box and can be copied/ pasted."
-      suggested_or_example_answer_label: "Suggested answer/ Example"
-      suggested_or_example_answer_button: "Add suggested answer/ example"
-      edit_suggested_answer_button: "Edit suggested answer/ example"
-      delete_suggested_answer_message: "You are about to delete a suggested answer/ example for '%{question_text}'. Are you sure?"
-      default_value_label: "Default value"
-      number_help_text: "This allows you to order questions within a section."
-      question_format_help_text_html: "You can choose from:<ul><li>- text area (large box for paragraphs);</li> <li>- text field (for a short answer);</li>
-      <li>- checkboxes where options are presented in a list and multiple values can be selected;</li>
-      <li>- radio buttons where options are presented in a list but only one can be selected;</li>
-      <li>- dropdown like this box - only one option can be selected;</li>
-      <li>- multiple select box allows users to select several options from a scrollable list, using the CTRL key;</li></ul>"
-      default_answer_help_text_html: "Anything you enter here will display in the answer box. If you want an answer in a certain format (e.g. tables), you can enter that style here."
-      themes_label: "Themes"
-      question_themes_help_text_html: "<p>Select themes that are relevant to this question.</p>
-      <p>This allows your generic institution-level guidance to be drawn in, as well as that from other sources e.g. the DCC or any Schools/Departments that you provide guidance for. </p>
-      <p>You can select multiple themes by using the CTRL button.</p>"
-      default_answer_label: "Default answer"
-      guidance_label: "Guidance"
-      question_guidance_help_text_html: "Enter specific guidance to accompany this question. If you have guidance by themes too, this will be pulled in based on your selections below so it's best not to duplicate too much text."
-      delete_message: "You are about to delete '%{question_text}'. Are you sure?"
-      question_options_help_text_html: "Enter any options that you wish to display. If you want to pre-set one option as selected, check the default box."
-
-
   about_page:
-    title: "About DMPonline"
+    title: "About DMPonline.be"
     tab_1: "Background"
     tab_2: "Latest news"
     
@@ -271,7 +12,7 @@ en:
     </br>
     <h3>Getting Started</h3>
     <p>If you have an account please sign in and start creating or editing your DMP.</p>
-    <p>If you do not have a DMPonline account, click on <a href='/'>'Sign up'</a> on the homepage.</p>
+    <p>If you do not have a DMPonline.be account, click on <a href='/'>'Sign up'</a> on the homepage.</p>
     <p>Please visit the <a href='/help'>'Help'</a> page for guidance.</p>
     </br>
     <h3>Additional Information</h3>
@@ -284,7 +25,7 @@ en:
 
   help_page:
     title: "Help"
-    tab_1: "On DMPonline"
+    tab_1: "On DMPonline.be"
     tab_2: "On data management planning"
     body_text_tab_2_html: "<h3>Useful resources on Data Management Planning</h3>
       <ul class='help_ul'>
@@ -366,7 +107,7 @@ en:
   An online training course designed for researchers or others planning to manage digital data as part of the research process. The course includes a number of software practicals on using SPSS, R, ArcGIS and NVivo.
       </li>
     </ul>"
-    body_text_tab_1_html: "<p>When you login to DMPonline you will be directed to the 'My plans' page. From here you can edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
+    body_text_tab_1_html: "<p>When you login to DMPonline.be you will be directed to the 'My plans' page. From here you can edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
     <h3>Create a plan</h3>
     <p>To create a plan, click the 'Create plan' button from the 'My plans' page or  the top menu. Select options from the drop-down menus and tickboxes to determine what questions and guidance you should be presented with. Confirm your selection by clicking 'Yes, create plan'</p>
     <h3>Write your plan</h3>
@@ -383,7 +124,7 @@ en:
     <h3>Share plans</h3>
     <p>Insert the email address of any collaborators you would like to invite to read or edit your plan. Set the level of permissions you would like to grant them via the drop-down options and click to 'Add collaborator'</p>
     <h3>Export plans</h3>
-    <p>From here you can download your plan in various formats. This may be useful if you need to submit your plan as part of a grant application. Choose what format you would like to view/download your plan in and click to export. When you login to DMPonline you will be directed to the 'My plans' page. From here you can edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
+    <p>From here you can download your plan in various formats. This may be useful if you need to submit your plan as part of a grant application. Choose what format you would like to view/download your plan in and click to export. When you login to DMPonline.be you will be directed to the 'My plans' page. From here you can edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
     <h3>Legacy data</h3>
     <p>If you need to access plans from the earlier version of the tool please visit <a href='https://dmponline3.dcc.ac.uk' target='_top'>DMPonline v3</a>.</p>"
 
