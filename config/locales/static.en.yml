@@ -38,13 +38,13 @@ en:
     body_text_tab_2_html: "<h3>Useful resources on Data Management Planning</h3>
       <ul class='help_ul'>
         <li>
-          <a target='_blank' href=''>Data Management Plan</a> [webpage]<br />Ghent University webpage with basic information and guidance on data management planning.
+          <a target='_blank' href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement/datamanagementplan/datamanagementplan.htm'>Data Management Plan</a> [webpage]<br />Ghent University webpage with basic information and guidance on data management planning.
         </li>
         <li>
-          <a target='_blank' href=''>DMP requirements of external funders</a> [webpage]<br />Ghent University webpage with basic information and guidance on funder DMP requirements.
+          <a target='_blank' href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement/datamanagementplan/external-funders.htm'>DMP requirements of external funders</a> [webpage]<br />Ghent University webpage with basic information and guidance on funder DMP requirements.
         </li>
         <li>
-          <a target='_blank' href=''>FPPW Data Management Plan</a> [webpage]<br />Webpage from the Faculty of Psychology and Educational Sciences at Ghent University with further information about DMPs for members.
+          <a target='_blank' href='https://www.ugent.be/pp/en/research/data-management'>FPPW Data Management Plan</a> [webpage]<br />Webpage from the Faculty of Psychology and Educational Sciences at Ghent University with further information about DMPs for members.
         </li>
         <li>
           <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/resource/DMP_Checklist_2013.pdf'>DCC Checklist for a Data Management Plan</a> [PDF, 3 pages]<br />
@@ -88,7 +88,7 @@ en:
     <h3>Useful guides on Research Data Management in general</h3>
     <ul class='help_ul'>
       <li>
-        <a target='_blank' href=''>UGent Research Data Management</a> [webpage]<br />Ghent University webpages with basic information and guidance on research data management.
+        <a target='_blank' href='http://www.ugent.be/en/research/research-staff/organisation/datamanagement'>UGent Research Data Management</a> [webpage]<br />Ghent University webpages with basic information and guidance on research data management.
       </li>
       <li>
         <a target='_blank' href='http://www.data-archive.ac.uk/media/2894/managingsharing.pdf'>Managing and Sharing Data: best practice for researchers</a> [PDF, 36 pages]<br />
@@ -133,17 +133,15 @@ en:
 
   contact_page:
     title: "Contact us"
-    intro_text_html: "<p>DMPonline is provided by the Digital Curation Centre. You can find out more about us on our <a href='http://www.dcc.ac.uk/' target='_blank'>website</a>. If you would like to contact us about DMPonline, please enter your query in the form below or email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a>.</p>"
+    intro_text_html: "<p>DMPonline.be is provided by Ghent University Library. You can find out more about RDM at UGent on our <a href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement' target='_blank'>intranet pages</a>. If you would like to contact us about DMPonline.be software, please enter your query in the form below or email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a>.</p>"
     github_text_html: "<p>If you have a feature request or think you have found a bug, please check out the <a href='https://github.com/DigitalCurationCentre/DMPonline_v4/issues?state=open'>list of issues on GitHub</a>. If your issue isn't listed there, please add it; if it is, please add a comment if you have more information or just to let us know how important it is to you. This will help us to help us prioritise future developments.</p>"
     address_text_html: "<ul>
-      <li>Digital Curation Centre</li>
-      <li>Level 7, Appleton Tower</li>
-      <li>Crichton Street</li>
-      <li>Edinburgh</li>
-      <li>EH8 9LE</li>
-      <li>UK</li>
+      <li>Ghent University Library</li>
+      <li>Rozier 9</li>
+      <li>9000 Ghent</li>
+      <li>BELGIUM</li>
      </ul>
-     <p>Tel. +44 (0) 131 651 1239</p>
+     <p>Website <a href='http://lib.ugent.be'>lib.ugent.be</a></p>
      <p>Email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a></p>"
   
   roadmap_page:
@@ -197,34 +195,24 @@ en:
     <p>We are currently investigating options for revenue generation. This will help us serve the increased demand more effectively and safeguard the long-term sustainability of DMPonline. Plans will be released for consultation soon but we also welcome your suggestions on how best to support our work.</p> "
     
   terms_page:
-    title: "Terms of use"
+    title: "Disclaimer"
     body_text_html: "<div class='white_background'>
-    <p>The Digital Curation Centre ('DCC') is a consortium supported by Jisc and based at the Universities of Edinburgh, Glasgow and Bath. Our primary constituency is the UK research community, particularly the higher and further education sector.</p>
-    </div>
-    <h3>DMPonline</h3>
-    <div class='white_background'>
-      <p>DMPonline ('the tool', 'the system') is a tool developed by the DCC as a shared resource for the research community. It is hosted at the University of Edinburgh.</p>
-    </div>
-    <h3>Your personal details</h3>
-    <div class='white_background'>
-      <p>In order to help identify and administer your account with DMPonline, we need to store your email address. We may also use it to contact you to obtain feedback on your use of the tool, or to inform you of the latest developments or releases. The information may be transferred between the DCC partner institutions but only for legitimate DCC purposes. We will not sell, rent or trade any personal information you provide to us.</p>
-    </div>
-    <h3>Privacy policy</h3>
-    <div class='white_background'>
-      <p>The information you enter into this system can be seen by you, people you have chosen to share access with, and - solely for the purposes of maintaining the service - system administrators at the University of Edinburgh.  We compile anonymised, automated and aggregated information from plans, but we will not directly access, make use of, or share your content with anyone else without your permission. Authorised officers of your home institution may access your plans for specific purposes - for example, to track compliance with funder/institutional requirements or to calculate storage requirements.</p>
-    </div>
-    <h3>Freedom of Information</h3>
-    <div class='white_background'>
-      <p>The University of Edinburgh holds your plans on your behalf, but they are your property and responsibility. Any FOI applicants will be referred back to your home institution.</p>
-    </div>
-    <h3>Passwords</h3>
-    <div class='white_background'>
-      <p>Your password is stored in encrypted form and cannot be retrieved. If forgotten it has to be reset.</p>
-    </div>
-    <h3>Cookies</h3>
-    <div class='white_background'>
-      <p>Please note that DMPonline uses Cookies. Further information about Cookies and how we use them is available on the <a target='_blank' href='http://www.dcc.ac.uk/about-us/about-site/website-terms-use/cookies'>main DCC website</a>.</p>
-    </div>
-    <br />
-    <div class='white_background'>
-    <p>Use of the tool indicates that you understand and agree to these terms and conditions.</p></div>"
+    <h3>Limitations of liability</h3>
+    <p>Although this website has been conceived with the utmost care, Ghent University Library cannot accept any liability for this website. The <a href='http://www.ugent.be/en/disclaimer'>Ghent University disclaimer</a> applies. The aim is for it to be as complete and accurate as possible. However, all the data on this website is not necessarily comprehensive, accurate or up to date. If you draw our attention to inaccuracies or incompleteness, e.g. by sending <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>, we will make the necessary corrections and/or adjustments as quickly as possible. As a visitor to this website you agree to these limitations of liability.</p>
+    <h3>Hyperlinks</h3>
+    <p>Since the website includes hyperlinks to websites managed by third parties, Ghent University Library does not accept any liability for their content, nor for their availability, their actual existence nor for any use that could be made of the afore-mentioned websites. Ghent University Library cannot be held responsible for any errors in website addresses or domain names on this website.</p>
+    <p>The fact that hyperlinks to other websites are included on our website does not signify that we would approve of the information contained on these websites.</p>
+    <h3>Copyright and Open Access</h3>
+    <p>You are free to consult the information on this website free of charge unless stated otherwise.</p>
+    <p>All textual content in the website is free to be reused in accordance with the conditions laid down by the <a href='http://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Public License Attribution-ShareAlike 4.0 International</a>, unless stated otherwise. Except in the event of explicit exceptions, this agreement does not apply to images, sound and video on this site, because third parties often exercise limitations of usage.</p>
+    <p>Prior consent is always required for the multiplication or making public in a commercial or for-profit context of texts, images and other protected works on this website through print, photocopy, microfilm or by whatever other means. For further information and to obtain such a license, you can send <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>.</p>
+    <h3>Privacy</h3>
+    <p>This website does not use spyware and does not attempt in any way to violate your privacy. Your e-mail address is not passed on or sold to third parties.</p>
+    <p>The web server keeps comprehensive log files on every visit to this website. These log files are thoroughly processed and analysed with a view to improving this website. The log files are never made available to third parties.</p>
+    <p>To improve the operation of the site and to make its use as user-friendly as possible for you, we can place ‘cookies’ on your computer. These cookies are used for nothing more than the simplification of your site visit.</p>
+    <p>If you have any comments or queries about our privacy policy, please do not hesitate to contact us, e.g. by sending <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>. The same applies in the event you wish to consult or alter your data.</p>
+    <h3>Log in</h3>
+    <p>A number of services on this website require user identification which in turn necessitates a valid UGent account. Conditions of use might apply on this website, as part of these prior registrations.</p>
+    <h3>Competent court</h3>
+    <p>Belgian law is applicable to any and all disputes relating to this website and its conditions of use. The court of Ghent has sole jurisdiction in these disputes.</p>
+    </div>"
