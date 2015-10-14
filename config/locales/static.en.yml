@@ -1,0 +1,220 @@
+en:
+  about_page:
+    title: "About DMPonline"
+    tab_1: "DMPonline.be"
+    tab_2: "Background"
+    tab_3: "Latest news"
+    
+    body_text_tab_1_html: "<p>Properly managing research data starts with good planning, 
+    for example by preparing a data management plan (DMP). This is a document that specifies 
+    how you will handle your data during and after a research project. International 
+    funding bodies increasingly require their researchers to produce DMPs, but preparing a 
+    plan is good practice for any research project generating data.</p>
+    <h3>How the tool works</h3>
+    <p>This tool includes a number of DMP templates. There are templates for Ghent University 
+    researchers responding to DMP requirements of a specific research funder or faculty, as 
+    well as a generic template based on international best practices for researchers not 
+    completing a particular funder or faculty DMP. When creating a new plan, users are asked 
+    a number of questions first so that we can determine the appropriate template to display. 
+    Guidance is provided to help you interpret and answer the questions. This guidance is 
+    provided by research funders, Ghent University and/or specific faculties.</p>
+    <h3>Getting started</h3>
+    <p>If you have a valid UGent username and password, you can sign in and start. You will 
+    be directed to the ‘My plans’ page. From here you can edit, share, export or delete any 
+    of your plans. You will also see plans that have been shared with you by others.
+    Please visit the ‘Help’ page for guidance. If you have any questions or comments about 
+    DMPonline.be, please contact us.</p>"
+
+    body_text_tab_2_html: "<p>DMPonline was originally developed by the UK’s Digital Curation Centre (DCC) 
+    to assist researchers with writing an effective DMP. DCC has made the source code 
+    available under a GNU Affero General Public License to permit others to reuse the code 
+    freely. Ghent University has installed an instance of DMPonline to customise the tool 
+    for its researchers. All data is stored locally.</p>"
+
+    body_text_tab_3_html: "<p>Research Data management news</p></ br>"
+
+  help_page:
+    title: "Help"
+    tab_1: "On DMPonline.be"
+    tab_2: "On data management planning"
+    body_text_tab_2_html: "<h3>Useful resources on Data Management Planning</h3>
+      <ul class='help_ul'>
+        <li>
+          <a target='_blank' href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement/datamanagementplan/datamanagementplan.htm'>Data Management Plan</a> [webpage]<br />Ghent University webpage with basic information and guidance on data management planning.
+        </li>
+        <li>
+          <a target='_blank' href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement/datamanagementplan/external-funders.htm'>DMP requirements of external funders</a> [webpage]<br />Ghent University webpage with basic information and guidance on funder DMP requirements.
+        </li>
+        <li>
+          <a target='_blank' href='https://www.ugent.be/pp/en/research/data-management'>FPPW Data Management Plan</a> [webpage]<br />Webpage from the Faculty of Psychology and Educational Sciences at Ghent University with further information about DMPs for members.
+        </li>
+        <li>
+          <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/resource/DMP_Checklist_2013.pdf'>DCC Checklist for a Data Management Plan</a> [PDF, 3 pages]<br />
+  A list of 13 questions and associated guidance, that represent the main issues to come up in Data Management and Sharing Plans. The Checklist is used as a generic template in DMPonline, and is presented when no funder or organsiational requirements are applicable for the user.
+        </li>
+        <li>
+          <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/publications/reports/guides/How%20to%20Develop.pdf'>How to develop a Data Management and Sharing Plan</a> [PDF, 8 pages]<br />A guide by the Digital Curation Centre that outlines typical funder requirements for DMPs and the types of considerations to make when responding.
+        </li>
+     </ul>
+    <h3>Example Data Management Plans</h3>
+    <ul class='help_ul'>
+      <li>
+        <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/adocs/Leeds-RoaDMaP-DMPs.pdf'>Two social science DMPs</a> [PDF, 7 pages]<br />
+  Example plans from researchers at the University of Leeds, shared as part of the Leeds RoaDMaP training materials
+      </li>
+      <li>
+        <a target='_blank' href='http://relu.data-archive.ac.uk/data-sharing/planning/examples'>Rural Economy & Land Use (RELU) programme examples</a> [webpage]<br />
+  Two examples from a joint ESRC, BBSRC and NERC programme
+      </li>
+      <li>
+        <a target='_blank' href='http://www.northumbria.ac.uk/static/5007/ceispdf/dmpfull.pdf'>Health sciences DMP</a> [PDF, 11 pages]<br />
+  Example DMP produced by the DATUM for Health RDM training project
+      </li>
+      <li>
+        <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/adocs/DMTpsych-example-DMP.pdf'>Psychology DMP</a> [PDF, 11 pages]<br />
+  A very detailed, fictional psychology DMP produced by the DMTpsych RDM training project, based on a seminal psychology experiment
+      </li>
+      <li>
+        <a target='_blank' href='http://inside.mines.edu/RDS-example-plans'>Colorado School of Mines examples</a> [webpage]<br />
+  A variety of US example DMPs from Mines and elsewhere
+      </li>
+      <li>
+        <a target='_blank' href='https://www.dataone.org/data-management-planning'>NSF data management plans</a> [webpage]<br />
+  5 DMPs submitted to the NSF, shared by the DataOne initiative
+      </li>
+      <li>
+        <a target='_blank' href='http://library.umassmed.edu/necdmc/dmp'>Biology and chemistry DMPs</a> [webpage]<br />
+  Three example DMPs from the USA shared by NECDMC, an instructional tool for teaching RDM to undergraduates, graduate students, and researchers in the health sciences, sciences and engineering.
+      </li>
+    </ul>
+    <h3>Useful guides on Research Data Management in general</h3>
+    <ul class='help_ul'>
+      <li>
+        <a target='_blank' href='http://www.ugent.be/en/research/research-staff/organisation/datamanagement'>UGent Research Data Management</a> [webpage]<br />Ghent University webpages with basic information and guidance on research data management.
+      </li>
+      <li>
+        <a target='_blank' href='http://www.data-archive.ac.uk/media/2894/managingsharing.pdf'>Managing and Sharing Data: best practice for researchers</a> [PDF, 36 pages]<br />
+  A guide by the UK Data Service covering a range of topics including data formats, documentaion, ethics, copyright and data sharing.
+      </li>
+      <li>
+        <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/publications/reports/guides/How_to_Cite_Link.pdf'>How to Cite Datasets and Link to Publications</a> [PDF, 12 pages]<br />
+  A guide by the Digital Curation Centre giving practical guidelines on how to cite data and the different tools and infrastructure that can be used to support data citation.
+      </li>
+      <li>
+        <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/publications/reports/guides/How_To_License_Research_Data.pdf'>How to License Research Data</a> [PDF, 16 pages]<br />
+  A guide by the Digital Curation Centre that outlines different types of licenses, the pros and cons of each and how they can be applied.
+      </li>
+      <li>
+        <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/How%20to%20Appraise%20and%20Select%20Research%20Data.pdf'>How to Appraise and Select Research Data for Curation</a> [PDF, 8 pages]<br />
+  A guide by ANDS and the DCC on how to select which data to keep for long-term preservation, sharing and reuse. The guide puts forward several criteria to aid selection decisions.
+      </li>
+      <li>
+        <a target='_blank' href='http://datalib.edina.ac.uk/mantra'>Research Data MANTRA</a> [online resource]<br />
+  An online training course designed for researchers or others planning to manage digital data as part of the research process. The course includes a number of software practicals on using SPSS, R, ArcGIS and NVivo.
+      </li>
+    </ul>"
+
+    body_text_tab_1_html: "<p>When you login to DMPonline.be you will be directed to the 'My plans' page. From here you can edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
+    <h3>Create a plan</h3>
+    <p>To create a plan, click the 'Create plan' button from the 'My plans' page or the top menu. Select options from the drop-down menus and tickboxes to determine what questions and guidance you should be presented with. Confirm your selection by clicking 'Yes, create plan'</p>
+    <h3>Write your plan</h3>
+    <p>The tabbed interface allows you to navigate through different functions when editing your plan.</p>
+    <ul>
+      <li>- 'Plan details' includes basic administrative details, tells you what sets of questions and guidance your plan is based on and gives you an overview to the questions that you will be asked.</li>
+      <li>- The following tab(s) present the questions to answer. There may be more than one tab if your funder or university asks different sets of questions at different stages e.g. at grant application and post-award.</li>
+      <li>- The 'Share' tab allows you to invite others to read or contribute to your plan.</li>
+      <li>- The 'Export' tab allows you to download your plan in various formats. This may be useful if you need to submit your plan as part of a grant application.</li>
+    </ul>
+    <p>When viewing any of the question tabs, you will see the different sections of your plan displayed. Click into these in turn to answer the questions. You can format your responses using the text editing buttons.</p>
+    <p>Guidance is displayed in the right-hand panel. Click the '+' symbol to view this.</p>
+    <p>Remember to 'save' your responses before moving on.</p>
+    <h3>Share plans</h3>
+    <p>Insert the email address of any collaborators you would like to invite to read or edit your plan. Set the level of permissions you would like to grant them via the drop-down options and click to 'Add collaborator'</p>
+    <h3>Export plans</h3>
+    <p>From here you can download your plan in various formats. This may be useful if you need to submit your plan as part of a grant application. Choose what format you would like to view/download your plan in and click to export.</p>"
+
+  contact_page:
+    title: "Contact us"
+    intro_text_html: "<p>DMPonline.be is provided by Ghent University Library. You can find out more about RDM at UGent on our <a href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement' target='_blank'>intranet pages</a>. If you would like to contact us about DMPonline.be software, please enter your query in the form below or email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a>.</p>"
+    github_text_html: "<p>If you have a feature request or think you have found a bug, please check out the <a href='https://github.com/DigitalCurationCentre/DMPonline_v4/issues?state=open'>list of issues on GitHub</a>. If your issue isn't listed there, please add it; if it is, please add a comment if you have more information or just to let us know how important it is to you. This will help us to help us prioritise future developments.</p>"
+    address_text_html: "<ul>
+      <li>Ghent University Library</li>
+      <li>Rozier 9</li>
+      <li>9000 Ghent</li>
+      <li>BELGIUM</li>
+     </ul>
+     <p>Website <a href='http://lib.ugent.be'>lib.ugent.be</a></p>
+     <p>Email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a></p>"
+  
+  roadmap_page:
+    title: "Roadmap"
+    tab_1: "Future plans"
+    tab_2: "Get involved"
+    body_text_tab_1_html: "<p>DMPonline has an active and growing user base, and we are grateful to the members who suggest ideas for new and improved features. We regularly take stock of how we can expand our service to meet these evolving needs.  To keep everyone in the loop, we publish our plans for the future in the DMPonline roadmap.</p>
+    <p>Our <a href='http://www.dcc.ac.uk/webfm_send/1956' target='_blank'>roadmap for 2015</a> is based on a 2-monthly release cycle, and includes a range of new features as well as enhacements to existing features.</p>
+    <p><a href='http://www.dcc.ac.uk/sites/default/files/documents/tools/dmpOnline/DMPonline-roadmap.png' target='_blank'><img alt='' src='http://www.dcc.ac.uk/webfm_send/1957' style='font-size: 14px; width: 600px; height: 266px;'/></a></p>
+    <p>To make sure we’re on the right track, we work to develop our roadmap in conjunction with our DMPonline user group.</p>
+    </br>
+    <h3>Current release</h3>
+    <p>The current version of DMPonline is 4.1  This was released in May 2015 and included a comment feature, improved guidance on signing in with institutional credentials, enhanced deployment guidance and proposed methods for internationalisation. Full details can be found in the release note and associated documents.</p>
+    <ul>
+      <li>- <a href='/files/DMPonline-DeliveryNote-May2015.pdf' target='_blank'>Release Note</a></li>
+      <li>- <a href='/files/DMPonline-v4-InstitutionalLogin.pdf' target='_blank'>Signing into DMPonline version 4 with UK Institutional Credentials</a></li>
+      <li>- <a href='/files/DMPonline-v4-LocaleSupport.pdf' target='_blank'>Developing Locale-Aware Support for DMPonline version 4</a></li>
+    </ul>
+    <p>The code is available on <a target='_blank' href='https://github.com/DigitalCurationCentre/DMPonline_v4'>GitHub</a></p>
+    </br>
+    <h3>Future plans</h3>
+    <p>A number of new features are planned in forthcoming release. These include:</p>
+    <ul>
+        <li>- Institutional branding</li>
+        <li>- DMP review functionality</li>
+        <li>- Alerts to notify institutions of support needs</li>
+        <li>- Statistics and analytics for administrators</li>
+        <li>- Introduction of a plan lifecycle to define status (e.g. draft, complete, published)</li>
+        <li>- API development</li>
+        <li>- Locale-aware support</li>
+    </ul>
+    <p>If you would like to help shape our future plans you could join the user group. More information on how you can engage with us is available under the 'Get involved' tab.</p>"
+     
+    body_text_tab_2_html: "<p>DMPonline is developed and maintained by the UK Digital Curation Centre. We’re a small team, and are happy to collaborate with others. There are various ways you can get involved:</p>
+    <h3>Join the user group</h3>
+    <p>We want to engage with our users more actively so invite you to join the user group. We run a <a target='_blank' href='https://www.jiscmail.ac.uk/cgi-bin/webadmin?A0=DMPONLINE-USER-GROUP'>listserv</a> for the group that you can request to join. We also host periodic meetings to consult on our plans</p>
+    <p>Our user group sessions are usually focused around a certain topic (e.g. fleshing out use cases for an API) so invites are sent based on your areas of expertise. It is also helpful for us to know what type of user you are –researcher, institutional administrator, librarian, developer, funder etc.</p>
+    <p>Please let us know your interests and share your ideas for future developments via the mailing list so the community as a whole can feedback on them.</p>
+    </br>
+    <h3>Customise DMPonline</h3>
+    <p>DMPonline can be customised by institutions and disciplines. You can add templates for users in your organisation and tailored guidance that explains local support and services. Example answers can also be offered to help users understand what to write in a Data Management Plan. To do this you’ll need to request admin access, so please email us on <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20Admin%20access' target='_top'>dmponline@dcc.ac.uk</a>.</p>
+    <p>Futher guidance on customising DMPonline is available on the <a href='http://www.dcc.ac.uk/dmponline' target='_blank'>DCC website</a>.</p> 
+    </br>
+    <h3>Contribute to the code</h3>
+    <p>DMPonline is a Ruby on Rails application. The source code is made available under a GNU Affero General Public License. This permits others to reuse the code freely, but obligates you to share the source code for any extensions in the same way. Please inform us if you install an instance of DMPonline and offer your contributions back to the community.</p>
+    <p>If you install an instance of DMPonline we require that you credit the DCC as originators of the tool. We recommend that the acknowledgement takes the form of the DMPonline logo with a link back to the DCC-hosted version of the tool.</p>
+    <p>We are willing to work with external developers to add new features to the tool. We are also open to delivering new features on a chargeable basis. If there are extensions you would like to see prioritised and have resource to support additional developer effort, please contact us on dmponline@dcc.ac.uk to negotiate terms.</p>
+    </br>
+    <h3>Support our work</h3>
+    <p>We are impressed by the uptake of DMPonline both in the UK and internationally and are really keen to hear  how you are using the tool and promoting it in your context. We are aware that others have run training courses, developed guidance materials and advocated use of the tool. Please notify us of this as it helps to show impact.</p>
+    <p>We are currently investigating options for revenue generation. This will help us serve the increased demand more effectively and safeguard the long-term sustainability of DMPonline. Plans will be released for consultation soon but we also welcome your suggestions on how best to support our work.</p> "
+    
+  terms_page:
+    title: "Disclaimer"
+    body_text_html: "<div class='white_background'>
+    <h3>Limitations of liability</h3>
+    <p>Although this website has been conceived with the utmost care, Ghent University Library cannot accept any liability for this website. The <a href='http://www.ugent.be/en/disclaimer'>Ghent University disclaimer</a> applies. The aim is for it to be as complete and accurate as possible. However, all the data on this website is not necessarily comprehensive, accurate or up to date. If you draw our attention to inaccuracies or incompleteness, e.g. by sending <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>, we will make the necessary corrections and/or adjustments as quickly as possible. As a visitor to this website you agree to these limitations of liability.</p>
+    <h3>Hyperlinks</h3>
+    <p>Since the website includes hyperlinks to websites managed by third parties, Ghent University Library does not accept any liability for their content, nor for their availability, their actual existence nor for any use that could be made of the afore-mentioned websites. Ghent University Library cannot be held responsible for any errors in website addresses or domain names on this website.</p>
+    <p>The fact that hyperlinks to other websites are included on our website does not signify that we would approve of the information contained on these websites.</p>
+    <h3>Copyright and Open Access</h3>
+    <p>You are free to consult the information on this website free of charge unless stated otherwise.</p>
+    <p>All textual content in the website is free to be reused in accordance with the conditions laid down by the <a href='http://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Public License Attribution-ShareAlike 4.0 International</a>, unless stated otherwise. Except in the event of explicit exceptions, this agreement does not apply to images, sound and video on this site, because third parties often exercise limitations of usage.</p>
+    <p>Prior consent is always required for the multiplication or making public in a commercial or for-profit context of texts, images and other protected works on this website through print, photocopy, microfilm or by whatever other means. For further information and to obtain such a license, you can send <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>.</p>
+    <h3>Privacy</h3>
+    <p>This website does not use spyware and does not attempt in any way to violate your privacy. Your e-mail address is not passed on or sold to third parties.</p>
+    <p>The web server keeps comprehensive log files on every visit to this website. These log files are thoroughly processed and analysed with a view to improving this website. The log files are never made available to third parties.</p>
+    <p>To improve the operation of the site and to make its use as user-friendly as possible for you, we can place ‘cookies’ on your computer. These cookies are used for nothing more than the simplification of your site visit.</p>
+    <p>If you have any comments or queries about our privacy policy, please do not hesitate to contact us, e.g. by sending <a href='mailto:libservice@ugent.be'>an email to libservice@ugent.be</a>. The same applies in the event you wish to consult or alter your data.</p>
+    <h3>Log in</h3>
+    <p>A number of services on this website require user identification which in turn necessitates a valid UGent account. Conditions of use might apply on this website, as part of these prior registrations.</p>
+    <h3>Competent court</h3>
+    <p>Belgian law is applicable to any and all disputes relating to this website and its conditions of use. The court of Ghent has sole jurisdiction in these disputes.</p>
+    </div>"
