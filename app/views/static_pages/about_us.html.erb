@@ -25,7 +25,9 @@
 		<li>
             <%= link_to t("about_page.tab_2"), "#Background", :data => { :toggle => "tab"} %>
         </li>
-        <li><%= link_to t("about_page.tab_3"), "#News", :data => { :toggle => "tab"} %></li>
+        <li>
+        	<%= link_to t("about_page.tab_3"), "#News", :data => { :toggle => "tab"} %>
+        </li>
 	</ul>
 </div>
 <div class="dmp_details_body">
@@ -33,7 +35,7 @@
 		<div class="tab-pane active" id="DMP">
 			<%= raw t("about_page.body_text_tab_1_html")%>
 		</div>	
-		<div class="tab-pane active" id="Background">
+		<div class="tab-pane" id="Background">
 			<%= raw t("about_page.body_text_tab_2_html")%>
 		</div>	
 		<div class="tab-pane" id="News">
