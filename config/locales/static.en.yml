@@ -1,19 +1,15 @@
 en:
   about_page:
-    title: "About DMPonline.be"
-    tab_1: "Background"
-    tab_2: "Latest news"
+    title: "About DMPonline"
+    tab_1: "DMPonline.be"
+    tab_2: "Background"
+    tab_3: "Latest news"
     
     body_text_tab_1_html: "<p>Properly managing research data starts with good planning, 
     for example by preparing a data management plan (DMP). This is a document that specifies 
     how you will handle your data during and after a research project. International 
     funding bodies increasingly require their researchers to produce DMPs, but preparing a 
     plan is good practice for any research project generating data.</p>
-    <p>DMPonline was originally developed by the UK’s Digital Curation Centre (DCC) 
-    to assist researchers with writing an effective DMP. DCC has made the source code 
-    available under a GNU Affero General Public License to permit others to reuse the code 
-    freely. Ghent University has installed an instance of DMPonline to customise the tool 
-    for its researchers. All data is locally hosted at Ghent University.</p>
     <h3>How the tool works</h3>
     <p>This tool includes a number of DMP templates. There are templates for Ghent University 
     researchers responding to DMP requirements of a specific research funder or faculty, as 
@@ -29,7 +25,13 @@ en:
     Please visit the ‘Help’ page for guidance. If you have any questions or comments about 
     DMPonline.be, please contact us.</p>"
 
-    body_text_tab_2_html: "<p>Research Data management news</p></ br>"
+    body_text_tab_2_html: "<p>DMPonline was originally developed by the UK’s Digital Curation Centre (DCC) 
+    to assist researchers with writing an effective DMP. DCC has made the source code 
+    available under a GNU Affero General Public License to permit others to reuse the code 
+    freely. Ghent University has installed an instance of DMPonline to customise the tool 
+    for its researchers. All data is stored locally.</p>"
+
+    body_text_tab_3_html: "<p>Research Data management news</p></ br>"
 
   help_page:
     title: "Help"
