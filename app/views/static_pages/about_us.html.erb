@@ -20,18 +20,26 @@
 <div id="project-tabs" class="nav-project-tabs">
 	<ul class="nav nav-tabs" data-tabs="tabs">
 		<li class="active">
-            <%= link_to t("about_page.tab_1"), "#Background", :data => { :toggle => "tab"} %>
+            <%= link_to t("about_page.tab_1"), "#DMP", :data => { :toggle => "tab"} %>
         </li>
-        <li><%= link_to t("about_page.tab_2"), "#News", :data => { :toggle => "tab"} %></li>
+		<li>
+            <%= link_to t("about_page.tab_2"), "#Background", :data => { :toggle => "tab"} %>
+        </li>
+        <li>
+        	<%= link_to t("about_page.tab_3"), "#News", :data => { :toggle => "tab"} %>
+        </li>
 	</ul>
 </div>
 <div class="dmp_details_body">
 	<div id="my-tab-content" class="tab-content">
-		<div class="tab-pane active" id="Background">
+		<div class="tab-pane active" id="DMP">
 			<%= raw t("about_page.body_text_tab_1_html")%>
 		</div>	
-		<div class="tab-pane" id="News">
+		<div class="tab-pane" id="Background">
 			<%= raw t("about_page.body_text_tab_2_html")%>
+		</div>	
+		<div class="tab-pane" id="News">
+			<%= raw t("about_page.body_text_tab_3_html")%>
             <% news_left = @dcc_news_feed.entries.count %>
             
             <% @dcc_news_feed.entries.each do |entry| %>

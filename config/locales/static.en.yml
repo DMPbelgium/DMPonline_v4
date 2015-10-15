@@ -11,25 +11,16 @@ en:
     funding bodies increasingly require their researchers to produce DMPs, but preparing a 
     plan is good practice for any research project generating data.</p>
     <h3>How the tool works</h3>
-    <p>This tool includes a number of DMP templates. There are templates for Ghent University 
-    researchers responding to DMP requirements of a specific research funder or faculty, as 
-    well as a generic template based on international best practices for researchers not 
-    completing a particular funder or faculty DMP. When creating a new plan, users are asked 
-    a number of questions first so that we can determine the appropriate template to display. 
-    Guidance is provided to help you interpret and answer the questions. This guidance is 
-    provided by research funders, Ghent University and/or specific faculties.</p>
+    <p>This tool includes a number of DMP templates. There are templates for Ghent University researchers responding to DMP requirements of a specific research funder or faculty, as well as a generic template based on international best practices for researchers not completing a particular funder or faculty DMP. When creating a new plan, users are asked a number of questions first so that we can determine the appropriate template to display. Guidance is provided to help you interpret and answer the questions. This guidance is provided by research funders, Ghent University and/or specific faculties.</p>
     <h3>Getting started</h3>
-    <p>If you have a valid UGent username and password, you can sign in and start. You will 
-    be directed to the ‘My plans’ page. From here you can edit, share, export or delete any 
-    of your plans. You will also see plans that have been shared with you by others.
-    Please visit the ‘Help’ page for guidance. If you have any questions or comments about 
-    DMPonline.be, please contact us.</p>"
+    <p>If you have a valid UGent username and password you can sign in and start.  You will be directed to the ‘My plans’ page. From here you can create, edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others. Please visit the ‘Help’ page for guidance. If you have any questions or comments about DMPonline.be, please contact us.</p>"
 
     body_text_tab_2_html: "<p>DMPonline was originally developed by the UK’s Digital Curation Centre (DCC) 
     to assist researchers with writing an effective DMP. DCC has made the source code 
     available under a GNU Affero General Public License to permit others to reuse the code 
-    freely. Ghent University has installed an instance of DMPonline to customise the tool 
-    for its researchers. All data is stored locally.</p>"
+    freely.</p>
+    <p>Ghent University Library has installed an instance of DMPonline (version 4.1 released by the Digital Curation Centre in May 2015) to customise the tool for its researchers. All data is locally hosted. We share the source code for any extensions on Github.</p>
+    <p>To further maintain and develop the tool we would like to cooperate with other academic institutions in Belgium. In fact, we set up our Ghent University instance as a pilot for a shared DMPonline.be platform, where common DMP templates (e.g. for external funders) can be added, new releases can be processed for multiple institutions at once, and new features can be co-developed. If you are interested in collaborating with us on DMPonline.be, please contact us.</p>"
 
     body_text_tab_3_html: "<p>Research Data management news</p></ br>"
 
