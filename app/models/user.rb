@@ -125,8 +125,18 @@ class User < ActiveRecord::Base
 	end
 
   def org_type
-      org_type = organisation.organisation_type.name
-	return org_type
+    org_type = organisation.organisation_type.name
+	  return org_type
   end
 
+  @@after_auth_shibboleth_callbacks = []
+  def self.after_auth_shibboleth(&callback)
+    @@after_auth_shibboleth_callbacks << callback
+  end
+  def call_after_auth_shibboleth(auth)
+    user = self
+    @@after_auth_shibboleth_callbacks.each do |callback|
+      callback.call(user,auth)
+    end
+  end
 end

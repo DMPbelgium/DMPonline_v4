@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150518153927) do
+ActiveRecord::Schema.define(:version => 20151016112544) do
 
   create_table "answers", :force => true do |t|
     t.text     "text"
@@ -377,6 +377,7 @@ ActiveRecord::Schema.define(:version => 20150518153927) do
     t.boolean  "dmponline3"
     t.boolean  "accept_terms"
     t.integer  "organisation_id"
+    t.text     "shibboleth_data"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

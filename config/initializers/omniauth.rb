@@ -6,9 +6,11 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     # Doing this the omniauth way rather than using REMOTE_USER
     # See controllers/users/omniauth_callbacks_controller.rb
     # Shibboleth authentication is enabled in config/application.rb
-    :uid_field => :"persistent-id",
+    #:uid_field => :"persistent-id",
+    :uid_field => ENV['SHIBBOLETH_UID_FIELD'],
     :fields => [],
     :extra_fields => [
+      :'persistent-id',
       :eppn,
       :affiliation,
       :entitlement,

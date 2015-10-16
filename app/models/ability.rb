@@ -17,7 +17,7 @@ class Ability
     #can :manage,UserStatus
     #can :manage,UserType
 
-    if user.roles.any?
+    if user.persisted?
 
       can [:index,:new,:create,:destroy,:parent,:children,:templates], Organisation
       can [:edit,:update,:delete_recent_locks,:unlock_all_sections,:lock_section,:unlock_section], Plan do |plan|

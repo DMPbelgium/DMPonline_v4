@@ -6,45 +6,58 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to root_path
     else
       auth = request.env['omniauth.auth'] || {}
-      eppn = auth['extra']['raw_info']['eppn']
-      uid = nil
-      if !eppn.blank? then
-        uid = eppn
-      elsif !auth['uid'].blank? then
-        uid = auth['uid']
-      elsif !auth['extra']['raw_info']['targeted-id'].blank? then
-        uid = auth['extra']['raw_info']['targeted-id']
-      end
+      uid = auth.uid
+      shibboleth_data = auth['extra']['raw_info']
 
       if !uid.nil? && !uid.blank? then
-				s_user = User.where(shibboleth_id: uid).first
-				# Take out previous record if was not confirmed.
-				if !s_user.nil? && s_user.confirmed_at.nil? then
-					sign_out s_user
-					User.delete(s_user.id)
-					s_user = nil
-				end
+        uid = uid.downcase if ENV['SHIBBOLETH_UID_LOWERCASE'] == "true"
 
-				# Stops Shibboleth ID being blocked if email incorrectly entered.
-				if !s_user.nil? && s_user.try(:persisted?) then
-					flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
-					sign_in s_user
+        s_user = User.where(shibboleth_id: uid).first
+
+        # Stops Shibboleth ID being blocked if email incorrectly entered.
+        if !s_user.nil? && s_user.try(:persisted?) then
+          flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
+          s_user.update_attribute('shibboleth_data',shibboleth_data)
+
+          s_user.call_after_auth_shibboleth(auth)
+          sign_in s_user
           redirect_to root_path
-				else
-					if user_signed_in? then
-						current_user.update_attribute('shibboleth_id', uid)
-						user_id = current_user.id
-						sign_out current_user
-						session.delete(:shibboleth_data)
-						s_user = User.find(user_id)
-						sign_in s_user
+        else
+          if user_signed_in? then
+            s_user.updates_attributes(
+              :shibboleth_id => uid,
+              :shibboleth_data => shibboleth_data
+            )
+            current_user.update_attributes(
+              :shibboleth_id => uid,
+              :shibboleth_data => shibboleth_data
+            )
+            user_id = current_user.id
+            sign_out current_user
+            session.delete(:shibboleth_data)
+            s_user = User.find(user_id)
+
+            s_user.call_after_auth_shibboleth(auth)
+            sign_in s_user
             redirect_to edit_user_registration_path
-					else
-						session[:shibboleth_data] = request.env['omniauth.auth']
-						session[:shibboleth_data][:uid] = uid
-						redirect_to new_user_registration_url(:nosplash => 'true')
-					end
-				end
+          else
+            #create new user
+            mail_field = ENV['SHIBBOLETH_MAIL_FIELD']
+            mail_field = mail_field.nil? || mail_field.blank? ? :mail : ENV['SHIBBOLETH_MAIL_FIELD']
+            s_user = User.new(
+              :shibboleth_id => uid,
+              :shibboleth_data => shibboleth_data,
+              :email => auth['extra']['raw_info'][mail_field].downcase
+            )
+            s_user.save
+            #login
+            flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
+
+            s_user.call_after_auth_shibboleth(auth)
+            sign_in s_user
+            redirect_to edit_user_registration_path
+          end
+        end
       else
         redirect_to root_path
       end
