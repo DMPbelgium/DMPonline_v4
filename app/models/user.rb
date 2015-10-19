@@ -133,10 +133,10 @@ class User < ActiveRecord::Base
   def self.after_auth_shibboleth(&callback)
     @@after_auth_shibboleth_callbacks << callback
   end
-  def call_after_auth_shibboleth(auth)
+  def call_after_auth_shibboleth(auth,request)
     user = self
     @@after_auth_shibboleth_callbacks.each do |callback|
-      callback.call(user,auth)
+      callback.call(user,auth,request)
     end
   end
 end

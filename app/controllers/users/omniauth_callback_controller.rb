@@ -19,7 +19,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
           s_user.update_attribute('shibboleth_data',shibboleth_data.to_json)
 
-          s_user.call_after_auth_shibboleth(auth)
+          s_user.call_after_auth_shibboleth(auth,request)
           sign_in s_user
           redirect_to root_path
         else
@@ -37,7 +37,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             session.delete(:shibboleth_data)
             s_user = User.find(user_id)
 
-            s_user.call_after_auth_shibboleth(auth)
+            s_user.call_after_auth_shibboleth(auth,request)
             sign_in s_user
             redirect_to edit_user_registration_path
           else
@@ -53,7 +53,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             #login
             flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
 
-            s_user.call_after_auth_shibboleth(auth)
+            s_user.call_after_auth_shibboleth(auth,request)
             sign_in s_user
             redirect_to edit_user_registration_path
           end
