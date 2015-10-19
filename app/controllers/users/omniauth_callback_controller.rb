@@ -17,7 +17,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # Stops Shibboleth ID being blocked if email incorrectly entered.
         if !s_user.nil? && s_user.try(:persisted?) then
           flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
-          s_user.update_attribute('shibboleth_data',shibboleth_data)
+          s_user.update_attribute('shibboleth_data',shibboleth_data.to_json)
 
           s_user.call_after_auth_shibboleth(auth)
           sign_in s_user
@@ -26,11 +26,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           if user_signed_in? then
             s_user.updates_attributes(
               :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data
+              :shibboleth_data => shibboleth_data.to_json
             )
             current_user.update_attributes(
               :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data
+              :shibboleth_data => shibboleth_data.to_json
             )
             user_id = current_user.id
             sign_out current_user
@@ -46,7 +46,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             mail_field = mail_field.nil? || mail_field.blank? ? :mail : ENV['SHIBBOLETH_MAIL_FIELD']
             s_user = User.new(
               :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data,
+              :shibboleth_data => shibboleth_data.to_json,
               :email => auth['extra']['raw_info'][mail_field].downcase
             )
             s_user.save

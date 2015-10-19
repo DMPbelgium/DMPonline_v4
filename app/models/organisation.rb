@@ -21,6 +21,18 @@ class Organisation < ActiveRecord::Base
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
+
+  def is_parent?
+    self.parent_id.nil?
+  end
+  with_options if: :is_parent? do |parent|
+    parent.validates :domain, :uniqueness => true, :allow_nil => false
+  end
+  with_options unless: :is_parent? do |child|
+    child.validates_each :domain do |record,attr,value|
+      record.errors.add(:domain, :absence) if value.present?
+    end
+  end
   #validation - end
 
 	def to_s

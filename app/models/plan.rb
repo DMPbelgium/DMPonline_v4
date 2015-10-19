@@ -287,7 +287,6 @@ class Plan < ActiveRecord::Base
 	end
 
 	def lock_section(section_id, user_id, release_time = 60)
-    $stderr.puts "lock_section called!!!!!!!!"
 		status = locked(section_id, user_id)
 		if ! status["locked"] then
 			plan_section = PlanSection.new
