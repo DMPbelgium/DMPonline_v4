@@ -1,6 +1,6 @@
 <p>Hello <%= @project_group.user.name %></p>
 
-<% 
+<%
 access_level = "read-only"
 if @project_group.access_level == 2 then
 	access_level = "editor"

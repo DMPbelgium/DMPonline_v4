@@ -54,6 +54,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
 
             s_user.call_after_auth_shibboleth(auth,request)
+
             sign_in s_user
             redirect_to edit_user_registration_path
           end
