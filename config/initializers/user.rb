@@ -14,7 +14,7 @@ User.after_auth_shibboleth do |user,auth,request|
     user.firstname = auth['extra']['raw_info']['givenname']
 
     #try to match against a more specific suborganisation
-    if !user.organisation.nil? user.organisation.is_parent?
+    if !user.organisation.nil? && user.organisation.is_parent?
 
       faculty = nil
 
