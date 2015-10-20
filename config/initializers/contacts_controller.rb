@@ -1,1 +1,0 @@
-ContactsController.google_maps_url = "https://maps.google.co.uk/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=EH8+9LE&amp;aq=&amp;sll=55.85546,-4.232459&amp;sspn=0.195785,0.663986&amp;ie=UTF8&amp;hq=&amp;hnear=EH8+9LE,+United+Kingdom&amp;ll=55.944435,-3.186767&amp;spn=0.006104,0.02075&amp;t=m&amp;z=14&amp;iwloc=A&amp;output=embed"
