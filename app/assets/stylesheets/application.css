@@ -23,3 +23,9 @@ footer a#footer_right_jisc {
   width: 12% !important;
   padding-right: 5px;
 }
+h3 a, h3 a:hover, h3 a:visited {
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}

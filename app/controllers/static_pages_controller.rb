@@ -1,10 +1,9 @@
 class StaticPagesController < ApplicationController
 
   def about_us
-    dcc_news_feed_url = "http://www.dcc.ac.uk/news/dmponline-0/feed"
-    @dcc_news_feed = Feedzirra::Feed.fetch_and_parse(dcc_news_feed_url)
+    @news_feed = Feedzirra::Feed.fetch_and_parse(ENV['DMP_FEED_URL'])
     respond_to do |format|
-      format.rss { redirect_to dcc_news_feed_url }
+      format.rss { redirect_to ENV['DMP_FEED_URL'] }
       format.html
     end
   end

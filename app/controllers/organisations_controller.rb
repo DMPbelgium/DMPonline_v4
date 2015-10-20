@@ -93,7 +93,6 @@ class OrganisationsController < ApplicationController
     end
   end
 
-  #TODO: ?
   def parent
   	@organisation = Organisation.find(params[:id])
     authorize! :parent, @organisation

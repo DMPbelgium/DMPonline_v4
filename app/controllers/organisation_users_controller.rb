@@ -6,8 +6,6 @@ class OrganisationUsersController < ApplicationController
 
 		respond_to do |format|
 			format.html # index.html.erb
-      #this is dead code (variable never set)
-			format.json { render json: @organisation_users }
 		end
 	end
 
