@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'csv'
 
 def exec_cmd(cmd)
   r = system(cmd)
@@ -62,6 +63,23 @@ namespace :dmponline do
         f.write(guidance.text)
       end
     end
+
+    map_guidance_group = File.join(git_path,"guidance_groups.csv")
+    CSV.open(map_guidance_group, "wb", :headers => :first_row) do |csv|
+      csv << ["directory","label"]
+      GuidanceGroup.order(:id).each do |gg|
+        csv << ["guidance_group-#{gg.id}",gg.name]
+      end
+    end
+
+    map_themes = File.join(git_path,"themes.csv")
+    CSV.open(map_themes, "wb", :headers => :first_row) do |csv|
+      csv << ["directory","label"]
+      Theme.order(:id).each do |t|
+        csv << ["theme-#{t.id}",t.title]
+      end
+    end
+
     #change - end
 
     exec_cmd(add_cmd)
