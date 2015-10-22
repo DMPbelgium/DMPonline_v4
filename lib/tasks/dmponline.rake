@@ -27,6 +27,20 @@ namespace :dmponline do
 
     exec_cmd(enter_cmd)
 
+    #change - start
+    guidance_dir = File.join(git_path,"guidances")
+    unless File.directory?(guidance_dir)
+      FileUtils.mkdir_p(guidance_dir)
+      Guidance.all.each do |guidance|
+        filename = File.join(guidance_dir,guidance.id.to_s+".txt")
+        File.open(filename, "w:UTF-8") do |f|
+          f.write(guidance.text)
+        end
+      end
+    end
+
+    #change - end
+
     exec_cmd(add_cmd)
 
     exec_cmd(commit_cmd)
