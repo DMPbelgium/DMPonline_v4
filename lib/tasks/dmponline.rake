@@ -3,7 +3,7 @@ require 'fileutils'
 def exec_cmd(cmd)
   r = system(cmd)
   raise RuntimeError, "cannot execute command '#{cmd}'" if r.nil?
-  raise RuntimeError, "cmd '#{cmd}' exited with failure" unless r
+  #raise RuntimeError, "cmd '#{cmd}' exited with failure" unless r
 end
 
 namespace :dmponline do
