@@ -59,12 +59,17 @@ class User < ActiveRecord::Base
   end
 
 	def name(use_email = true)
-		if ((firstname.nil? && surname.nil?) || (firstname.strip == "" && surname.strip == "")) && use_email then
-			return email
-		else
-			name = "#{firstname} #{surname}"
-			return name.strip
-		end
+    fn = firstname.nil? ? "" : firstname
+    sn = surname.nil? ? "" : surname
+    fn.strip!
+    sn.strip!
+
+    if (fn == "" || sn == "") && use_email
+      return email
+    else
+      name = "#{fn} #{sn}"
+      return name.strip
+    end
 	end
 
 	def organisation_id=(new_organisation_id)

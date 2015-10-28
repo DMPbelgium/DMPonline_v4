@@ -16,7 +16,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       :entitlement,
       :"unscoped-affiliation",
       :"targeted-id",
-      :mail
+      :mail,
+      :sn,
+      :givenname
     ],
   }
 end
