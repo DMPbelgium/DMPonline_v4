@@ -126,7 +126,7 @@ en:
 
   contact_page:
     title: "Contact us"
-    intro_text_html: "<p>DMPonline.be is provided by Ghent University Library. You can find out more about RDM at UGent on our <a href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement' target='_blank'>intranet pages</a>. If you would like to contact us about DMPonline.be software, please enter your query in the form below or email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a>.</p>"
+    intro_text_html: "<p>DMPonline.be is provided by Ghent University Library. You can find out more about RDM at UGent on our <a href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement' target='_blank'>intranet pages</a>. If you would like to contact us about DMPonline.be software, please enter your query in the form below or email <a href='mailto:info@dmponline.be?Subject=DMPonline%20inquiry' target='_top'>info@dmponline.be</a>.</p>"
     github_text_html: "<p>If you have a feature request or think you have found a bug, please check out the <a href='https://github.com/DigitalCurationCentre/DMPonline_v4/issues?state=open'>list of issues on GitHub</a>. If your issue isn't listed there, please add it; if it is, please add a comment if you have more information or just to let us know how important it is to you. This will help us to help us prioritise future developments.</p>"
     address_text_html: "<ul>
       <li>Ghent University Library</li>
@@ -135,7 +135,7 @@ en:
       <li>BELGIUM</li>
      </ul>
      <p>Website <a href='http://lib.ugent.be'>lib.ugent.be</a></p>
-     <p>Email <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20inquiry' target='_top'>dmponline@dcc.ac.uk</a></p>"
+     <p>Email <a href='mailto:info@dmponline.be?Subject=DMPonline%20inquiry' target='_top'>info@dmponline.be</a></p>"
   
   roadmap_page:
     title: "Roadmap"
@@ -175,13 +175,13 @@ en:
     <p>Please let us know your interests and share your ideas for future developments via the mailing list so the community as a whole can feedback on them.</p>
     </br>
     <h3>Customise DMPonline</h3>
-    <p>DMPonline can be customised by institutions and disciplines. You can add templates for users in your organisation and tailored guidance that explains local support and services. Example answers can also be offered to help users understand what to write in a Data Management Plan. To do this you’ll need to request admin access, so please email us on <a href='mailto:dmponline@dcc.ac.uk?Subject=DMPonline%20Admin%20access' target='_top'>dmponline@dcc.ac.uk</a>.</p>
+    <p>DMPonline can be customised by institutions and disciplines. You can add templates for users in your organisation and tailored guidance that explains local support and services. Example answers can also be offered to help users understand what to write in a Data Management Plan. To do this you’ll need to request admin access, so please email us on <a href='mailto:info@dmponline.be?Subject=DMPonline%20Admin%20access' target='_top'>info@dmponline.be</a>.</p>
     <p>Futher guidance on customising DMPonline is available on the <a href='http://www.dcc.ac.uk/dmponline' target='_blank'>DCC website</a>.</p> 
     </br>
     <h3>Contribute to the code</h3>
     <p>DMPonline is a Ruby on Rails application. The source code is made available under a GNU Affero General Public License. This permits others to reuse the code freely, but obligates you to share the source code for any extensions in the same way. Please inform us if you install an instance of DMPonline and offer your contributions back to the community.</p>
     <p>If you install an instance of DMPonline we require that you credit the DCC as originators of the tool. We recommend that the acknowledgement takes the form of the DMPonline logo with a link back to the DCC-hosted version of the tool.</p>
-    <p>We are willing to work with external developers to add new features to the tool. We are also open to delivering new features on a chargeable basis. If there are extensions you would like to see prioritised and have resource to support additional developer effort, please contact us on dmponline@dcc.ac.uk to negotiate terms.</p>
+    <p>We are willing to work with external developers to add new features to the tool. We are also open to delivering new features on a chargeable basis. If there are extensions you would like to see prioritised and have resource to support additional developer effort, please contact us on info@dmponline.be to negotiate terms.</p>
     </br>
     <h3>Support our work</h3>
     <p>We are impressed by the uptake of DMPonline both in the UK and internationally and are really keen to hear  how you are using the tool and promoting it in your context. We are aware that others have run training courses, developed guidance materials and advocated use of the tool. Please notify us of this as it helps to show impact.</p>
