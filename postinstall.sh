@@ -20,3 +20,6 @@ fi
 VERSION=`cat .assets-version`
 VERSION=`expr $VERSION + 1`
 echo -n $VERSION > .assets-version
+
+#temporary hack: set shibboleth_id of old users to email
+bundle exec rake dmponline:user_setup_shibboleth

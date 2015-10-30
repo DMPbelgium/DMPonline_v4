@@ -10,6 +10,18 @@ end
 
 namespace :dmponline do
 
+  desc "copy user email to shibboleth_id"
+  task :user_setup_shibboleth => :environment do |t,args|
+    User.transaction do
+      users = User.all
+      users.each do |u|
+        $stderr.puts "setting shibboleth_id to #{u.email.downcase}"
+        u.shibboleth_id = u.email.downcase
+        u.save
+      end
+    end
+  end
+
   desc "backup data to git repo"
   task :git_backup => :environment do |t,args|
 
