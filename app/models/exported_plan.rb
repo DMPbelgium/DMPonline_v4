@@ -89,21 +89,42 @@ class ExportedPlan < ActiveRecord::Base
   end
 
   def as_txt
-    #output = "#{self.plan.project.title}\n\n#{self.plan.version.phase.title}\n"
     output = "#{self.plan.project.try(:title)}\n\n#{self.plan.title}\n"
 
-    self.sections.each do |section|
-      output += "\n#{section.title}\n"
+    if self.admin_details.present?
+        f = "Admin details"
+        output += "\n"+f+":\n"
+        output += "=" * f.length
+        output += "\n"
+        self.admin_details.each do |field|
+            value = self.send(field)
+            label = "helpers.plan.export.#{field}"
+            if value.present?
+              output += "#{I18n.t(label)}: #{value}\n"
+            end
+        end
+    end
 
-      self.questions_for_section(section).each do |question|
-        output += "\n#{question.text}\n"
-        answer = self.plan.answer(question.id, false)
+    if self.sections.present?
+      f = "Sections"
+      output += "\n"+f+":\n"
+      output += "=" * f.length
+      output += "\n"
+      self.sections.each do |section|
+        output += "\n#{section.title}\n"
+        output += "-" * section.title.length
+        output += "\n"
 
-        if answer.nil? || answer.text.nil? then
-          output += "Question not answered.\n"
-        else
-          output += answer.options.collect {|o| o.text}.join("\n")
-          output += "#{sanitize_text(answer.text)}\n"
+        self.questions_for_section(section).each do |question|
+          output += "\n#{question.text}\n"
+          answer = self.plan.answer(question.id, false)
+
+          if answer.nil? || answer.text.nil? then
+            output += "Question not answered.\n"
+          else
+            output += answer.options.collect {|o| o.text}.join("\n")
+            output += "#{sanitize_text(answer.text)}\n"
+          end
         end
       end
     end
