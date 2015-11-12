@@ -32,7 +32,7 @@ en:
   tool_title: "DMPonline.be"
   dcc_name: "Digital Curation Centre (UK)"
   welcome_title: "Welcome."
-  welcome_text: "<p>This instance of DMPonline is provided by <a href='http://lib.ugent.be' target='_blank'>Ghent University Library</a> to help you write data management plans.</p><p>This is a pilot for a fully localized version for research institutions in the BELNET Federation.</p>"
+  welcome_text: "<p>This instance of DMPonline is provided by <a href='http://lib.ugent.be' target='_blank'>Ghent University Library</a> to help you write data management plans.</p><p>This is a pilot for a fully localised version for research institutions in the BELNET Federation.</p>"
   screencast_text: "Screencast on how to use DMPonline.be"
   screencast_error_text: "Your browser does not support the video tag."
 

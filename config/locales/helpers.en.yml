@@ -23,8 +23,8 @@ en:
     user_name: "Email address"
     email: "Email"
     valid_email: "You must enter a valid email address."
-    user_details_text_html: "<p>Please note that your email address is used as your username. If you change this, remember to use your new email address on sign in.</p>"
-    user_details_paragraph_html: "You can edit any of the details below."
+    user_details_text_html: "<p>Please note that your institutional email address is used as your username.</p>"
+    user_details_paragraph_html: "You can edit some of the details below."
     remember_me: "Remember me"
     org_not_listed: "My organisation isn't listed."
 
