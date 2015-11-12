@@ -19,7 +19,7 @@ en:
     to assist researchers with writing an effective DMP. DCC has made the source code 
     available under a GNU Affero General Public License to permit others to reuse the code 
     freely.</p>
-    <p>Ghent University Library has installed an instance of DMPonline (version 4.1 released by the Digital Curation Centre in May 2015) to customise the tool for its researchers. All data is locally hosted. We share the source code for any extensions on Github.</p>
+    <p>Ghent University Library has installed an instance of DMPonline (version 4.1 released by the Digital Curation Centre in May 2015) to customise the tool for its researchers. All data is locally hosted. We share the source code for any extensions on <a href='https://github.com/Universiteitsbibliotheek/DMPonline_v4'>Github</a>.</p>
     <p>To further maintain and develop the tool we cooperating with other academic institutions in Belgium. In fact, we set up our Ghent University instance as a pilot for a shared DMPonline.be platform, where common DMP templates (e.g. for external funders) can be added, new releases can be processed for multiple institutions at once, and new features can be co-developed. If you are interested in collaborating with us on DMPonline.be, <a href='mailto:info@dmponline.be'>please contact us.</a></p>"
 
     body_text_tab_3_html: "<p>Research Data management news</p></ br>"
@@ -127,7 +127,7 @@ en:
   contact_page:
     title: "Contact us"
     intro_text_html: "<p>DMPonline.be is provided by Ghent University Library. You can find out more about RDM at UGent on our <a href='https://www.ugent.be/en/research/research-staff/organisation/datamanagement' target='_blank'>intranet pages</a>. If you would like to contact us about DMPonline.be software, please enter your query in the form below or email <a href='mailto:info@dmponline.be?Subject=DMPonline%20inquiry' target='_top'>info@dmponline.be</a>.</p>"
-    github_text_html: "<p>If you have a feature request or think you have found a bug, please check out the <a href='https://github.com/DigitalCurationCentre/DMPonline_v4/issues?state=open'>list of issues on GitHub</a>. If your issue isn't listed there, please add it; if it is, please add a comment if you have more information or just to let us know how important it is to you. This will help us to prioritise future developments.</p>"
+    github_text_html: "<p>If you have a feature request or think you have found a bug, please check out the <a href='https://github.com/DigitalCurationCentre/DMPonline_v4/issues?state=open'>list of issues on DCC's GitHub</a>. If your issue isn't listed there, please add it; if it is, please add a comment if you have more information or just to let people know how important it is to you. This will help DCC to prioritise future developments.</p>"
     address_text_html: "<ul>
       <li>Ghent University Library</li>
       <li>Rozier 9</li>
@@ -153,7 +153,7 @@ en:
       <li>- <a href='/files/DMPonline-v4-InstitutionalLogin.pdf' target='_blank'>Signing into DMPonline version 4 with UK Institutional Credentials</a></li>
       <li>- <a href='/files/DMPonline-v4-LocaleSupport.pdf' target='_blank'>Developing Locale-Aware Support for DMPonline version 4</a></li>
     </ul>
-    <p>The code is available on <a target='_blank' href='https://github.com/DigitalCurationCentre/DMPonline_v4'>GitHub</a></p>
+    <p>The code is available on <a target='_blank' href='https://github.com/Universiteitsbibliotheek/DMPonline_v4'>GitHub</a></p>
     </br>
     <h3>Future plans</h3>
     <p>A number of new features are planned in forthcoming release. These include:</p>
