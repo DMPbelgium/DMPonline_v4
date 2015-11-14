@@ -8,7 +8,7 @@ User.after_auth_shibboleth do |user,auth,request|
 
     if orgs.size > 0
       user.organisation_id=(orgs.first.id)
-      if domain =~ /ugent.be$/
+      if domain =~ /^(auster\.ugent|dmponline)\.be$/
 
         user.surname = auth['extra']['raw_info']['sn']
         user.firstname = auth['extra']['raw_info']['givenname']
