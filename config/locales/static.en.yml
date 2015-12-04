@@ -197,8 +197,7 @@ en:
 
     <h3>Privacy</h3>
     <p>This website does not use spyware and does not attempt in any way to violate your privacy. Your e-mail address is not passed on or sold to third parties.</p>
-    <p>The web server keeps comprehensive log files on every visit to this website. These log files can be thoroughly processed and analysed with a view to improving this website. The log files are never made available to third parties.</p>
-    <p>To improve the operation of the site and to make its use as user-friendly as possible for you, we can place ‘cookies’ on your computer. These cookies are used for nothing more than the simplification of your site visit.</p>
+    <p>The web server keeps comprehensive log files on every visit to this website. These log files can be thoroughly processed and analysed with a view to improving this website. The log files are never made available to third parties. To improve the operation of the site and to make its use as user-friendly as possible for you, we can place ‘cookies’ on your computer. These cookies are used for nothing more than the simplification of your site visit.</p>
     <p>If you have any comments or queries about our privacy policy, please do not hesitate to contact us, e.g. by sending <a href='mailto:info@dmponline.be'>an email to info@dmponline.be</a>. The same applies in the event you wish to consult or alter your data.</p>
 
     <h3>Log in</h3>
@@ -211,22 +210,21 @@ en:
     <h3>Applicable licences on templates and guidance</h3>
 
     <ul>
-        <li>DMPonline software<br />
-        The DMPonline.be tool is built with open source software called DMPonline, which is developed by the Digital Curation Centre (DCC) and made available under a GNU Affero General Public License. We share the source code of our modified version on GitHub under the same license.
+        <li><em>DMPonline software</em><br />
+        The DMPonline.be tool is built with open source software called DMPonline, which is developed by the Digital Curation Centre (DCC) and made available under a GNU Affero General Public License. We share the source code of our modified version on GitHub under the same license.<br />
         </li>
 
-        <li>Templates and guidance<br />
+        <li><em>Templates and guidance</em><br />
         You are free to consult the templates and guidance on this website free of charge.
         <p>The Generic DMP template and associated question-specific guidance are modified from the original “Checklist for a Data Management Plan v4.0” by DCC, used under the Creative Commons Attribution 4.0 International Public License. The “Generic DMP” (and associated question specific guidance) by Ghent University Library are available under a Creative Commons Attribution-ShareAlike 4.0 International Public License.</p>
         <p>The thematic DCC guidance is listed in “Using the DMPonline admin interface: a guide to customising the tool” by S. Jones and DCC, which is licensed under the Creative Commons Attribution 4.0 International Public License.</p>
         <p>The Horizon 2020 template and associated question-specific guidance includes materials from the “Guidelines on Data Management in Horizon 2020” by the European Commission, which allows reuse of its documents provided the source is acknowledged, and from “What is the Open Research Data Pilot” by the OpenAIRE Consortium, licensed under a Creative Commons Attribution 4.0 International Public License.</p>
-        <p>Other templates and guidance are free to be reused in accordance with the conditions laid down by the Creative Commons Attribution-ShareAlike 4.0 International Public License (attribution to Ghent University), unless stated otherwise. </p>
+        <p>Other templates and guidance are free to be reused in accordance with the conditions laid down by the Creative Commons Attribution-ShareAlike 4.0 International Public License (attribution to Ghent University), unless stated otherwise. <br /></p>
         </li>
 
-        <li>Images, sound and video on this site<br />
+        <li><em>Images, sound and video on this site</em><br />
         Third parties often exercise limitations of usage on images, sound and video on this site.
         </li>
-
     </ul>
 
     <h3>Hyperlinks</h3>
