@@ -40,6 +40,8 @@ module ApplicationHelper
     orgs = Organisation.where('wayfless_entity IS NOT NULL').all
     orgs.each do |org|
 
+      next if login_links.any? { |ll| ll[1] == org.wayfless_entity }
+
       url = set_url_query(default_url,{ :idp => org.wayfless_entity })
       abbrev = org.abbreviation.nil? ? org.name : org.abbreviation
       label_base = I18n.t('helpers.institution_sign_in_link_base')

@@ -3,12 +3,22 @@ User.after_auth_shibboleth do |user,auth,request|
   #only change organisation when none exists
   if user.organisation.nil?
 
-    domain = request.host
-    orgs = Organisation.where(:domain => domain)
+    #match IDP against wayfless entity
+
+    pid = auth['extra']['raw_info']['persistent-id']
+    idp = nil
+    #persistent-id: <idp>!<sp>!<session-id>
+    if !(pid.nil?) && !(pid.empty?)
+      idp = pid.split('!').first
+    end
+
+    orgs = Organisation.where(:wayfless_entity => idp)
 
     if orgs.size > 0
+
       user.organisation_id=(orgs.first.id)
-      if domain =~ /^(auster\.ugent|dmponline)\.be$/
+
+      user.organisation.abbreviation == 'UGent'
 
         user.surname = auth['extra']['raw_info']['sn']
         user.firstname = auth['extra']['raw_info']['givenname']
