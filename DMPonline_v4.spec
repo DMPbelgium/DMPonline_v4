@@ -40,6 +40,7 @@ rm -rf %{buildroot}
 /var/log/%{name}/
 %attr(0664,root,root) /opt/%{name}/.ruby-version
 %attr(0664,root,root) /opt/%{name}/.ruby-gemset
+%attr(644,root,root) /opt/%{name}/cron.d/dmponline.cron
 
 %doc
 
