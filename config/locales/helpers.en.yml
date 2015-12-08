@@ -19,6 +19,7 @@ en:
     signed_in: "Signed in as "
     institution_sign_in_link: "Sign in with UGent account"
     institution_sign_in: ""
+    institution_sign_in_link_base: "Sign in with"
 
     user_name: "Email address"
     email: "Email"

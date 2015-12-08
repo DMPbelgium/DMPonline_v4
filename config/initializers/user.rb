@@ -16,9 +16,10 @@ User.after_auth_shibboleth do |user,auth,request|
 
     if orgs.size > 0
 
-      user.organisation_id=(orgs.first.id)
+      org = orgs.first
+      user.organisation_id=(org.id)
 
-      user.organisation.abbreviation == 'UGent'
+      if org.abbreviation == 'UGent'
 
         user.surname = auth['extra']['raw_info']['sn']
         user.firstname = auth['extra']['raw_info']['givenname']
