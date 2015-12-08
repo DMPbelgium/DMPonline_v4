@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151016112544) do
+ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "answers", :force => true do |t|
     t.text     "text"
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(:version => 20151016112544) do
     t.integer  "banner_file_id"
     t.integer  "organisation_type_id"
     t.string   "domain"
-    t.integer  "wayfless_entity"
+    t.text     "wayfless_entity"
     t.integer  "stylesheet_file_id"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
