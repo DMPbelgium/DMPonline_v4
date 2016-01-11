@@ -3,7 +3,7 @@ class Dmptemplate < ActiveRecord::Base
   attr_accessible :organisation_id, :description, :published, :title, :user_id, :locale, :is_default, :guidance_group_ids
 
   #associations between tables
-  has_many :phases
+  has_many :phases, :dependent => :destroy
   has_many :versions, :through => :phases
   has_many :sections, :through => :versions
   has_many :questions, :through => :sections
