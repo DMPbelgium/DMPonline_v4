@@ -59,6 +59,15 @@ DMPonline4::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
 
+  #devise config
+  config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+
+  ActionMailer::Base.default :from => ENV['DMP_EMAIL_FROM']
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+
   # Enable threaded mode
   # config.threadsafe!
 

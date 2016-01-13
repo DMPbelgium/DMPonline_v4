@@ -1,6 +1,6 @@
 statusbar: false
 menubar: false
-toolbar: bold italic | bullist numlist | link | table
+toolbar: bold italic | bullist numlist indent | link | table
 plugins:
   - table
   - autoresize

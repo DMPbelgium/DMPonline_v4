@@ -61,10 +61,20 @@ $( document ).ready(function() {
 		else {
 			$("#confirm-template").closest("div").show();
 		}
-		$("#confirm-guidance").empty();
-		$("input:checked").each(function(){
-			$("#confirm-guidance").append("<li id='confirm-"+$(this).attr("id")+"'>"+$(this).parent().text()+"</li>");
-		});
+    var $confirm_guidance = $("#confirm-guidance");
+    var $confirm_guidance_none = $("#confirm-guidance-none");
+    var $guidances = $("input:checked");
+    $confirm_guidance.empty().hide();
+    $confirm_guidance_none.hide();
+
+    if( $guidances.size() > 0 ){
+      $guidances.each(function(){
+  			$confirm_guidance.append("<li id='confirm-"+$(this).attr("id")+"'>"+$(this).parent().text()+"</li>");
+	  	});
+      $confirm_guidance.show();
+    }else{
+      $confirm_guidance_none.show();
+    }
 		$('.select2-choice').hide();
 	});
 
