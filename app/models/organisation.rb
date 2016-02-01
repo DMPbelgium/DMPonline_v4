@@ -26,11 +26,11 @@ class Organisation < ActiveRecord::Base
     self.parent_id.nil?
   end
   with_options if: :is_parent? do |parent|
-    parent.validates :domain, :uniqueness => true, :allow_nil => false
+    parent.validates :wayfless_entity, :uniqueness => true, :allow_nil => true, :allow_blank => true
   end
   with_options unless: :is_parent? do |child|
-    child.validates_each :domain do |record,attr,value|
-      record.errors.add(:domain, :absence) if value.present?
+    child.validates_each :wayfless_entity do |record,attr,value|
+      record.errors.add(:wayfless_entity, :absence) if value.present?
     end
   end
   #validation - end
