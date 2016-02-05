@@ -4,13 +4,7 @@ User.after_auth_shibboleth do |user,auth,request|
   if user.organisation.nil?
 
     #match IDP against wayfless entity
-
-    pid = auth['extra']['raw_info']['persistent-id']
-    idp = nil
-    #persistent-id: <idp>!<sp>!<session-id>
-    if !(pid.nil?) && !(pid.empty?)
-      idp = pid.split('!').first
-    end
+    idp = request.env['Shib-Identity-Provider']
 
     orgs = Organisation.where(:wayfless_entity => idp)
 
