@@ -29,13 +29,25 @@ ActiveAdmin.register UserOrgRole do
   show do
 		attributes_table do
 		  row I18n.t('admin.user'), :user_id do |user_n|
-        link_to user_n.user.firstname, [:admin, user_n.user]
+        unless user_n.try(:user).nil?
+          link_to user_n.user.firstname, [:admin, user_n.user]
+        else
+          "-"
+        end
       end
       row I18n.t('admin.org'), :organisation_id do |org|
-        link_to org.organisation.name, [:admin, org.organisation]
+        unless org.try(:organisation).nil?
+          link_to org.organisation.name, [:admin, org.organisation]
+        else
+          "-"
+        end
       end
       row I18n.t('admin.user_role_type'), :user_role_type_id do |role|
-        link_to role.user_role_type.name, [:admin, role.user_role_type]
+        unless role.try(:user_role_type).nil?
+          link_to role.user_role_type.name, [:admin, role.user_role_type]
+        else
+          "-"
+        end
       end
       row :created_at
       row :updated_at
