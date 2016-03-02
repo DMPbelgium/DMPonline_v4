@@ -18,7 +18,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       :"targeted-id",
       :mail,
       :sn,
-      :givenname
+      :givenname,
+      :department,
+      :faculty
     ],
   }
 end

@@ -37,10 +37,10 @@ module ApplicationHelper
   def get_shibboleth_login_links(default_url)
     login_links = []
     #login_links << [I18n.t('helpers.institution_sign_in_link'),default_url]
-    orgs = Organisation.where('wayfless_entity IS NOT NULL').all
+    orgs = Organisation.where("wayfless_entity IS NOT NULL AND wayfless_entity != ''").all
     orgs.each do |org|
 
-      next if login_links.any? { |ll| ll[1] == org.wayfless_entity }
+      #next if login_links.any? { |ll| ll[1] == org.wayfless_entity }
 
       url = set_url_query(default_url,[[:idp,org.wayfless_entity]])
       abbrev = org.abbreviation.nil? ? org.name : org.abbreviation
