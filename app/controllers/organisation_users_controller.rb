@@ -1,4 +1,5 @@
 class OrganisationUsersController < ApplicationController
+  before_filter :authenticate_user!
 
   #TODO: put access control in app/model/ability.rb
 	def admin_index

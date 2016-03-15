@@ -1,4 +1,5 @@
 class UserTypesController < ApplicationController
+  before_filter :authenticate_user!
   # GET /user_types
   # GET /user_types.json
   def index

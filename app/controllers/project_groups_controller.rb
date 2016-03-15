@@ -1,4 +1,5 @@
 class ProjectGroupsController < ApplicationController
+  before_filter :authenticate_user!
 
 	def create
 		@project_group = ProjectGroup.new(params[:project_group])

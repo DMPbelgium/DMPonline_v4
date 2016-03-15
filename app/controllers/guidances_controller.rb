@@ -1,4 +1,5 @@
 class GuidancesController < ApplicationController
+  before_filter :authenticate_user!
 
   # GET /guidances
   # GET /guidances.json

@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_filter :authenticate_user!
 	# POST /answers
 	# POST /answers.json
 	def create

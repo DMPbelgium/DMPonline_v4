@@ -1,5 +1,6 @@
 #DEPRECATED, not used anymore (table pages is removed)
 class PagesController < ApplicationController
+  before_filter :authenticate_user!
   # GET /pages
   # GET /pages.json
   def index

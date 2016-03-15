@@ -3,6 +3,7 @@
 # [+Copyright:+] Digital Curation Centre
 
 class DmptemplatesController < ApplicationController
+  before_filter :authenticate_user!
 
   # GET /dmptemplates
   # GET /dmptemplates.json

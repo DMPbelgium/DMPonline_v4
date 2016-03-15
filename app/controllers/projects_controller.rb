@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_filter :authenticate_user!
 	before_filter :get_plan_list_columns, only: %i( index )
 
 	# GET /projects

@@ -1,4 +1,5 @@
 class UserStatusesController < ApplicationController
+  before_filter :authenticate_user!
   # GET /user_statuses
   # GET /user_statuses.json
   def index

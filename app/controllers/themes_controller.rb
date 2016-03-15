@@ -1,4 +1,5 @@
 class ThemesController < ApplicationController
+  before_filter :authenticate_user!
   # GET /themes
   # GET /themes.json
   def index

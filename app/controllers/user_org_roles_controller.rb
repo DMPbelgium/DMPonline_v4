@@ -1,4 +1,5 @@
 class UserOrgRolesController < ApplicationController
+  before_filter :authenticate_user!
   # GET /user_org_roles
   # GET /user_org_roles.json
   def index

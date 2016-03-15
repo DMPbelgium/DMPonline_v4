@@ -1,4 +1,5 @@
 class ContactsController < ContactUs::ContactsController
+  before_filter :authenticate_user!
 	def create
 		@contact = ContactUs::Contact.new(params[:contact_us_contact])
 		if (!user_signed_in?)
