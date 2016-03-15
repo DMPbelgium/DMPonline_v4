@@ -1,3 +1,9 @@
+User.before_validation do |user|
+  if user.shibboleth_id.nil? || user.shibboleth_id.empty?
+    user.shibboleth_id = user.email
+  end
+  true
+end
 User.after_auth_shibboleth do |user,auth,request|
 
   #only change organisation when none exists
