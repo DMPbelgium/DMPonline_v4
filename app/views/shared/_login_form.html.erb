@@ -1,46 +1,34 @@
 <%= form_for(resource, :as => "user", :url => user_session_path) do |f| %>
 <ul>
-	<li>
+  <li>
 		<%= devise_error_messages! %>
 	</li>
-<!-- 
-	<li>
-		<%= f.email_field :email, placeholder: (t('helpers.user_name')  + ' *') , :as => :email%>
-	</li>
-	<li>
-		<%= f.password_field :password, placeholder: (t('helpers.password') + ' *'), :as => :password %>
-	</li>
-	<li class="forgot_password_link">
-		<%= link_to t('helpers.forgot_password'), new_password_path('user'), :class => "a-orange" %>
-	</li>
-	<li class="remember_me_li">
-		<%= f.check_box :remember_me %><%= f.label :remember_me, :class => "remember_div" do %>
-			<%= t('helpers.remember_me') %>
-		<%end%>
-	</li>
-	<li>
-		<%= f.submit t('helpers.sign_in'), :class => "btn btn-primary" %>
-	</li>
- -->
-    <% if request.fullpath != "/users/sign_up?nosplash=true" && session[:shibboleth_data].nil? then%>
-        <% login_links = get_shibboleth_login_links( user_omniauth_shibboleth_path ) %>
-        <% login_links.each do |ll| %>
-        <li>
-            <div class="institution_login_link">
-                <%= link_to ll[0], ll[1], :class => "a-orange" %>
-            </div>
-        </li>
-        <% end %>
-    <%else%>
-        <%= f.hidden_field :shibboleth_id, :value => session[:shibboleth_data][:uid] %>
-    <%end%> 
+
+  <% if request.fullpath != "/users/sign_up?nosplash=true" && session[:shibboleth_data].nil? then%>
+
+    <% login_links = get_shibboleth_login_links( user_omniauth_shibboleth_path ) %>
+    <% login_links.each do |ll| %>
+
+      <li>
+        <div class="institution_login_link">
+          <%= link_to ll[0], ll[1], :class => "a-orange" %>
+        </div>
+      </li>
+
+    <% end %>
+
+  <%else%>
+
+    <%= f.hidden_field :shibboleth_id, :value => session[:shibboleth_data][:uid] %>
+
+  <%end%>
 </ul>
 <ul>
 	<li>
-		Need your institutional login here? Check if you're part of the BELNET Identity Federation and contact us. 
+		Need your institutional login here? Check if you're part of the BELNET Identity Federation and contact us.
 	</li>
   <li>
-      <%= link_to('sign in (local account)',user_session_path) %>
+    <%= link_to('sign in (local account)',user_session_path) %>
   </li>
 </ul>
 <% end %>
