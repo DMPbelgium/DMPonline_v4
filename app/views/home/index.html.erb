@@ -10,7 +10,7 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#homepage-accordion" href="#collapse-login">
-						<%= t('helpers.sign_in')%>
+						<%= t('helpers.sign_in')%><span class="minus-laranja"></span>
           </a>
 				</div>
 				<div id="collapse-login" class="accordion-home collapse in">
@@ -19,6 +19,20 @@
 					</div>
 				</div>
 			</div>
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#homepage-accordion" href="#collapse-register">
+            <%= t('helpers.sign_up') %><span class="plus-laranja"> </span></a>
+          <p>
+            <%= t('helpers.sign_up_text')%>
+          </p>
+        </div>
+        <div id="collapse-register" class="accordion-home collapse">
+          <div class="accordion-inner">
+            <%= render :partial => 'shared/register_form', locals: {extended: true} %>
+          </div>
+        </div>
+      </div>
 		</div>
 	</div>
 	<div class="two-column-clear"></div>

@@ -11,6 +11,7 @@
 	   		</li>
     <!-- Plans (phases)-->
     <% project.plans.each do |plan| %>
+    <% next unless can? :edit, plan %>
 		<% if active == plan.id then %>
 			<li class="active">
 		<% else %>
@@ -24,7 +25,7 @@
 		</li>
     <% end %>
     <!--Share project (project admin only)-->
-    <% if project.administerable_by(current_user.id) then %>
+    <% if can? :share, @project %>
 		<% if active == "share_project" then %>
 			<li class="active">
 		<% else %>
@@ -34,12 +35,14 @@
 		</li>
 	<% end %>
 	<!-- Export page that display all plans options to export-->
+    <% if can? :export, @project %>
 		<% if active == "export_page" then %>
 			<li class="active">
 		<% else %>
 			<li>
 		<% end %>
 		<%= link_to t('helpers.project.tab_export'), ["export",project] %>
-	   		</li>
+	  </li>
+    <% end %>
 	</ul>
 </div>

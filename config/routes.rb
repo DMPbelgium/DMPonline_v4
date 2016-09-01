@@ -1,6 +1,6 @@
 DMPonline4::Application.routes.draw do
 
-  devise_for :users, :controllers => {:confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks'} do
+  devise_for :users, :controllers => { :registrations => "registrations", :confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks'} do
   	get "/users/sign_out", :to => "devise/sessions#destroy"
   end
   resources :contacts, :controllers => {:contacts => 'contacts'}
@@ -169,5 +169,8 @@ DMPonline4::Application.routes.draw do
     resource :projects
     resources :plans
   end
+
+  get "sso_user/edit", :controller => :sso_user, :action => :edit, :as => :edit_sso_user
+  post "sso_user", :controller => :sso_user, :action => :update, :as => :update_sso_user
 
 end

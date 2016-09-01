@@ -50,8 +50,9 @@ ActiveAdmin.register User do
   		row :email
   		row :orcid_id
   		row I18n.t('admin.org_title'), :organisation_id do |org_title|
-		    if !org_title.organisation_id.nil? then
-		      link_to org_title.organisation_id, [:admin, org_title.organisation]
+        org = org_title.organisation
+		    if !org.nil? then
+		      link_to org.name, [:admin, org]
 		    end
 		  end
 		  row :other_organisation

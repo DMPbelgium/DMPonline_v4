@@ -46,8 +46,11 @@ class Ability
       can :show,Project do |p|
         p.readable_by(user.id)
       end
-      can [:edit,:share,:update,:destroy],Project do |p|
+      can [:edit,:update],Project do |p|
         p.editable_by(user.id)
+      end
+      can [:share,:destroy], Project do |p|
+        p.administerable_by(user.id)
       end
 
 

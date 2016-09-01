@@ -1,3 +1,6 @@
+require 'omniauth-shibboleth'
+require 'omniauth-orcid'
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -87,7 +90,7 @@ Devise.setup do |config|
 
   # Setup a pepper to generate the encrypted password.
   config.pepper = ENV['DEVISE_PEPPER']
-  
+
   # ==> Configuration for :invitable
   # The period the generated invitation token is valid, after
   # this period, the invited resource won't be able to accept the invitation.
@@ -268,9 +271,39 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
-  
+
   config.warden do |manager|
     manager.failure_app = CustomFailure
   end
-  
+
+  config.omniauth :shibboleth,{
+    :uid_field => ENV['SHIBBOLETH_UID_FIELD'],
+    :fields => [],
+    :extra_fields => [
+      :'persistent-id',
+      :eppn,
+      :affiliation,
+      :entitlement,
+      :"unscoped-affiliation",
+      :"targeted-id",
+      :mail,
+      :sn,
+      :givenname,
+      :department,
+      :faculty
+    ],
+  }
+  config.omniauth :orcid,
+    ENV["ORCID_CLIENT_ID"],
+    ENV["ORCID_CLIENT_SECRET"],
+    :member => false,
+    :sandbox => false,
+    :client_options => {
+      :site => ENV['ORCID_SITE'],
+      :authorize_url => ENV['ORCID_AUTHORIZE_URL'],
+      :token_url => ENV['ORCID_TOKEN_URL']
+    },
+    :authorize_params => {
+      :scope => "/authenticate"
+    }
 end

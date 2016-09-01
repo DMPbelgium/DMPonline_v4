@@ -63,3 +63,4 @@ gem 'feedzirra', '0.5.0'
 gem 'ledermann-rails-settings'
 gem 'jbuilder'
 gem 'figaro'
+gem 'omniauth-orcid', :git => "https://github.com/datacite/omniauth-orcid.git"

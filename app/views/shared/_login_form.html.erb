@@ -3,7 +3,6 @@
   <li>
 		<%= devise_error_messages! %>
 	</li>
-
   <% if request.fullpath != "/users/sign_up?nosplash=true" && session[:shibboleth_data].nil? then%>
 
     <% login_links = get_shibboleth_login_links( user_omniauth_shibboleth_path ) %>
@@ -28,7 +27,10 @@
 		Need your institutional login here? Check if you're part of the BELNET Identity Federation and contact us.
 	</li>
   <li>
-    <%= link_to('sign in (local account)',user_session_path) %>
+    <%= link_to('sign in with ORCID', user_omniauth_authorize_path(:orcid)) %>
+  </li>
+  <li>
+    <%= link_to('sign in with local account',user_session_path) %>
   </li>
 </ul>
 <% end %>

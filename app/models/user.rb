@@ -3,15 +3,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :registerable, :invitable, :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:shibboleth]
-
-  before_validation do |record|
-    if !(record.persisted?) && (record.password.nil? || record.password == "")
-      p = Devise.friendly_token[0,20]
-      record.password = p
-      record.password_confirmation = p
-    end
-  end
+  devise :registerable, :invitable, :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:shibboleth,:orcid]
 
   #associations between tables
   belongs_to :user_type
@@ -57,6 +49,13 @@ class User < ActiveRecord::Base
   has_settings :plan_list, class_name: 'Settings::PlanList' do |s|
     s.key :plan_list, defaults: { columns: Settings::PlanList::DEFAULT_COLUMNS }
   end
+
+  validates :firstname,:length => { :minimum => 1 }
+  validates :surname,:length => { :minimum => 1 }
+  #can be empty, but, if not, should be unique
+  validates :orcid_id,:length => { :minimum => 1 }, :uniqueness => true, :allow_blank => true
+  #can be empty, but, if not, should be unique
+  validates :shibboleth_id,:length => { :minimum => 1 }, :uniqueness => true, :allow_blank => true
 
 	def name(use_email = true)
     fn = firstname.nil? ? "" : firstname
@@ -143,5 +142,20 @@ class User < ActiveRecord::Base
     @@after_auth_shibboleth_callbacks.each do |callback|
       callback.call(user,auth,request)
     end
+  end
+
+  def ensure_password
+    unless self.password.present?
+      self.generate_password
+    end
+  end
+  def generate_password
+    p = Devise.friendly_token[0,20]
+    self.password = p
+    self.password_confirmation = p
+  end
+  def writable_attributes
+    whitelist = User.accessible_attributes - ["","id"]
+    self.attributes.slice( *whitelist )
   end
 end

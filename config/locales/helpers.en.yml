@@ -86,6 +86,7 @@ en:
     owner: "Owner"
     orcid_id: "ORCID identifier"
     orcid_html: "ORCID is a persistent digital identifier that distinguishes each researcher, <a href='http://orcid.org/content/initiative' target='_blank' rel='external' class='a_orange'>more info</a>."
+    shibboleth_id_html: "Shibboleth has a persistent digital identifier that distinguishes each user within a federation"
     sign_up_shibboleth_alert_text_html: "DMPonline.be doesn't recognise your institutional credentials - either you haven't created an account with us or you haven't linked these details to your existing account. </br>Once you have created and/or linked your account, you'll be able to sign in with your institutional credentials directly."
     shibboleth_linked_text: "Your account is linked to your institutional credentials."
     shibboleth_to_link_text: "Link your DMPonline.be account to your institutional credentials"
