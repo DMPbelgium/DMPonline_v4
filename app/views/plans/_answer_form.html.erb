@@ -146,34 +146,20 @@
         <% @comments = Comment.where("question_id = ? && plan_id = ?", question.id, answer.plan_id ) %>
         <%= hidden_field_tag :question_id, question.id, :class => "question_id" %>
         <ul class="question_right_column_ul">
-            <% if !question.guidance.nil? && question.guidance != "" then %>
-                <!-- add css to comment div-->
-                <% css_style_comment_div = "display: none;"%>
-                <% css_style_guidance_div = ""%>
-                <li class="active guidance_tab_class">
-                    <%= link_to t("helpers.guidance_accordion_label"), "#", :class => "guidance_accordion_button" %>
-                </li>
-                <li class="comment_tab_class">
-                    <% if @comments.count > 0 then%>
-                        <% comments_label_with_count = "#{t('helpers.comment_accordion_label')} (#{@comments.count})"%>
-                        <%= link_to comments_label_with_count , "#", :class => "comments_accordion_button" %>
-                    <%else%>
-                        <%= link_to t("helpers.add_comment_accordion_label"), "#", :class => "comments_accordion_button" %>
-                    <%end%>
-                </li>
-            <%else%>
-                <!-- remove the css from comment div-->
-                <% css_style_comment_div = ""%>
-                <% css_style_guidance_div = "display: none;"%>
-                <li>
-                    <% if @comments.count > 0 then%>
-                        <% comments_label_with_count = "#{t('helpers.comment_accordion_label')} (#{@comments.count})"%>
-                        <p class= "accordion_label"><%= comments_label_with_count %></p>
-                    <%else%>
-                        <p class= "accordion_label"><%= t("helpers.add_comment_accordion_label") %></p>
-                    <%end%>
-                </li>
-            <%end%>
+          <!-- add css to comment div-->
+          <% css_style_comment_div = "display: none;"%>
+          <% css_style_guidance_div = ""%>
+          <li class="active guidance_tab_class">
+              <%= link_to t("helpers.guidance_accordion_label"), "#", :class => "guidance_accordion_button" %>
+          </li>
+          <li class="comment_tab_class">
+              <% if @comments.count > 0 then%>
+                  <% comments_label_with_count = "#{t('helpers.comment_accordion_label')} (#{@comments.count})"%>
+                  <%= link_to comments_label_with_count , "#", :class => "comments_accordion_button" %>
+              <%else%>
+                  <%= link_to t("helpers.add_comment_accordion_label"), "#", :class => "comments_accordion_button" %>
+              <%end%>
+          </li>
         </ul>
     </div>
 
