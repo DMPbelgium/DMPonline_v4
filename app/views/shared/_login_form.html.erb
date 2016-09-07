@@ -1,36 +1,30 @@
-<%= form_for(resource, :as => "user", :url => user_session_path) do |f| %>
 <ul>
+  <% d_errors = devise_error_messages! %>
+  <% unless d_errors.blank? %>
   <li>
-		<%= devise_error_messages! %>
+		<%= devise_e %>
 	</li>
-  <% if request.fullpath != "/users/sign_up?nosplash=true" && session[:shibboleth_data].nil? then%>
-
-    <% login_links = get_shibboleth_login_links( user_omniauth_shibboleth_path ) %>
-    <% login_links.each do |ll| %>
-
-      <li>
-        <div class="institution_login_link">
-          <%= link_to ll[0], ll[1], :class => "a-orange" %>
-        </div>
-      </li>
-
-    <% end %>
-
-  <%else%>
-
-    <%= f.hidden_field :shibboleth_id, :value => session[:shibboleth_data][:uid] %>
-
-  <%end%>
-</ul>
-<ul>
-	<li>
-		Need your institutional login here? Check if you're part of the BELNET Identity Federation and contact us.
-	</li>
+  <% end %>
   <li>
-    <%= link_to('sign in with ORCID', user_omniauth_authorize_path(:orcid)) %>
+    <h3>with your institutional account</h3>
+  </li>
+  <% login_links = get_shibboleth_login_links( user_omniauth_shibboleth_path ) %>
+  <% login_links.each do |ll| %>
+
+    <li>
+      <div class="institution_login_link">
+        <%= link_to ll[0], ll[1], :class => "a-orange" %>
+      </div>
+    </li>
+
+  <% end %>
+  <li>
+    <h3>or..</h3>
   </li>
   <li>
-    <%= link_to('sign in with local account',user_session_path) %>
+    <%= link_to('Sign in with ORCID', user_omniauth_authorize_path(:orcid)) %>
+  </li>
+  <li>
+    <%= link_to('Sign in with local account',user_session_path) %>
   </li>
 </ul>
-<% end %>
