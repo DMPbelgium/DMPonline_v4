@@ -29,3 +29,22 @@ h3 a, h3 a:hover, h3 a:visited {
   font-family: inherit;
   font-size: inherit;
 }
+/* make room for the textarea! */
+form.edit_guidance table.dmp_details_table td:last-child {
+  width: 600px;
+}
+form.phase_details_body table.dmp_details_table td:last-child {
+  width: 600px;
+}
+form.edit_version table.dmp_details_table td:last-child {
+  width: 600px;
+}
+form.edit_dmptemplate table.dmp_details_table td:last-child {
+  width: 600px;
+}
+form.edit_phase table.dmp_details_table td:last-child {
+  width: 600px;
+}
+div.phase_details_body form table.dmp_details_table td:last-child {
+  width: 600px;
+}
