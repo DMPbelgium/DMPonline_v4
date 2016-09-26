@@ -1,7 +1,14 @@
 DMPonline4::Application.routes.draw do
 
-  devise_for :users, :controllers => { :registrations => "registrations", :confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks'} do
+  devise_for :users, :controllers => { :confirmations => 'confirmations', :passwords => 'passwords', :sessions => 'sessions', :omniauth_callbacks => 'users/omniauth_callbacks' }, skip: [:registrations] do
+
   	get "/users/sign_out", :to => "devise/sessions#destroy"
+
+    #do not allow sign up, only changing profile
+    get 'users/edit' => 'registrations#edit', :as => 'edit_user_registration'
+    put '/users(.:format)' => 'registrations#update', as: 'user_registration'
+    delete '/users(.:format)' => 'registrations#destroy'
+
   end
   resources :contacts, :controllers => {:contacts => 'contacts'}
 
@@ -14,6 +21,8 @@ DMPonline4::Application.routes.draw do
   root :to => 'home#index'
 
   ActiveAdmin.routes(self)
+
+  get 'emails' => 'emails#index', :as => "emails"
 
   get "about_us" => 'static_pages#about_us', :as => "about_us"
   get "help" => 'static_pages#help', :as => "help"

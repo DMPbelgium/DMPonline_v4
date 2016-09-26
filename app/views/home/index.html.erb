@@ -1,3 +1,17 @@
+<%
+
+  #devise_mapping.registerable? is not enough, as the registrations_controller
+  #combines both the creation of users and editation.
+  sign_up_url = nil
+
+  begin
+
+    sign_up_url = url_for( :controller => :registrations, :action => :create )
+
+  rescue
+
+  end
+%>
 <div class="content">
 	<div class="home_left_column">
 		<div class="welcome-message">
@@ -10,7 +24,10 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#homepage-accordion" href="#collapse-login">
-						<%= t('helpers.sign_in')%><span class="minus-laranja"></span>
+						<%= t('helpers.sign_in')%>
+            <% unless sign_up_url.nil? %>
+              <span class="minus-laranja"></span>
+            <% end %>
           </a>
 				</div>
 				<div id="collapse-login" class="accordion-home collapse in">
@@ -19,6 +36,7 @@
 					</div>
 				</div>
 			</div>
+      <% unless sign_up_url.nil? %>
       <div class="accordion-group">
         <div class="accordion-heading">
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#homepage-accordion" href="#collapse-register">
@@ -33,6 +51,7 @@
           </div>
         </div>
       </div>
+      <% end %>
 		</div>
 	</div>
 	<div class="two-column-clear"></div>

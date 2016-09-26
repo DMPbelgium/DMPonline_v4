@@ -65,7 +65,10 @@
           <td><%= f.text_field :shibboleth_id ,
               :as => :string,
               :autocomplete => "off" ,
-              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.shibboleth_id_html') %></td>
+              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.shibboleth_id_html'),
+              :disabled => :disabled
+             %>
+          </td>
         </tr>
 
       </table>

@@ -102,7 +102,7 @@
                             <%= l org_template.updated_at.to_date, :formats => :short %>
                         </td>
                         <td class="dmp_td_small">
-                            <%if current_user.is_org_admin? then%>
+                            <%if current_user.is_org_admin? && !(current_user.organisation_id.nil?) then%>
                                 <% if org_template.org_type == t("helpers.org_type.funder") then %>
                                     <%if org_template.has_customisations?(current_user.organisation_id, org_template) then%>
                                         <% b_label = t('org_admin.templates.edit_customisation')%>

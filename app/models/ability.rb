@@ -67,6 +67,8 @@ class Ability
 
       end
 
+      can :emails, User
+
     end
   end
 end
