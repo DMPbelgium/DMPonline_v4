@@ -127,6 +127,7 @@ class PlansController < ApplicationController
       format.pdf do
         @formatting = @plan.settings(:export).formatting
         render pdf: file_name,
+          encoding: "UTF-8",
 			    margin: @formatting[:margin],
 			  	footer: {
 			  	  center:    t('helpers.plan.export.pdf.generated_by'),
