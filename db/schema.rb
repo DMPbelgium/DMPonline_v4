@@ -14,12 +14,12 @@
 ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "answers", :force => true do |t|
-    t.text     "text"
+    t.text     "text",        :limit => 16777215
     t.integer  "plan_id"
     t.integer  "user_id"
     t.integer  "question_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "answers_options", :id => false, :force => true do |t|
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "question_id"
-    t.text     "text"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "text",        :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.boolean  "archived"
     t.integer  "plan_id"
     t.integer  "archived_by"
@@ -42,12 +42,12 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "dmptemplates", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.text     "description",     :limit => 16777215
     t.boolean  "published"
     t.integer  "user_id"
     t.integer  "organisation_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "locale"
     t.boolean  "is_default"
   end
@@ -77,13 +77,13 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   create_table "file_uploads", :force => true do |t|
     t.string   "name"
     t.string   "title"
-    t.text     "description"
+    t.text     "description",  :limit => 16777215
     t.integer  "size"
     t.boolean  "published"
     t.string   "location"
     t.integer  "file_type_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   create_table "friendly_id_slugs", :force => true do |t|
@@ -114,19 +114,19 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   add_index "guidance_in_group", ["guidance_id", "guidance_group_id"], :name => "index_guidance_in_group_on_guidance_id_and_guidance_group_id"
 
   create_table "guidances", :force => true do |t|
-    t.text     "text"
+    t.text     "text",              :limit => 16777215
     t.integer  "guidance_group_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.integer  "question_id"
   end
 
   create_table "option_warnings", :force => true do |t|
     t.integer  "organisation_id"
     t.integer  "option_id"
-    t.text     "text"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.text     "text",            :limit => 16777215
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   create_table "options", :force => true do |t|
@@ -140,24 +140,24 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "organisation_types", :force => true do |t|
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "organisations", :force => true do |t|
     t.string   "name"
     t.string   "abbreviation"
-    t.text     "description"
+    t.text     "description",          :limit => 16777215
     t.string   "target_url"
     t.integer  "logo_file_id"
     t.integer  "banner_file_id"
     t.integer  "organisation_type_id"
     t.string   "domain"
-    t.text     "wayfless_entity"
+    t.text     "wayfless_entity",      :limit => 16777215
     t.integer  "stylesheet_file_id"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "parent_id"
     t.boolean  "is_other"
     t.string   "sort_name"
@@ -165,11 +165,11 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "phases", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.text     "description",    :limit => 16777215
     t.integer  "number"
     t.integer  "dmptemplate_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.string   "slug"
   end
 
@@ -213,13 +213,13 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   create_table "projects", :force => true do |t|
     t.string   "title"
     t.integer  "dmptemplate_id"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.string   "slug"
     t.integer  "organisation_id"
     t.string   "grant_number"
     t.string   "identifier"
-    t.text     "description"
+    t.text     "description",                       :limit => 16777215
     t.string   "principal_investigator"
     t.string   "principal_investigator_identifier"
     t.string   "data_contact"
@@ -230,22 +230,22 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "question_formats", :force => true do |t|
     t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "questions", :force => true do |t|
-    t.text     "text"
-    t.text     "default_value"
-    t.text     "guidance"
+    t.text     "text",               :limit => 16777215
+    t.text     "default_value",      :limit => 16777215
+    t.text     "guidance",           :limit => 16777215
     t.integer  "number"
     t.integer  "parent_id"
     t.integer  "dependency_id"
-    t.text     "dependency_text"
+    t.text     "dependency_text",    :limit => 16777215
     t.integer  "section_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.integer  "question_format_id"
   end
 
@@ -270,12 +270,12 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "sections", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.text     "description",     :limit => 16777215
     t.integer  "number"
     t.integer  "version_id"
     t.integer  "organisation_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.boolean  "published"
   end
 
@@ -299,17 +299,17 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   create_table "suggested_answers", :force => true do |t|
     t.integer  "question_id"
     t.integer  "organisation_id"
-    t.text     "text"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.text     "text",            :limit => 16777215
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.boolean  "is_example"
   end
 
   create_table "themes", :force => true do |t|
     t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "locale"
   end
 
@@ -328,40 +328,40 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "user_role_types", :force => true do |t|
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "user_statuses", :force => true do |t|
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "user_types", :force => true do |t|
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.text     "description", :limit => 16777215
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "firstname"
     t.string   "surname"
-    t.string   "email",                  :default => "", :null => false
+    t.string   "email",                                      :default => "", :null => false
     t.string   "orcid_id"
     t.string   "shibboleth_id"
     t.integer  "user_type_id"
     t.integer  "user_status_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "encrypted_password",     :default => ""
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.string   "encrypted_password",                         :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                              :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -377,7 +377,7 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
     t.boolean  "dmponline3"
     t.boolean  "accept_terms"
     t.integer  "organisation_id"
-    t.text     "shibboleth_data"
+    t.text     "shibboleth_data",        :limit => 16777215
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
@@ -394,12 +394,12 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
 
   create_table "versions", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.text     "description", :limit => 16777215
     t.boolean  "published"
     t.integer  "number"
     t.integer  "phase_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "versions", ["phase_id"], :name => "index_versions_on_phase_id"
