@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-gem 'mysql2'
+gem 'mysql2','~> 0.3.10'
 gem 'omniauth'
 gem 'omniauth-shibboleth'
 gem 'recaptcha'
@@ -23,7 +23,7 @@ gem 'less-rails'
 
 gem 'therubyracer', '0.11.4', platforms: :ruby
 gem 'libv8'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails','2.2.8'
 gem 'sass-rails',   '~> 3.2.3'
 gem 'sass', '3.2.10'
 
