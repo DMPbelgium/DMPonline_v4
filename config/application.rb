@@ -86,5 +86,7 @@ module DMPonline4
 	  :exe_path => ENV['WICKED_PDF_EXE']
 	}
 
+    config.assets.initialize_on_precompile = false
+
   end
 end

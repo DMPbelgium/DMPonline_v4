@@ -36,14 +36,15 @@ DMPonline4::Application.configure do
   config.assets.debug = false
 
   #devise config
-  config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+  unless ENV['DMP_HOST'].blank? || ENV['DMP_SMTP_ADDRESS'].blank? || ENV['DMP_SMTP_PORT'].blank? || ENV['DMP_EMAIL_FROM'].blank? || ENV['DMP_SMTP_ADDRESS'].blank? || ENV['DMP_SMTP_PORT'].blank?
+    config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
 
-  ActionMailer::Base.default :from => ENV['DMP_EMAIL_FROM']
-  ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
-
+    ActionMailer::Base.default :from => ENV['DMP_EMAIL_FROM']
+    ActionMailer::Base.delivery_method = :smtp
+    ActionMailer::Base.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
+  end
 
 	# Add the fonts path
 	config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
@@ -52,12 +53,14 @@ DMPonline4::Application.configure do
 	config.assets.precompile += %w( .svg .eot .woff .ttf )
 
 	# Error notifications by email
+  unless ENV['DMP_ERR_EMAIL_PREFIX'].blank? || ENV['DMP_ERR_EMAIL_SENDER_ADDRESS'].blank? || ['DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS'].blank?
 	 config.middleware.use ExceptionNotification::Rack,
 	  :email => {
 	    :email_prefix => ENV['DMP_ERR_EMAIL_PREFIX'],
 	    :sender_address => ENV['DMP_ERR_EMAIL_SENDER_ADDRESS'],
 	    :exception_recipients => JSON.parse(ENV['DMP_ERR_EMAIL_EXCEPTION_RECIPIENTS'])
 	  }
+  end
 
 
 config.action_mailer.perform_deliveries = true
