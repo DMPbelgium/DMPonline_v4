@@ -1,6 +1,6 @@
 = DMPonline v4
 
-DMPonline is the DCC's data management planning tool, available at https://dmponline.dcc.ac.uk
+DMPonline is the DCC's data management planning tool, available at https://dmponline.be
 
 Development of the DMPonline by the Digital Curation Centre has been funded by JISC.  JISC inspires UK colleges and universities in the innovative use of digital technologies, helping to maintain the UK's position as a global leader in education. www.jisc.ac.uk
 
