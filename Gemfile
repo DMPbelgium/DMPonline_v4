@@ -57,6 +57,7 @@ gem 'validate_url'
 
 gem 'thin'
 gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 gem 'htmltoword', '0.1.8'
 gem 'feedzirra', '0.5.0'
 
