@@ -82,9 +82,6 @@ module DMPonline4
     # Absolute path to Shibboleth SSO Login
     config.shibboleth_login = ENV['SHIBBOLETH_LOGIN']
 
-    WickedPdf.config = {
-	  :exe_path => ENV['WICKED_PDF_EXE']
-	}
 
     config.assets.initialize_on_precompile = false
 
