@@ -1,0 +1,19 @@
+The mysql tables where incorrectly set latin1.
+
+To fix this, do the following:
+
+* turn off mysql
+* edit /etc/my.cnf
+
+  [mysqld]
+  ..
+  character-set-server=utf8
+  collation-server=utf8_unicode_ci
+
+  [client]
+  default-character-set=utf8
+
+* turn on mysql
+* convert ALL tables using this command:
+
+  ALTER TABLE <table> CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci
