@@ -5,7 +5,17 @@ Version: 1.0
 Release: X
 BuildArch: noarch
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-Requires: Percona-Server-server-55, Percona-Server-client-55, Percona-Server-devel-55, httpd, libcurl-devel, git
+Requires: Percona-Server-server-55
+Requires: Percona-Server-client-55
+Requires: Percona-Server-devel-55
+Requires: httpd
+Requires: libcurl-devel
+Requires: git
+Requires: libXrender
+Requires: libXext
+Requires: libjpeg-turbo
+Requires: libpng
+Requires: fontconfig
 #already required in gem 'wkhtmltopdf-binary'
 #Requires: wkhtmltox
 Source: %{name}.tar.gz
