@@ -83,7 +83,8 @@ module DMPonline4
     config.shibboleth_login = ENV['SHIBBOLETH_LOGIN']
 
 
-    config.assets.initialize_on_precompile = false
+    #DON'T SET TO FALSE (TRUE BY DEFAULT) FOR THERE WILL BE MISSING ASSETS
+    #config.assets.initialize_on_precompile = false
 
   end
 end
