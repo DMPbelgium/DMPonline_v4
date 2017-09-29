@@ -59,13 +59,16 @@
 	                </li>
                 <% else %>
                 	<% if user_signed_in? %>
-		           		<li>
+                    <% if can? :index, Project %>
+		           		    <li>
 		                    <%= link_to t("helpers.view_plans_label"), projects_path, :class => "btn header_button btn-primary" %>
-		                </li>
-		                <li>
-		                	<%= link_to t("helpers.create_plan_label"), "/projects/new", :class => "btn header_button btn-primary"%>
-		                </li>
-
+		                  </li>
+                    <% end %>
+                    <% if can? :new, Project %>
+		                  <li>
+		                	  <%= link_to t("helpers.create_plan_label"), new_project_path, :class => "btn header_button btn-primary"%>
+		                  </li>
+                    <% end %>
 	                <% else %>
 	                	<li>
 	                    	<%= link_to t("helpers.home"), root_path , :class => "btn header_button btn-primary"%>

@@ -30,16 +30,18 @@
 		<p>You can view or edit earlier plans by visiting <%= link_to("the previous version of DMPonline", "http://dmponline3.dcc.ac.uk") %>.</p>
 	<% end %>
 <!-- if the user does not have projects -->
-<% else %>
+<% elsif can? :create, Project %>
 	<p>
 		<%= raw t("helpers.project.project_text_when_no_project")%>
 	</p>
 
 <% end %>
 
-<!-- link button to create a new project -->
-<p>
-	<%= link_to t('.new', :default => t("helpers.project.create")),
-            new_project_path,
-            :class => 'btn btn-primary' %>
-</p>
+<% if can? :create, Project %>
+  <!-- link button to create a new project -->
+  <p>
+    <%= link_to t('.new', :default => t("helpers.project.create")),
+              new_project_path,
+              :class => 'btn btn-primary' %>
+  </p>
+<% end %>

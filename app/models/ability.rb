@@ -19,7 +19,6 @@ class Ability
 
     if user.persisted?
 
-      can [:index,:new,:create,:destroy,:parent,:children,:templates], Organisation
       can [:edit,:update,:delete_recent_locks,:unlock_all_sections,:lock_section,:unlock_section], Plan do |plan|
         plan.editable_by(user.id)
       end
@@ -42,21 +41,23 @@ class Ability
         pg.project.administerable_by(user.id)
       end
 
-      can [:index,:new,:export,:create],Project
-      can :show,Project do |p|
+      can [:index,:show,:export],Project do |p|
         p.readable_by(user.id)
       end
-      can [:edit,:update],Project do |p|
-        p.editable_by(user.id)
-      end
-      can [:share,:destroy], Project do |p|
-        p.administerable_by(user.id)
-      end
+      unless user.is_guest?
 
+        can [:new,:create], Project
+        can [:edit,:update],Project do |p|
+          p.editable_by(user.id)
+        end
+        can [:share,:destroy], Project do |p|
+          p.administerable_by(user.id)
+        end
+
+      end
 
       if user.has_role? :admin
 
-        #TODO: all org_admin actions forbidden (actions that start with 'admin_'), for they load other resources based on the current_user?
         can :manage, :all
 
       elsif user.is_org_admin?

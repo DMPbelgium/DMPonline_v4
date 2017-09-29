@@ -109,4 +109,7 @@ class User < ActiveRecord::Base
     whitelist = User.accessible_attributes - ["","id"]
     self.attributes.slice( *whitelist )
   end
+  def is_guest?
+    self.organisation_id == Organisation.guest_org.id
+  end
 end
