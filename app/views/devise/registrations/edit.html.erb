@@ -13,7 +13,7 @@
       <table class="dmp_details_table">
         <tr>
           <td class="first"><%= (t('helpers.email') + ' *') %></td>
-          <td><%= f.email_field :email, :as => :email %></td>
+          <td><%= f.email_field :email, :as => :email, :disabled => :disabled %></td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.first_name') + ' *' %></td>
@@ -23,7 +23,8 @@
                 :class => 'text_field has-tooltip',
                 'data-toggle' => "tooltip",
                 'data-trigger' => "focus" ,
-                'title' => t('helpers.first_name_help_text') %></td>
+                'title' => t('helpers.first_name_help_text') %>
+          </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.last_name') + ' *'%></td>
@@ -32,33 +33,31 @@
             :class => 'text_field has-tooltip',
             'data-toggle' => "tooltip",
             'data-trigger' => "focus" ,
-            'title' => t('helpers.surname_help_text') %></td>
+            'title' => t('helpers.surname_help_text') %>
+          </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.org_type.organisation') + ' *'%></td>
-          <td><%= collection_select(:user,
-              :organisation_id, Organisation.where("parent_id IS NULL").order("name"),
-              :id, :name, {include_blank: t('helpers.org_type.organisation')},
-              { :class => 'typeahead org_sign_up' }) %></td>
-        </tr>
-
-        <% other_organisations = Array.new %>
-        <% Organisation.where("parent_id IS ? AND is_other = ?", nil, 1).each do |org| %>
-          <% other_organisations << org.id %>
-        <% end %>
-
-        <tr id="other-organisation-name" style="display:none" data-orgs="<%= other_organisations.join(',') %>">
-          <td class="first"><%= t('helpers.org_type.org_name') + ' *'%></td>
-          <td><%= f.text_field :other_organisation,
-              :as => :string,
-              :class => 'text_field has-tooltip reg-input', 'data-toggle' => "tooltip", 'data-container' => "body", 'title' => t('helpers.org_type.other_org_help_text') %></td>
+          <td>
+            <%= f.text_field :organisation,
+                  :as => :string,
+                  :class => 'text_field has-tooltip',
+                  'data-toggle' => "tooltip",
+                  :disabled => :disabled
+            %>
+            </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.orcid_id') %></td>
           <td><%= f.text_field :orcid_id ,
               :as => :string,
               :autocomplete => "off" ,
-              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.orcid_html') %></td>
+              :disabled => :disabled,
+              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.orcid_html') %>
+              <% if current_user.orcid_id.blank? %>
+                <%= link_to("Link to ORCID", user_omniauth_authorize_path(:orcid)) %>
+              <% end %>
+          </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.shibboleth_id') %></td>
@@ -70,11 +69,8 @@
              %>
           </td>
         </tr>
-
       </table>
-
 		  <br>
-
    		<p><%= raw t('helpers.edit_password_info')%></p>
 
 		  <table class="dmp_details_table">

@@ -102,7 +102,7 @@ $( document ).ready(function() {
 		var index = $.inArray(selected_org, other_orgs);
 		if (index > -1) {
 			$("#other-organisation-name").show();
-			$("#user_other_organisation").focus();
+			//$("#user_other_organisation").focus();
 		}
 		else {
 			$("#other-organisation-name").hide();

@@ -55,5 +55,7 @@ class Guidance < ActiveRecord::Base
 		templates = guidancegroups.where("guidance_group_id (?)", guidance_group.id).template
 		return templates
 	end
-
+  def to_s
+    "#{text}"
+  end
 end

@@ -9,8 +9,6 @@ class Organisation < ActiveRecord::Base
 	has_many :option_warnings
 	has_many :suggested_answers
 
-  has_many :user_org_roles
-
   belongs_to :parent, :class_name => 'Organisation'
 	has_many :children, :class_name => 'Organisation', :foreign_key => 'parent_id'
 
@@ -111,5 +109,21 @@ class Organisation < ActiveRecord::Base
 	def published_templates
 		return dmptemplates.find_all_by_published(1)
 	end
+
+  def self.guest_org
+    org = Organisation.find_by_name("guests")
+
+    if org.nil?
+      org = Organisation.new(
+        :name => "guests",
+        :abbreviation => "guests",
+        :parent_id => nil,
+        :sort_name => "guests",
+        :organisation_type_id => OrganisationType.guest_org_type.id
+      )
+    end
+
+    org
+  end
 
 end

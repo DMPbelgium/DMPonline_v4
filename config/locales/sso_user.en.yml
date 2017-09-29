@@ -1,0 +1,9 @@
+en:
+  sso_user:
+    already_logged_in: "You have already logged in"
+    not_authenticated: "You haven't authenticated yet against your external login service"
+    record:
+      email:
+        required: "No email could be retrieved from your external login service. Please make this information public"
+    actions:
+      no_changes: "No changes where made"

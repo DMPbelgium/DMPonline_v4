@@ -66,22 +66,22 @@ class RegistrationsController < Devise::RegistrationsController
   # extend this as needed
   def needs_password?(user, params)
 
-    user.email != params[:user][:email] || params[:user][:password].present?
+    params[:user][:password].present?
 
   end
 
   def do_update
-
 		successfully_updated = if needs_password?(@user, params)
 
-      @user.update_with_password(params[:user])
+      @user.update_with_password(
+        params[:user].slice( :firstname, :surname, :current_password, :password, :password_confirmation )
+      )
 
     else
 
-      # remove the virtual current_password attribute update_without_password
-      # doesn't know how to ignore it
-      params[:user].delete(:current_password)
-      @user.update_without_password(params[:user])
+      @user.update_without_password(
+        params[:user].slice( :firstname, :surname )
+      )
 
     end
 

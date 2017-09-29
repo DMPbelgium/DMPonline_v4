@@ -8,8 +8,14 @@
 
       <table class="dmp_details_table">
         <tr>
-          <td class="first"><%= (t('helpers.email') + ' *') %></td>
-          <td><%= email_field_tag 'user[email]', @sso_user["email"] %></td>
+          <td class="first"><%= t('helpers.email') + ' *' %></td>
+          <td><%= text_field_tag 'user[email]' , @sso_user["email"],
+              :as => :string,
+              :autocomplete => "off" ,
+              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true",
+              :disabled => :disabled
+             %>
+          </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.first_name') + ' *' %></td>
@@ -38,28 +44,23 @@
         </tr>
         <tr>
           <td class="first"><%= t('helpers.org_type.organisation') + ' *' %></td>
-          <td>
-              <%= select_tag 'user[organisation_id]', options_for_select(
-                [[ t('helpers.org_type.organisation'), nil ]] +
-                Organisation.where("parent_id IS NULL").order("name").collect { |org| [ org.name, org.id ] }
-              ), :class => 'typeahead org_sign_up'
-              %>
+          <td><%
+                org = @sso_user["organisation_id"].present? ? Organisation.find( @sso_user["organisation_id"] ) : nil
 
-              <div id="other-org-link"><a href="#"><%= t("helpers.org_not_listed") %></a></div>
+                if org
+              %>
+                <%= text_field_tag 'user[organisation]' , org.name,
+                    :as => :string,
+                    :autocomplete => "off" ,
+                    :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => org.name,
+                    :disabled => :disabled
+                %>
+              <% else %>
+                -
+              <% end %>
           </td>
         </tr>
 
-        <% other_organisations = Array.new %>
-        <% Organisation.where("parent_id IS ? AND is_other = ?", nil, 1).each do |org| %>
-          <% other_organisations << org.id %>
-        <% end %>
-
-        <tr id="other-organisation-name" style="display:none" data-orgs="<%= other_organisations.join(',') %>">
-          <td class="first"><%= t('helpers.org_type.org_name')%></td>
-          <td><%= text_field_tag 'user[other_organisation]','',
-              placeholder: (t('helpers.org_type.org_name') + ' *'),
-              :class => 'text_field has-tooltip reg-input', 'data-toggle' => "tooltip", 'data-container' => "body", 'title' => t('helpers.org_type.other_org_help_text') %></td>
-        </tr>
         <tr>
           <td class="first"></td>
           <td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151208134554) do
+ActiveRecord::Schema.define(:version => 20170928143015) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
     t.integer  "banner_file_id"
     t.integer  "organisation_type_id"
     t.string   "domain"
-    t.text     "wayfless_entity",      :limit => 16777215
+    t.text     "wayfless_entity"
     t.integer  "stylesheet_file_id"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
@@ -305,6 +305,13 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
     t.boolean  "is_example"
   end
 
+  create_table "test", :id => false, :force => true do |t|
+    t.binary "data", :limit => 2147483647
+    t.string "id",                         :null => false
+  end
+
+  add_index "test", ["id"], :name => "id", :unique => true
+
   create_table "themes", :force => true do |t|
     t.string   "title"
     t.text     "description", :limit => 16777215
@@ -316,21 +323,6 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
   create_table "themes_in_guidance", :id => false, :force => true do |t|
     t.integer "theme_id"
     t.integer "guidance_id"
-  end
-
-  create_table "user_org_roles", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "organisation_id"
-    t.integer  "user_role_type_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  create_table "user_role_types", :force => true do |t|
-    t.string   "name"
-    t.text     "description", :limit => 16777215
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
   end
 
   create_table "user_statuses", :force => true do |t|
@@ -373,11 +365,11 @@ ActiveRecord::Schema.define(:version => 20151208134554) do
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
-    t.string   "other_organisation"
     t.boolean  "dmponline3"
     t.boolean  "accept_terms"
     t.integer  "organisation_id"
     t.text     "shibboleth_data",        :limit => 16777215
+    t.string   "unconfirmed_email"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -1,8 +1,8 @@
 <ul>
   <% d_errors = devise_error_messages! %>
-  <% unless d_errors.blank? %>
+  <% if d_errors.present? %>
   <li>
-		<%= devise_e %>
+		<%= d_errors %>
 	</li>
   <% end %>
   <li>

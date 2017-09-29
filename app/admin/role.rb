@@ -29,11 +29,7 @@ ActiveAdmin.register Role do
       column (:last_sign_in_at){|user| user.last_sign_in_at}
       column (I18n.t('admin.org_title')){|user|
         if !user.organisation.nil? then
-          if user.other_organisation.nil? || user.other_organisation == "" then
-            link_to user.organisation.name, [:admin, user.organisation]
-          else
-            I18n.t('helpers.org_type.org_name') + ' - ' + user.other_organisation
-          end
+          "-"
         end
       }
     end

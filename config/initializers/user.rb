@@ -2,62 +2,36 @@ User.before_validation do |user|
   if user.shibboleth_id.nil? || user.shibboleth_id.empty?
     user.shibboleth_id = user.email
   end
+  if user.organisation_id.nil?
+    user.organisation_id = Organisation.guest_org.id
+  end
   true
 end
 User.after_auth_shibboleth do |user,auth,request|
 
-  #only change organisation when none exists
-  if user.organisation.nil?
+ #always change organisation when authenticated against IDP
+ #User model makes sure the user always has a default organisation! (see above)
 
-    #match IDP against wayfless entity
-    idp = request.env['Shib-Identity-Provider']
+ #match IDP against wayfless entity of organisation
+ idp = request.env['Shib-Identity-Provider']
 
-    orgs = Organisation.where(:wayfless_entity => idp)
+ org = Organisation.where(:wayfless_entity => idp).first
 
-    if orgs.size > 0
+ unless org.nil?
 
-      org = orgs.first
-      user.organisation_id=(org.id)
-      user.save
+   user.organisation_id = org.id
 
-      if org.abbreviation == 'UGent'
+   if org.abbreviation == 'UGent'
 
-        user.surname = auth['extra']['raw_info']['sn']
-        user.firstname = auth['extra']['raw_info']['givenname']
+     user.surname = auth['extra']['raw_info']['sn']
+     user.firstname = auth['extra']['raw_info']['givenname']
 
-        #try to match against a more specific suborganisation
-        if !org.nil? && org.is_parent?
+   end
 
-          faculty = nil
-
-          if !auth['extra']['raw_info']['department'].nil?
-
-            faculty = auth['extra']['raw_info']['department'][0,2]
-
-          elsif !auth['extra']['raw_info']['faculty'].nil?
-
-            faculty = auth['extra']['raw_info']['faculty']
-
-          end
-
-          unless faculty.nil?
-
-            fac_orgs = Organisation.where(:abbreviation => faculty, :parent_id => org.id)
-            if fac_orgs.size > 0
-
-              user.organisation_id=(fac_orgs.first.id)
-
-            end
-
-          end
-        end
-
-      end
-
-    end
-  end
+ end
 
   user.save if user.changed?
+
 end
 
 User.after_create do |u|

@@ -28,7 +28,6 @@ DMPonline4::Application.routes.draw do
   get "help" => 'static_pages#help', :as => "help"
   get "roadmap" => 'static_pages#roadmap', :as => "roadmap"
   get "terms" => 'static_pages#termsuse', :as => "terms"
-  get "existing_users" => 'existing_users#index', :as => "existing_users"
 
   #organisation admin area
   get "org/admin/users" => 'organisation_users#admin_index', :as => "org/admin/users"
@@ -158,8 +157,9 @@ DMPonline4::Application.routes.draw do
   resources :user_statuses
   resources :user_types
 
-  resources :user_role_types
-  resources :user_org_roles
+  #2 deprecated routes
+  #resources :user_role_types
+  #resources :user_org_roles
 
   #only used in functional testing (see test/functional/organisation_types_controller_test.rb)
   #resources :organisation_types

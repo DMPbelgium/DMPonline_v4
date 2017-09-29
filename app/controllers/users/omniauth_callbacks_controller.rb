@@ -1,14 +1,13 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
-  #TODO: what if someone was invited?
-
   before_filter :clear_sso_user
   after_filter :clear_invitation
 
   def shibboleth
     if user_signed_in? && current_user.shibboleth_id.present? && current_user.shibboleth_id.length > 0 then
-      flash[:warning] = I18n.t('devise.failure.already_authenticated')
-      redirect_to root_path
+
+      redirect_to edit_user_registration_path
+
     else
       auth = request.env['omniauth.auth'] || {}
       uid = auth.uid
@@ -80,9 +79,28 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if user_signed_in?
 
-      flash[:warning] = I18n.t('devise.failure.already_authenticated')
-      redirect_to root_path
-      return
+      #link orcid
+      current_user.orcid_id = auth.uid
+
+      if current_user.valid?
+
+        flash[:notice] = I18n.t("devise.omniauth_callbacks.orcid.linked")
+        current_user.save
+
+      else
+
+        #happens when user changed email address:
+        # 1. create user with email1
+        # 2. set email in orcid
+        # 3. login with orcid (orcid_id is set)
+        # 4. reset email in orcid to email2
+        # 5. create user with email2
+        # 6. login with orcid: user with email2 cannot claim orcid, because it already belongs to user with email1
+        flash[:alert] = current_user.errors.full_messages
+
+      end
+
+      redirect_to edit_user_registration_path
 
     else
 
@@ -90,63 +108,95 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 #<OmniAuth::AuthHash credentials=#<OmniAuth::AuthHash expires=true expires_at=2103771161 refresh_token="bbbbfc77-85ae-4db9-b82c-4720c69c2b84" token="14465dd9-b9ac-4e37-b64b-3c4c98154820"> extra=#<OmniAuth::AuthHash raw_info=#<OmniAuth::AuthHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil other_names=[nil] urls=#<OmniAuth::AuthHash>>> info=#<OmniAuth::AuthHash::InfoHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil urls=#<OmniAuth::AuthHash>> provider="orcid" uid="0000-0002-5268-9669">
 =end
 
-      auth = request.env['omniauth.auth'] || {}
+=begin
+  What this should do:
+
+    1. Get Auth Hash (see above for an example)
+
+    2. Extract uid (orcid_id), email, firstname and surname
+
+    3. User found with same orcid_id:
+      3.1. email NOT changed (users without email do not exist)
+           so changing email in orcid does not do anything here.
+           DO NOT change email
+      3.2. set firstname if not present yet
+      3.3. set surname if not present yet
+
+    4. User not found based on orcid_id:
+      4.1. User found with email adres same as the one in orcid:
+        4.1.1. change orcid_id of that user record => what if that record has already an orcid_id, different from the one we get?
+          => never change orcid
+          user1 has confirmed email1
+          user2 has set email in orcid to email1
+          user2 logs in with orcid, so checking "user1.confirmed?" always returns true, but cannot be trusted
+
+      4.2. No User found with email adres same as the one in orcid:
+        4.2.1. create new user
+        4.2.2. set orcid_id
+        4.2.3. set email (when present)
+=end
+
       uid = auth.uid
       email = auth['info']['email']
-
-      if email.present?
-        user_with_email = User.where( :email => email ).first
-      end
+      @user = nil
 
       if uid.present?
 
-        user = User.where( :orcid_id => uid ).first
-        @user = user
+        @user = User.where( :orcid_id => uid ).first
 
-        if user.nil?
+        #user found with orcid_id
+        if @user
 
-          user = !user_with_email.nil? ? user_with_email : User.new( )
-          user.orcid_id = uid
+          #set firstname and surname when not present yet
+          @user.firstname = auth['info']['first_name'] if @user.firstname.blank?
+          @user.surname = auth['info']['last_name'] if @user.surname.blank?
 
-        else
+        #no user found with orcid_id
+        elsif email.present?
 
-          email = user.email
+          user_with_email = User.where( :email => email ).first
+
+          #user found with email
+          if user_with_email
+
+            #unable to trust this user
+            redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
+            return
+
+          #no user found with email: NEW USER. We trust "email" because it has to be confirmed.
+          else
+
+            @user = User.new(
+              :email => email,
+              :orcid_id => uid,
+              :firstname => auth['info']['first_name'],
+              :surname => auth['info']['last_name']
+            )
+
+          end
 
         end
 
-        user.email = email
+        if @user.new_record?
 
-        unless user.firstname.present?
-
-          user.firstname = auth['info']['first_name']
-
-        end
-        unless user.surname.present?
-
-          user.surname = auth['info']['last_name']
+          @user.ensure_password
 
         end
 
-        if user.new_record?
+        unless @user.valid?
 
-          user.ensure_password
-
-        end
-
-        unless user.valid?
-
-          session[:sso_user] = user.writable_attributes
-          redirect_to edit_sso_user_path, alert: user.errors.full_messages
+          session[:sso_user] = @user.writable_attributes
+          redirect_to edit_sso_user_path, alert: @user.errors.full_messages
           return
 
         else
 
-          user.save
+          @user.save
 
           #login
           flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'ORCID')
 
-          sign_in user
+          sign_in @user
           redirect_to edit_user_registration_path
 
         end
@@ -166,7 +216,6 @@ private
   end
   def clear_invitation
     unless @user.nil?
-      $stderr.puts "clearing invitation token for user #{ @user.email }"
       @user.accept_invitation! if @user.invitation_token.present?
     end
   end

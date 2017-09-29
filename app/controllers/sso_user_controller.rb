@@ -11,35 +11,37 @@ class SsoUserController < ApplicationController
 
   def update
 
-    user_params = params["user"]
+    user_params = params[:user]
 
-    unless user_params.is_a? Hash
-      raise ArgumentError.new("sso_user is required")
-    end
+    if user_params.is_a?(Hash)
 
-    user = nil
-    unless user_params["email"].nil?
-      user = User.find_by_email( user_params["email"] )
-    end
-    user = user.nil? ? User.new : user
+      #merge attributes
+      session[:sso_user].merge!( user_params.slice(:firstname, :surname) )
 
-    user_params = user_params.slice( * user.writable_attributes.keys  )
-    session[:sso_user].merge!( user_params )
-    user.assign_attributes( session[:sso_user] )
-    user.ensure_password
+      #update user or create new one
+      user = User.find_by_email( session[:sso_user]["email"] ) || User.new()
+      user.assign_attributes( session[:sso_user] )
+      user.ensure_password
 
-    if user.valid?
+      if user.valid?
 
-      #clear invitation if it was present
-      user.accept_invitation if user.invitation_token.present?
+        #clear invitation if it was present
+        user.accept_invitation if user.invitation_token.present?
+        user.save
 
-      user.save
-      sign_in user
-      redirect_to root_path
+        #sign in
+        sign_in user
+        redirect_to root_path
+
+      else
+
+        redirect_to edit_sso_user_path, :alert => user.errors.full_messages
+
+      end
 
     else
 
-      redirect_to edit_sso_user_path, alert: user.errors.full_messages
+      redirect_to edit_sso_user_path, :notice => I18n.t("sso_user.actions.no_changes")
 
     end
 
@@ -48,17 +50,19 @@ class SsoUserController < ApplicationController
 private
 
   def require_authentication
-
     if user_signed_in?
 
-      redirect_to root_path
+      redirect_to root_path, :alert => I18n.t("sso_user.already_logged_in")
 
     elsif session[:sso_user].nil?
 
-      redirect_to new_user_registration_path
+      redirect_to root_path, :alert => I18n.t("sso_user.not_authenticated")
+
+    elsif !(session[:sso_user]["email"].present?)
+
+      redirect_to root_path, :alert => I18n.t("sso_user.record.email.required")
 
     end
-
   end
 
 end

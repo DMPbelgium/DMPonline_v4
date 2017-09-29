@@ -3,16 +3,14 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :registerable, :invitable, :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:shibboleth,:orcid]
+  devise :registerable, :invitable, :database_authenticatable, :recoverable, :confirmable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:shibboleth,:orcid]
 
   #associations between tables
   belongs_to :user_type
   belongs_to :user_status
+  belongs_to :organisation
   has_many :answers, :dependent => :destroy
-  has_many :user_org_roles, :dependent => :destroy, :inverse_of => :user
   has_many :project_groups, :dependent => :destroy
-  has_many :organisations , through: :user_org_roles
-  has_many :user_role_types, through: :user_org_roles
 
   has_many :projects, through: :project_groups do
     def filter(query)
@@ -41,7 +39,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :password_confirmation, :encrypted_password, :remember_me, :id, :email, :firstname, :last_login,
    :login_count, :orcid_id, :password, :shibboleth_id, :user_status_id,
-   :surname, :user_type_id, :organisation_id, :skip_invitation, :other_organisation,
+   :surname, :user_type_id, :organisation_id, :skip_invitation,
    :accept_terms, :role_ids, :dmponline3
 
   # FIXME: The duplication in the block is to set defaults. It might be better if
@@ -69,53 +67,6 @@ class User < ActiveRecord::Base
       name = "#{fn} #{sn}"
       return name.strip
     end
-	end
-
-	def organisation_id=(new_organisation_id)
-    if !self.user_org_roles.pluck(:organisation_id).include?(new_organisation_id.to_i) then
-  		if self.user_org_roles.count != 1 then
-  			new_user_org_role = UserOrgRole.new
-  			new_user_org_role.organisation_id = new_organisation_id
-  			new_user_org_role.user_role_type = UserRoleType.find_by_name("user");
-  			self.user_org_roles << new_user_org_role
-  		else
-  			user_org_role = self.user_org_roles.first
-  			user_org_role.organisation_id = new_organisation_id
-            user_org_role.save
-  			org_admin_role = roles.find_by_name("org_admin")
-  			unless org_admin_role.nil? then
-  				roles.delete(org_admin_role)
-  			end
-  		end
-    end
-	end
-
-	def organisation_id
-		if self.organisations.count > 0 then
-			return self.organisations.first.id
-		else
-			return nil
-		end
-	end
-
-	def organisation
-		if self.organisations.count > 0 then
-			return self.organisations.first
-		else
-			return nil
-		end
-	end
-
-	def current_organisation
-		if self.organisations.count > 0 then
-			return self.organisations.last
-		else
-			return nil
-		end
-	end
-
-	def organisation=(new_organisation)
-		organisation_id = organisation.id
 	end
 
 	def is_admin?

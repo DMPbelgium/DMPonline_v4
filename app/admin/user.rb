@@ -11,7 +11,7 @@ ActiveAdmin.register User do
 	filter :firstname
 	filter :surname
 	filter :email
-	filter :organisations
+	filter :organisation
 	filter :dmponline3
 	filter :created_at
 	filter :updated_at
@@ -19,7 +19,7 @@ ActiveAdmin.register User do
 	index do   # :password_confirmation, :encrypted_password, :remember_me, :id, :email,
 		# :firstname, :orcid_id, :shibboleth_id,
 		#:user_status_id, :surname, :user_type_id, :organisation_id, :skip_invitation,
-		# :other_organisation, :accept_terms, :role_ids, :dmponline3
+		# :accept_terms, :role_ids, :dmponline3
 
   	column I18n.t('admin.user_name'), :sortable => :email do |user_email|
       link_to user_email.email, [:admin, user_email]
@@ -31,13 +31,11 @@ ActiveAdmin.register User do
       link_to user.surname, [:admin, user]
     end
    	column I18n.t('admin.last_logged_in'), :last_sign_in_at
-   	column I18n.t('admin.org_title'), :sortable => 'organisations.name' do |org_title|
-      if !org_title.organisation.nil? then
-      	if org_title.other_organisation.nil? || org_title.other_organisation == "" then
-          link_to org_title.organisation.name, [:admin, org_title.organisation]
-      	else
-      		I18n.t('helpers.org_type.org_name') + ' - ' + org_title.other_organisation
-        end
+   	column I18n.t('admin.org_title'), :sortable => 'organisation.name' do |user|
+      if user.organisation.nil? then
+        "-"
+      else
+        user.organisation.name
       end
    	end
   	default_actions
@@ -55,7 +53,6 @@ ActiveAdmin.register User do
 		      link_to org.name, [:admin, org]
 		    end
 		  end
-		  row :other_organisation
   		row I18n.t('admin.user_status'), :user_status_id do |us|
   			if !us.user_status.nil? then
   				link_to us.user_status.name, [:admin, us.user_status]
@@ -111,7 +108,7 @@ ActiveAdmin.register User do
 
   controller do
     def scoped_collection
-      resource_class.includes(:organisations) # prevents N+1 queries to your database
+      resource_class.includes(:organisation) # prevents N+1 queries to your database
     end
   end
 end
