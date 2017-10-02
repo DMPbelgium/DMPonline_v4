@@ -1,0 +1,27 @@
+<h1>Multiple accounts match for your login</h1>
+
+<div class="white_background">
+
+  <%= form_tag( :controller => :selectable_user, :action => "update", :method => :post ) do %>
+    <div class="dmp_details">
+      <table class="dmp_details_table">
+        <tr>
+          <td class="first"><%= t('helpers.email') + ' *' %></td>
+          <td><%= select_tag "selectable_user[id]", options_for_select(
+                    @selectable_users.map { |user|
+                      [ user.email, user.id ]
+                    }
+                  )
+              %>
+          </td>
+        </tr>
+        <tr>
+          <td class="first"></td>
+          <td>
+            <%= submit_tag t('helpers.sign_in'), :class => "btn btn-primary" %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
+</div>

@@ -180,4 +180,6 @@ DMPonline4::Application.routes.draw do
   get "sso_user/edit", :controller => :sso_user, :action => :edit, :as => :edit_sso_user
   post "sso_user", :controller => :sso_user, :action => :update, :as => :update_sso_user
 
+  get "selectable_user/edit", :controller => :selectable_user, :action => :edit, :as => :edit_selectable_user
+  post "selectable_user", :controller => :selectable_user, :action => :update, :as => :update_selectable_user
 end

@@ -142,7 +142,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       if uid.present?
 
-        @user = User.where( :orcid_id => uid ).first
+        selectable_users = User.where( :orcid_id => uid ).all
+
+        if selectable_users.size > 1
+
+          session[:selectable_user_ids] = selectable_users.map(&:id)
+          redirect_to edit_selectable_user_path
+          return
+
+        end
+
+        @user = selectable_users.first
 
         #user found with orcid_id
         if @user

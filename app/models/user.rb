@@ -50,8 +50,8 @@ class User < ActiveRecord::Base
 
   validates :firstname,:length => { :minimum => 1 }
   validates :surname,:length => { :minimum => 1 }
-  #can be empty, but, if not, should be unique
-  validates :orcid_id,:length => { :minimum => 1 }, :uniqueness => true, :allow_blank => true
+  #can be empty
+  validates :orcid_id,:length => { :minimum => 1 }, :allow_blank => true
   #can be empty, but, if not, should be unique
   validates :shibboleth_id,:length => { :minimum => 1 }, :uniqueness => true, :allow_blank => true
 
