@@ -58,7 +58,7 @@
 			<%= semantic_form_for new_project_group, :url => {:controller => :project_groups, :action => :create }, :html=>{:method=>:post} do |f| %>
 				<%= f.inputs do %>
 					<%= f.input :project_id, :as => :hidden %>
-					<%= f.input :email, :label => false, 'data-placeholder' => t('helpers.email'), :input_html => { :class => 'typeahead_ajax' } %>
+					<%= f.input :email, :as => :email, :required => true, :label => false, :placeholder => t('helpers.email') %>
 					<p><%= t('helpers.project.share.permissions')%>:</p>
 					<%= f.select :access_level, [[t('helpers.project.share.co_owner'), 3], [ t('helpers.project.share.edit') , 2], [ t('helpers.project.share.read_only'), 1]], {}, {:class => 'has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
 				<% end %>

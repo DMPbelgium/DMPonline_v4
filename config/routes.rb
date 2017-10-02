@@ -22,8 +22,6 @@ DMPonline4::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  get 'emails' => 'emails#index', :as => "emails"
-
   get "about_us" => 'static_pages#about_us', :as => "about_us"
   get "help" => 'static_pages#help', :as => "help"
   get "roadmap" => 'static_pages#roadmap', :as => "roadmap"

@@ -1,6 +1,6 @@
 <p>Hello <%= @project_group.user.name %></p>
 
-<% 
+<%
 access_level = "read-only"
 if @project_group.access_level == 2 then
 	access_level = "editor"
@@ -10,3 +10,9 @@ end
 %>
 
 <p>You have been given <%= access_level %> access to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
+
+<% unless @project_group.user.confirmed? %>
+
+  <p>An email will follow, containing instructions to unlock your new account.</p>
+
+<% end %>

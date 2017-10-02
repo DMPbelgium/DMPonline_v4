@@ -144,39 +144,6 @@ $( document ).ready(function() {
 		return false;
 	});*/
 
-  $('.typeahead_ajax').select2({
-    minimumInputLength: 3,
-    containerCss: {
-      "float": "none"
-    },
-    ajax: {
-      url: "/emails",
-      quietMillis: 250,
-      data: function (term,page) {
-        var limit = 10;
-        var start = (page - 1) * limit;
-        var query = {
-          q: term,
-          start: start,
-          limit: limit
-        }
-        return query;
-      },
-      results: function (data,page) {
-        var options = [];
-        for(var i = 0; i < data.data.length;i++){
-          options.push( { id: data.data[i], text: data.data[i] } );
-        }
-        return {
-          results: options,
-          more: ( data.start + data.limit ) < data.total
-        };
-      },
-      cache: true
-    },
-    allowClear: true
-  });
-
 });
 
 function validateEmail(sEmail) {

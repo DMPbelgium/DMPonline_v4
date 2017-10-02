@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   belongs_to :user_status
   belongs_to :organisation
   has_many :answers, :dependent => :destroy
-  has_many :project_groups, :dependent => :destroy
+  has_many :project_groups, :dependent => :destroy, :inverse_of => :user
 
   has_many :projects, through: :project_groups do
     def filter(query)

@@ -65,3 +65,4 @@ gem 'ledermann-rails-settings'
 gem 'jbuilder'
 gem 'figaro'
 gem 'omniauth-orcid', :git => "https://github.com/datacite/omniauth-orcid.git"
+gem 'strong_parameters'

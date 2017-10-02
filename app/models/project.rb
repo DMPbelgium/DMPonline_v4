@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 	belongs_to :dmptemplate
 	belongs_to :organisation
 	has_many :plans
-	has_many :project_groups, :dependent => :destroy
+	has_many :project_groups, :dependent => :destroy, :inverse_of => :project
 	has_and_belongs_to_many :guidance_groups, join_table: "project_guidance"
 
 	friendly_id :title, use: :slugged, :use => :history

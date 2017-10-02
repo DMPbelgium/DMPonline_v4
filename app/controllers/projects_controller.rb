@@ -97,6 +97,7 @@ class ProjectsController < ApplicationController
 				format.html { redirect_to({:action => "show", :id => @project.slug, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }
 				format.json { render json: @project, status: :created, location: @project }
 			else
+        flash[:alert] = @project.errors.full_messages
 				format.html { render action: "new" }
 				format.json { render json: @project.errors, status: :unprocessable_entity }
 			end

@@ -1,27 +1,25 @@
 class ProjectGroup < ActiveRecord::Base
 
   #associations between tables
-  belongs_to :project
-  belongs_to :user
+  belongs_to :project, :inverse_of => :project_groups
+  belongs_to :user, :inverse_of => :project_groups
+  validates :project, :presence => true
+  validates :user, :presence => true
 
   attr_accessible :project_creator, :project_editor, :project_administrator, :project_id, :user_id, :email, :access_level
 
   def email
-  	unless user.nil?
-  		return user.email
-  	end
+    self.user.nil? ? nil : self.user.email
   end
 
   def email=(new_email)
-  	unless User.find_by_email(email).nil? then
-		user = User.find_by_email(email)
-	end
+    self.user = User.find_by_email(email)
   end
 
   def access_level
-  	if project_administrator then
+  	if self.project_administrator
   		return 3
-  	elsif project_editor then
+  	elsif self.project_editor
   		return 2
   	else
   		return 1
@@ -30,15 +28,8 @@ class ProjectGroup < ActiveRecord::Base
 
   def access_level=(new_access_level)
   	new_access_level = new_access_level.to_i
-  	if new_access_level >= 3 then
-  		project_administrator = true
-  	else
-  		project_administrator = false
-  	end
-  	if new_access_level >= 2 then
-  		project_editor = true
-  	else
-  		project_editor = false
-  	end
+    self.project_administrator = new_access_level == 3
+    self.project_editor = new_access_level == 2
   end
+
 end
