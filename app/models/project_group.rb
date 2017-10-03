@@ -1,8 +1,8 @@
 class ProjectGroup < ActiveRecord::Base
 
   #associations between tables
-  belongs_to :project, :inverse_of => :project_groups
-  belongs_to :user, :inverse_of => :project_groups
+  belongs_to :project, :inverse_of => :project_groups, :autosave => true
+  belongs_to :user, :inverse_of => :project_groups, :autosave => true
   validates :project, :presence => true
   validates :user, :presence => true
 

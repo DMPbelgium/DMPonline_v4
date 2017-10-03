@@ -57,13 +57,13 @@ ActiveAdmin.register Question do
       end
       row :parent_id do |qparent|
         if !qparent.parent_id.nil? then
-          parent_q = Question.where('id = ?', qparent.parent_id)
+          parent_q = Question.find(qparent.parent_id)
           link_to parent_q.text, [:admin, parent_q]
         end
       end
       row :dependency_id do |qdepend|
         if !qdepend.dependency_id.nil? then
-          qdep = Question.where('id = ?', qparent.dependency_id)
+          qdep = Question.find(qdepend.dependency_id)
           link_to qdep.text, [:admin, qdep]
         end
       end

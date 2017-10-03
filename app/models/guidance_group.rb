@@ -1,7 +1,7 @@
 class GuidanceGroup < ActiveRecord::Base
 
   #associations between tables
-  belongs_to :organisation
+  belongs_to :organisation, :inverse_of => :guidance_groups, :autosave => true
 
   has_and_belongs_to_many :guidances, join_table: "guidance_in_group"
 

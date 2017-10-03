@@ -1,11 +1,11 @@
 class Version < ActiveRecord::Base
 
   #associations between tables
-  belongs_to :phase
+  belongs_to :phase, :inverse_of => :versions, :autosave => true
 
   has_many :sections, :dependent => :destroy, :inverse_of => :version
   has_many :questions, :through => :sections, :dependent => :destroy
-  has_many :plans
+  has_many :plans, :dependent => :destroy
 
   #Link the data
 	accepts_nested_attributes_for :phase

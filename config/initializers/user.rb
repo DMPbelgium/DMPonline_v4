@@ -2,8 +2,8 @@ User.before_validation do |user|
   if user.shibboleth_id.nil? || user.shibboleth_id.empty?
     user.shibboleth_id = user.email
   end
-  if user.organisation_id.nil?
-    user.organisation_id = Organisation.guest_org.id
+  if user.organisation.nil?
+    user.organisation = Organisation.guest_org
   end
   true
 end

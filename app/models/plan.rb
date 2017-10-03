@@ -9,10 +9,10 @@ class Plan < ActiveRecord::Base
 	FONT_WIDTH_HEIGHT_RATIO = 0.4 #Assume glyph width averages 2/5 the height
 
 	#associations between tables
-	belongs_to :project
-	belongs_to :version
-	has_many :answers
-	has_many :plan_sections
+	belongs_to :project, :inverse_of => :plans, :autosave => true
+	belongs_to :version, :inverse_of => :plans, :autosave => true
+	has_many :answers, :inverse_of => :plan, :dependent => :destroy
+	has_many :plan_sections, :inverse_of => :plan, :dependent => :destroy
 	accepts_nested_attributes_for :project
 	accepts_nested_attributes_for :answers
 	accepts_nested_attributes_for :version

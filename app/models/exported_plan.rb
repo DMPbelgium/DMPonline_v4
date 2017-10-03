@@ -2,8 +2,8 @@ class ExportedPlan < ActiveRecord::Base
   attr_accessible :plan_id, :user_id, :format
 
   #associations between tables
-  belongs_to :plan
-  belongs_to :user
+  belongs_to :plan, :autosave => true
+  belongs_to :user, :autosave => true
 
   VALID_FORMATS = %i( csv html json pdf text xml docx)
 

@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
     #'message' can be changed in config/locales/en.yml
     render :text => exception.message ,:status => 403
   end
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render :text => exception.message, :status => 404
+  end
 
  	after_filter :store_location
 

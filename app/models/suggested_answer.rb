@@ -1,7 +1,7 @@
 class SuggestedAnswer < ActiveRecord::Base
 
-	belongs_to :organisation
-	belongs_to :question
+	belongs_to :organisation, :inverse_of => :suggested_answers, :autosave => true
+	belongs_to :question, :inverse_of => :suggested_answers, :autosave => true
 
 	accepts_nested_attributes_for :question
 

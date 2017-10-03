@@ -13,7 +13,7 @@ class Guidance < ActiveRecord::Base
   attr_accessible :guidance_group_ids
   attr_accessible :theme_ids
 
-  belongs_to :question
+  belongs_to :question, :inverse_of => :guidances, :autosave => true
 
   #belongs_to :dmptemplate
 	#belongs_to :theme

@@ -1,9 +1,9 @@
 class Answer < ActiveRecord::Base
 
 	#associations between tables
-	belongs_to :question
-	belongs_to :user
-	belongs_to :plan
+	belongs_to :question, :inverse_of => :answers, :autosave => true
+	belongs_to :user, :inverse_of => :answers, :autosave => true
+	belongs_to :plan, :inverse_of => :answers, :autosave => true
   accepts_nested_attributes_for :question
 	accepts_nested_attributes_for :plan
 

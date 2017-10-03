@@ -5,9 +5,9 @@ class Project < ActiveRecord::Base
 	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug
 
 	#associations between tables
-	belongs_to :dmptemplate
-	belongs_to :organisation
-	has_many :plans
+	belongs_to :dmptemplate, :inverse_of => :projects, :autosave => true
+	belongs_to :organisation, :autosave => true
+	has_many :plans, :inverse_of => :project, :dependent => :destroy
 	has_many :project_groups, :dependent => :destroy, :inverse_of => :project
 	has_and_belongs_to_many :guidance_groups, join_table: "project_guidance"
 

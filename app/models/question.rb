@@ -1,17 +1,17 @@
 class Question < ActiveRecord::Base
 
   #associations between tables
-  has_many :answers, :dependent => :destroy
-  has_many :options, :dependent => :destroy
-  has_many :suggested_answers, :dependent => :destroy
-  has_many :guidances
-  has_many :comments
+  has_many :answers, :dependent => :destroy, :inverse_of => :question
+  has_many :options, :dependent => :destroy, :inverse_of => :question
+  has_many :suggested_answers, :dependent => :destroy, :inverse_of => :question
+  has_many :guidances, :inverse_of => :question, :dependent => :destroy
+  has_many :comments, :inverse_of => :question, :dependent => :destroy
 
   has_and_belongs_to_many :themes, join_table: "questions_themes"
 
 
-  belongs_to :section
-  belongs_to :question_format
+  belongs_to :section, :inverse_of => :questions, :autosave => true
+  belongs_to :question_format, :inverse_of => :questions, :autosave => true
 
   accepts_nested_attributes_for :answers, :reject_if => lambda {|a| a[:text].blank? },  :allow_destroy => true
   accepts_nested_attributes_for :section

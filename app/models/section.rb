@@ -1,10 +1,10 @@
 class Section < ActiveRecord::Base
 
   #associations between tables
-  belongs_to :version
-  belongs_to :organisation
-  has_many :questions, :dependent => :destroy
-  has_many :plan_sections, :dependent => :destroy
+  belongs_to :version, :inverse_of => :sections, :autosave => true
+  belongs_to :organisation, :inverse_of => :sections, :autosave => true
+  has_many :questions, :dependent => :destroy, :inverse_of => :section
+  has_many :plan_sections, :dependent => :destroy, :inverse_of => :section
 
   #Link the data
   accepts_nested_attributes_for :questions, :reject_if => lambda {|a| a[:text].blank? },  :allow_destroy => true

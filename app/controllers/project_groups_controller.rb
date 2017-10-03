@@ -69,8 +69,6 @@ class ProjectGroupsController < ApplicationController
 
     @project_group = ProjectGroup.find(params[:id])
 
-    raise ActionController::RoutingError.new("Not found") if @project_group.nil?
-
     @project_group.access_level = permitted[:access_level].to_i
 
     authorize! :update, @project_group
@@ -98,8 +96,6 @@ class ProjectGroupsController < ApplicationController
 	def destroy
 
 		@project_group = ProjectGroup.find(params[:id])
-
-    raise ActionController::RoutingError.new("Not found") if @project_group.nil?
 
     authorize! :destroy, @project_group
 

@@ -8,11 +8,11 @@ class Phase < ActiveRecord::Base
 	extend FriendlyId
 
 	#associations between tables
-	belongs_to :dmptemplate
+	belongs_to :dmptemplate, :inverse_of => :phases, :autosave => true
 
 	has_many :versions, :dependent => :destroy, :inverse_of => :phase
 	has_many :sections, :through => :versions, :dependent => :destroy
-    has_many :questions, :through => :sections, :dependent => :destroy
+  has_many :questions, :through => :sections, :dependent => :destroy
 
 	#Link the child's data
 	accepts_nested_attributes_for :versions, :allow_destroy => true

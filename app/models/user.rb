@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
   devise :registerable, :invitable, :database_authenticatable, :recoverable, :confirmable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:shibboleth,:orcid]
 
   #associations between tables
-  belongs_to :user_type
-  belongs_to :user_status
-  belongs_to :organisation
-  has_many :answers, :dependent => :destroy
+  belongs_to :user_type, :inverse_of => :users, :autosave => true
+  belongs_to :user_status, :inverse_of => :users, :autosave => true
+  belongs_to :organisation, :inverse_of => :users, :autosave => true
+  has_many :answers, :dependent => :destroy, :inverse_of => :user
   has_many :project_groups, :dependent => :destroy, :inverse_of => :user
 
   has_many :projects, through: :project_groups do
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :roles, :join_table => :users_roles
-  has_many :plan_sections
+  has_many :plan_sections, :dependent => :destroy, :inverse_of => :user
 
   accepts_nested_attributes_for :roles
   attr_accessible :role_ids

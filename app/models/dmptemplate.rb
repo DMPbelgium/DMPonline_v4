@@ -3,15 +3,15 @@ class Dmptemplate < ActiveRecord::Base
   attr_accessible :organisation_id, :description, :published, :title, :user_id, :locale, :is_default, :guidance_group_ids
 
   #associations between tables
-  has_many :phases, :dependent => :destroy
+  has_many :phases, :dependent => :destroy, :inverse_of => :dmptemplate
   has_many :versions, :through => :phases
   has_many :sections, :through => :versions
   has_many :questions, :through => :sections
-  has_many :projects
+  has_many :projects, :dependent => :destroy, :inverse_of => :dmptemplate
 
   #has_many :guidances                needs to be removed and checked
 
-  belongs_to :organisation
+  belongs_to :organisation, :inverse_of => :dmptemplates, :autosave => true
   #validation - start
   #needed, for the index page fails otherwise
   validates :organisation, :presence => true
