@@ -47,7 +47,7 @@ class ProjectGroupsController < ApplicationController
         else
 
           flash[:alert] = @project_group.errors.full_messages
-          format.html { render action: "new" }
+          format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
           format.json { render json: @project_group.errors, status: :unprocessable_entity }
 
         end
