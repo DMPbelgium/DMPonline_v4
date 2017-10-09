@@ -37,16 +37,6 @@ User.before_validation do |user|
 
     end
 
-    if user.organisation.wayfless_entity.present?
-
-      user.skip_confirmation!
-
-    else
-
-      user.confirmation_sent_at = nil
-
-    end
-
   end
 
   true
@@ -64,8 +54,12 @@ User.after_auth_shibboleth do |user,auth,request|
 
     if org.abbreviation.present? && org.abbreviation == 'UGent'
 
-      user.surname = auth['extra']['raw_info']['sn'] if user.surname.blank?
-      user.firstname = auth['extra']['raw_info']['givenname'] if user.firstname.blank?
+      if auth['extra'].is_a?(Hash) && auth['extra']['raw_info'].is_a?(Hash)
+
+        user.surname = auth['extra']['raw_info']['sn'] if user.surname.blank?
+        user.firstname = auth['extra']['raw_info']['givenname'] if user.firstname.blank?
+
+      end
 
     end
 

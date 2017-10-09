@@ -1,91 +1,120 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
-  before_filter :clear_sso_user
   after_filter :clear_invitation
 
   def shibboleth
-    if user_signed_in? && current_user.shibboleth_id.present? && current_user.shibboleth_id.length > 0 then
+
+    auth = request.env['omniauth.auth'] || {}
+    uid = auth.uid
+
+    #no auth.uid present. Does this happen?
+    if uid.blank?
+
+      redirect_to root_path
+      return
+
+    end
+
+    #user already signed with existing shibboleth_id: return to profile
+    if user_signed_in? && current_user.shibboleth_id.present?
 
       redirect_to edit_user_registration_path
+      return
 
-    else
-      auth = request.env['omniauth.auth'] || {}
-      uid = auth.uid
-      shibboleth_data = auth['extra']['raw_info']
-
-      if !uid.nil? && !uid.blank? then
-        uid = uid.downcase if ENV['SHIBBOLETH_UID_LOWERCASE'] == "true"
-
-        s_user = User.where(shibboleth_id: uid).first
-        @user = s_user
-
-        # Stops Shibboleth ID being blocked if email incorrectly entered. => TODO: komt deze situatie voor? (persisted altijd true in dit geval??)
-        if !s_user.nil? && s_user.persisted?
-          flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
-          s_user.update_attribute('shibboleth_data',shibboleth_data.to_json)
-
-          s_user.call_after_auth_shibboleth(auth,request)
-          sign_in s_user
-          redirect_to root_path
-        else
-          if user_signed_in? then
-            s_user.updates_attributes(
-              :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data.to_json
-            )
-            current_user.update_attributes(
-              :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data.to_json
-            )
-            user_id = current_user.id
-            sign_out current_user
-            session.delete(:shibboleth_data)
-            s_user = User.find(user_id)
-
-            s_user.call_after_auth_shibboleth(auth,request)
-            sign_in s_user
-            redirect_to edit_user_registration_path
-          else
-            #create new user
-            mail_field = ENV['SHIBBOLETH_MAIL_FIELD'].present? ? ENV['SHIBBOLETH_MAIL_FIELD'] : :mail
-            s_user = User.new(
-              :shibboleth_id => uid,
-              :shibboleth_data => shibboleth_data.to_json,
-              :email => auth['extra']['raw_info'][mail_field].downcase
-            )
-            #ensure password
-            s_user.ensure_password
-
-            #save
-            unless s_user.save
-
-              flash[:alert] = s_user.errors.full_messages
-              redirect_to root_path
-              return
-
-            end
-
-            #login
-            flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
-
-            s_user.call_after_auth_shibboleth(auth,request)
-
-            sign_in s_user
-            redirect_to edit_user_registration_path
-          end
-        end
-      else
-        redirect_to root_path
-      end
     end
+
+    shibboleth_data = auth['extra']['raw_info']
+
+    uid = uid.downcase if ENV['SHIBBOLETH_UID_LOWERCASE'] == "true"
+
+    @user = User.where(shibboleth_id: uid).first
+
+    #user found: update info and sign in
+    if @user
+
+      flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
+      @user.update_attribute('shibboleth_data',shibboleth_data.to_json)
+
+      @user.call_after_auth_shibboleth(auth,request)
+      sign_in @user
+      redirect_to root_path
+      return
+
+    end
+
+    #user already signed in, but apparently did not have his/her shibboleth_id set
+    if user_signed_in? then
+
+      @user.updates_attributes(
+        :shibboleth_id => uid,
+        :shibboleth_data => shibboleth_data.to_json
+      )
+      current_user.update_attributes(
+        :shibboleth_id => uid,
+        :shibboleth_data => shibboleth_data.to_json
+      )
+      user_id = current_user.id
+      sign_out current_user
+      session.delete(:shibboleth_data)
+      @user = User.find(user_id)
+
+      @user.call_after_auth_shibboleth(auth,request)
+      sign_in @user
+      redirect_to edit_user_registration_path
+      return
+
+    end
+
+    #create new user
+    mail_field = ENV['SHIBBOLETH_MAIL_FIELD'].present? ? ENV['SHIBBOLETH_MAIL_FIELD'] : :mail
+    email = auth['extra']['raw_info'][mail_field].present? ? auth['extra']['raw_info'][mail_field] : nil
+
+    @user = User.new(
+      :shibboleth_id => uid,
+      :shibboleth_data => shibboleth_data.to_json,
+      :email => email.downcase
+    )
+
+    #ensure password
+    @user.ensure_password
+
+    #validate
+    unless @user.valid?
+
+      flash[:alert] = @user.errors.full_messages
+      redirect_to root_path
+      return
+
+    end
+
+    #skip confirmation
+    @user.skip_confirmation!
+    @user.save
+
+    #login
+    flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
+
+    @user.call_after_auth_shibboleth(auth,request)
+
+    sign_in @user
+    redirect_to edit_user_registration_path
+
   end
+
   def orcid
 
     auth = request.env['omniauth.auth'] || {}
 
+    if auth.uid.blank?
+
+      redirect_to root_path
+      return
+
+    end
+
+    #link orcid to logged in user
     if user_signed_in?
 
-      #link orcid
       current_user.orcid_id = auth.uid
 
       if current_user.valid?
@@ -95,44 +124,38 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       else
 
-        #TODO: klopt dit nog????
-        #happens when user changed email address:
-        # 1. create user with email1
-        # 2. set email in orcid
-        # 3. login with orcid (orcid_id is set)
-        # 4. reset email in orcid to email2
-        # 5. create user with email2
-        # 6. login with orcid: user with email2 cannot claim orcid, because it already belongs to user with email1
         flash[:alert] = current_user.errors.full_messages
 
       end
 
       redirect_to edit_user_registration_path
+      return
 
-    else
+    end
 
-      if session[:confirm_user].present? && session[:confirm_user].is_a?(Hash)
+    #link orcid to confirmable user
+    if session[:confirm_user].present? && session[:confirm_user].is_a?(Hash)
 
-        u = User.where( :confirmation_token => session[:confirm_user][:confirmation_token] ).first
+      u = User.where( :confirmation_token => session[:confirm_user][:confirmation_token] ).first
 
-        if u && !u.confirmed?
+      if u && !u.confirmed?
 
-          u.firstname = session[:confirm_user][:firstname]
-          u.surname = session[:confirm_user][:surname]
-          u.orcid_id = auth.uid
+        u.firstname = session[:confirm_user][:firstname]
+        u.surname = session[:confirm_user][:surname]
+        u.orcid_id = auth.uid
 
-          u.confirm!
+        u.confirm!
 
-          session.delete(:confirm_user)
+        session.delete(:confirm_user)
 
-          sign_in u
-          flash[:notice] = I18n.t("devise.omniauth_callbacks.orcid.linked")
-          redirect_to edit_user_registration_path
-          return
-
-        end
+        sign_in u
+        flash[:notice] = I18n.t("devise.omniauth_callbacks.orcid.linked")
+        redirect_to edit_user_registration_path
+        return
 
       end
+
+    end
 
 =begin
 #<OmniAuth::AuthHash credentials=#<OmniAuth::AuthHash expires=true expires_at=2103771161 refresh_token="bbbbfc77-85ae-4db9-b82c-4720c69c2b84" token="14465dd9-b9ac-4e37-b64b-3c4c98154820"> extra=#<OmniAuth::AuthHash raw_info=#<OmniAuth::AuthHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil other_names=[nil] urls=#<OmniAuth::AuthHash>>> info=#<OmniAuth::AuthHash::InfoHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil urls=#<OmniAuth::AuthHash>> provider="orcid" uid="0000-0002-5268-9669">
@@ -166,95 +189,80 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         4.2.3. set email (when present)
 =end
 
-      uid = auth.uid
-      email = auth['info']['email']
-      @user = nil
+    email = auth['info']['email']
+    @user = nil
 
-      if uid.present?
+    selectable_users = User.where( :orcid_id => auth.uid ).all
 
-        selectable_users = User.where( :orcid_id => uid ).all
+    if selectable_users.size > 1
 
-        if selectable_users.size > 1
+      session[:selectable_user_ids] = selectable_users.map(&:id)
+      redirect_to edit_selectable_user_path
+      return
 
-          session[:selectable_user_ids] = selectable_users.map(&:id)
-          redirect_to edit_selectable_user_path
-          return
+    end
 
-        end
+    @user = selectable_users.first
 
-        @user = selectable_users.first
+    #user found with orcid_id
+    if @user
 
-        #user found with orcid_id
-        if @user
+      #set firstname and surname when not present yet
+      @user.firstname = auth['info']['first_name'] if @user.firstname.blank?
+      @user.surname = auth['info']['last_name'] if @user.surname.blank?
 
-          #set firstname and surname when not present yet
-          @user.firstname = auth['info']['first_name'] if @user.firstname.blank?
-          @user.surname = auth['info']['last_name'] if @user.surname.blank?
+    #no user found with orcid_id
+    elsif email.present?
 
-        #no user found with orcid_id
-        elsif email.present?
+      user_with_email = User.where( :email => email ).first
 
-          user_with_email = User.where( :email => email ).first
+      #user found with email
+      if user_with_email
 
-          #user found with email
-          if user_with_email
+        #unable to trust this user
+        redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
+        return
 
-            #unable to trust this user
-            redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
-            return
-
-          #no user found with email: NEW USER. We trust "email" because it has to be confirmed.
-          else
-
-            @user = User.new(
-              :email => email,
-              :orcid_id => uid,
-              :firstname => auth['info']['first_name'],
-              :surname => auth['info']['last_name']
-            )
-            @user.firstname = "n.n." if @user.firstname.blank?
-            @user.surname = "n.n." if @user.surname.blank?
-            @user.ensure_password
-
-          end
-
-        end
-
-        #wait for confirmation
-        if @user.new_record?
-
-          @user.save
-
-          flash[:alert] = I18n.t("devise.confirmations.send_instructions")
-          redirect_to root_path
-          return
-
-        #just save record and login
-        else
-
-          @user.save
-
-          #login
-          flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'ORCID')
-
-          sign_in @user
-          redirect_to edit_user_registration_path
-
-        end
-
+      #no user found with email: NEW USER. We trust "email" because it has to be confirmed.
       else
 
-        redirect_to root_path
+        @user = User.new(
+          :email => email,
+          :orcid_id => auth.uid,
+          :firstname => auth['info']['first_name'],
+          :surname => auth['info']['last_name']
+        )
+        @user.firstname = "n.n." if @user.firstname.blank?
+        @user.surname = "n.n." if @user.surname.blank?
+        @user.ensure_password
 
       end
 
     end
+
+    #wait for confirmation (always, even if not a guest organisation)
+    if @user.new_record?
+
+      @user.save
+
+      flash[:alert] = I18n.t("devise.confirmations.send_instructions")
+      redirect_to root_path
+      return
+
+    end
+
+    #just save record and login
+    @user.save
+
+    #login
+    flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'ORCID')
+
+    sign_in @user
+    redirect_to edit_user_registration_path
+
   end
 
 private
-  def clear_sso_user
-    session.delete(:sso_user)
-  end
   def clear_invitation
     unless @user.nil?
       @user.accept_invitation! if @user.invitation_token.present?
