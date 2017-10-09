@@ -27,12 +27,10 @@ class ProjectGroupsController < ApplicationController
         user = User.find_by_email(email)
 
         if user.nil?
-          user = User.new(
-            :email => email,
-            :firstname => "n.n.",
-            :surname => "n.n."
-          )
+
+          user = User.new( :email => email )
           user.ensure_password
+
         end
 
         @project_group.user = user

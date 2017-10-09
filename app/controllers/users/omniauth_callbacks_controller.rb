@@ -232,8 +232,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
           :firstname => auth['info']['first_name'],
           :surname => auth['info']['last_name']
         )
-        @user.firstname = "n.n." if @user.firstname.blank?
-        @user.surname = "n.n." if @user.surname.blank?
         @user.ensure_password
 
       end

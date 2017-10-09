@@ -14,37 +14,37 @@ class ConfirmationsController < Devise::ConfirmationsController
       redirect_to root_path
       return
 
-    else
+    end
 
-      @user = User.where( :confirmation_token => params[:confirmation_token] ).first
+    @user = User.where( :confirmation_token => params[:confirmation_token] ).first
 
-      #no user found for confirmation_token
-      if @user.nil?
+    #no user found for confirmation_token
+    if @user.nil?
 
-        flash[:alert] = I18n.t("devise.confirmations.confirmation_token_invalid")
-        redirect_to root_path
-        return
-
-      #user not confirmable anymore
-      elsif @user.confirmed?
-
-        flash[:alert] = I18n.t("devise.confirmations.already_confirmed")
-        redirect_to root_path
-        return
-
-      elsif @user.firstname == "n.n" || @user.surname == "n.n." || @user.orcid_id.blank?
-
-        render :action => :show
-
-      #user already ok, but confirmation needed (case: reconfirmation instructions sent at the users request)
-      else
-
-        super
-        return
-
-      end
+      flash[:alert] = I18n.t("devise.confirmations.confirmation_token_invalid")
+      redirect_to root_path
+      return
 
     end
+
+    #user not confirmable anymore
+    if @user.confirmed?
+
+      flash[:alert] = I18n.t("devise.confirmations.already_confirmed")
+      redirect_to root_path
+      return
+
+    end
+
+    if @user.nemo? || @user.orcid_id.blank?
+
+      render :action => :show
+      return
+
+    end
+
+    #user already ok, but confirmation needed (case: reconfirmation instructions sent at the users request)
+    super
 
   end
 

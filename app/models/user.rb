@@ -113,6 +113,13 @@ class User < ActiveRecord::Base
     self.organisation_id == Organisation.guest_org.id
   end
 
+  def self.nemo
+    "n.n."
+  end
+  def nemo?
+    self.firstname.blank? || self.surname.blank? || self.firstname == User.nemo || self.surname == User.nemo
+  end
+
   before_validation do |user|
 
     if user.orcid_id.present?
@@ -121,6 +128,9 @@ class User < ActiveRecord::Base
       user.orcid_id = user.orcid_id.split("/").last
 
     end
+
+    user.firstname = User.nemo if user.firstname.blank?
+    user.surname = User.nemo if user.surname.blank?
 
   end
 end
