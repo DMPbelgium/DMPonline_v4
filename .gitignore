@@ -23,3 +23,4 @@
 
 /app/assets/stylesheets/.sass-cache
 /git-data/
+*.swap
