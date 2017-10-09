@@ -112,4 +112,15 @@ class User < ActiveRecord::Base
   def is_guest?
     self.organisation_id == Organisation.guest_org.id
   end
+
+  before_validation do |user|
+
+    if user.orcid_id.present?
+
+      #orcid.org/0000-0002-5268-9669 => 0000-0002-5268-9669
+      user.orcid_id = user.orcid_id.split("/").last
+
+    end
+
+  end
 end
