@@ -6,6 +6,11 @@ en:
       confirmed: "Your account was successfully confirmed. Please sign in."
       send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+      #confirmation controller
+      confirmation_token_needed: "You requested a confirmation, but failed to supply a confirmation token"
+      confirmation_token_invalid: "You supplied an invalid confirmation token. The confirmation is probably already confirmed. Please try signing in."
+      confirmation_period_expired: "Confirmation period was exceeded. Please request a new confirmation."
+      already_confirmed: "Was already confirmed. Please try signing in"
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account was not activated yet."

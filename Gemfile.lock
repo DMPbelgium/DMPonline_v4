@@ -253,6 +253,9 @@ GEM
     validate_url (1.0.2)
       activemodel (>= 3.0.0)
       addressable
+    validates_hostname (1.0.7)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
     warden (1.2.6)
       rack (>= 1.0)
     wicked_pdf (1.1.0)
@@ -298,5 +301,6 @@ DEPENDENCIES
   twitter-bootstrap-rails (= 2.2.8)
   uglifier (>= 1.0.3)
   validate_url
+  validates_hostname
   wicked_pdf
   wkhtmltopdf-binary

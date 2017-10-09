@@ -19,8 +19,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         s_user = User.where(shibboleth_id: uid).first
         @user = s_user
 
-        # Stops Shibboleth ID being blocked if email incorrectly entered.
-        if !s_user.nil? && s_user.try(:persisted?) then
+        # Stops Shibboleth ID being blocked if email incorrectly entered. => TODO: komt deze situatie voor? (persisted altijd true in dit geval??)
+        if !s_user.nil? && s_user.persisted?
           flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
           s_user.update_attribute('shibboleth_data',shibboleth_data.to_json)
 
@@ -47,8 +47,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             redirect_to edit_user_registration_path
           else
             #create new user
-            mail_field = ENV['SHIBBOLETH_MAIL_FIELD']
-            mail_field = mail_field.nil? || mail_field.blank? ? :mail : ENV['SHIBBOLETH_MAIL_FIELD']
+            mail_field = ENV['SHIBBOLETH_MAIL_FIELD'].present? ? ENV['SHIBBOLETH_MAIL_FIELD'] : :mail
             s_user = User.new(
               :shibboleth_id => uid,
               :shibboleth_data => shibboleth_data.to_json,
@@ -58,7 +57,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
             s_user.ensure_password
 
             #save
-            s_user.save
+            unless s_user.save
+
+              flash[:alert] = s_user.errors.full_messages
+              redirect_to root_path
+              return
+
+            end
+
             #login
             flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
 
@@ -89,6 +95,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       else
 
+        #TODO: klopt dit nog????
         #happens when user changed email address:
         # 1. create user with email1
         # 2. set email in orcid
@@ -103,6 +110,29 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to edit_user_registration_path
 
     else
+
+      if session[:confirm_user].present? && session[:confirm_user].is_a?(Hash)
+
+        u = User.where( :confirmation_token => session[:confirm_user][:confirmation_token] ).first
+
+        if u && !u.confirmed?
+
+          u.firstname = session[:confirm_user][:firstname]
+          u.surname = session[:confirm_user][:surname]
+          u.orcid_id = auth.uid
+
+          u.confirm!
+
+          session.delete(:confirm_user)
+
+          sign_in u
+          flash[:notice] = I18n.t("devise.omniauth_callbacks.orcid.linked")
+          redirect_to edit_user_registration_path
+          return
+
+        end
+
+      end
 
 =begin
 #<OmniAuth::AuthHash credentials=#<OmniAuth::AuthHash expires=true expires_at=2103771161 refresh_token="bbbbfc77-85ae-4db9-b82c-4720c69c2b84" token="14465dd9-b9ac-4e37-b64b-3c4c98154820"> extra=#<OmniAuth::AuthHash raw_info=#<OmniAuth::AuthHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil other_names=[nil] urls=#<OmniAuth::AuthHash>>> info=#<OmniAuth::AuthHash::InfoHash description=nil email="nicolas.franck@ugent.be" first_name="Nicolas" last_name="Franck" name=nil urls=#<OmniAuth::AuthHash>> provider="orcid" uid="0000-0002-5268-9669">
@@ -182,23 +212,24 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
               :firstname => auth['info']['first_name'],
               :surname => auth['info']['last_name']
             )
+            @user.firstname = "n.n." if @user.firstname.blank?
+            @user.surname = "n.n." if @user.surname.blank?
+            @user.ensure_password
 
           end
 
         end
 
+        #wait for confirmation
         if @user.new_record?
 
-          @user.ensure_password
+          @user.save
 
-        end
-
-        unless @user.valid?
-
-          session[:sso_user] = @user.writable_attributes
-          redirect_to edit_sso_user_path, alert: @user.errors.full_messages
+          flash[:alert] = I18n.t("devise.confirmations.send_instructions")
+          redirect_to root_path
           return
 
+        #just save record and login
         else
 
           @user.save

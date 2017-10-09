@@ -19,6 +19,7 @@ class Organisation < ActiveRecord::Base
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
+  validates :domain, :allow_blank => true, :uniqueness => true, :hostname => true
 
   def is_parent?
     self.parent_id.nil?

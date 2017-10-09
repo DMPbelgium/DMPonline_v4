@@ -1,0 +1,36 @@
+<h2>Before we can confirm your account, we need the following information</h2>
+
+<div class="white_background">
+
+  <%= form_tag({ :controller => :confirmations, :action => :update },{ :method => :put }) do %>
+    <%= hidden_field_tag "confirmation_token", params[:confirmation_token] %>
+    <div class="dmp_details">
+      <table class="dmp_details_table">
+        <tr>
+          <td class="first"><%= t('helpers.firstname') + ' *' %></td>
+          <td><%= text_field_tag "firstname", @user.firstname %></td>
+        </tr>
+        <tr>
+          <td class="first"><%= t('helpers.surname') + ' *' %></td>
+          <td><%= text_field_tag "surname", @user.surname %></td>
+        </tr>
+        <tr>
+          <td class="first">ORCID</td>
+          <td><%= text_field_tag "orcid_id", @user.orcid_id, :disabled => :disabled %></td>
+        </tr>
+        <tr>
+          <td class="first"></td>
+          <td>
+            <%= submit_tag t('helpers.sign_in'), :class => "btn btn-primary" %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
+  <% if @user.orcid_id.blank? %>
+    After this, the browser will redirect you to the ORCID website in order to link your ORCID identifier.
+  <% end %>
+
+</div>
+
+<%= render "devise/shared/links" %>

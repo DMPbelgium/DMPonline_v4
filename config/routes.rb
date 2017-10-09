@@ -10,6 +10,10 @@ DMPonline4::Application.routes.draw do
     delete '/users(.:format)' => 'registrations#destroy'
 
   end
+  as :user do
+    match '/users/confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
+  end
+
   resources :contacts, :controllers => {:contacts => 'contacts'}
 
   # WAYFless access point - use query param idp
@@ -177,8 +181,8 @@ DMPonline4::Application.routes.draw do
     resources :plans
   end
 
-  get "sso_user/edit", :controller => :sso_user, :action => :edit, :as => :edit_sso_user
-  post "sso_user", :controller => :sso_user, :action => :update, :as => :update_sso_user
+  #get "sso_user/edit", :controller => :sso_user, :action => :edit, :as => :edit_sso_user
+  #post "sso_user", :controller => :sso_user, :action => :update, :as => :update_sso_user
 
   get "selectable_user/edit", :controller => :selectable_user, :action => :edit, :as => :edit_selectable_user
   post "selectable_user", :controller => :selectable_user, :action => :update, :as => :update_selectable_user
