@@ -5,7 +5,7 @@ class ExportedPlan < ActiveRecord::Base
   belongs_to :plan, :autosave => true
   belongs_to :user, :autosave => true
 
-  VALID_FORMATS = %i( csv html json pdf text xml docx)
+  VALID_FORMATS = %i(pdf text docx)
 
   validates :format, inclusion: { in: VALID_FORMATS, message: '%{value} is not a valid format' }
 

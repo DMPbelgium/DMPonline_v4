@@ -115,10 +115,10 @@ class PlansController < ApplicationController
 		file_name = @exported_plan.project_name
 
 		respond_to do |format|
-      format.html
-      format.xml
-      format.json
-      format.csv  { send_data @exported_plan.as_csv, filename: "#{file_name}.csv" }
+      #format.html
+      #format.xml
+      #format.json
+      #format.csv  { send_data @exported_plan.as_csv, filename: "#{file_name}.csv" }
       format.text { send_data @exported_plan.as_txt, filename: "#{file_name}.txt" }
 			format.docx do
 				file = Htmltoword::Document.create @exported_plan.html_for_docx, file_name
