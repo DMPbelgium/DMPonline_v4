@@ -155,9 +155,9 @@ DMPonline4::Application.routes.draw do
   #resources :project_partners
   resources :project_groups
 
-  resources :users
-  resources :user_statuses
-  resources :user_types
+  #resources :users
+  #resources :user_statuses
+  #resources :user_types
 
   #2 deprecated routes
   #resources :user_role_types
