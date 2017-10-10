@@ -31,6 +31,15 @@ class ProjectGroupsController < ApplicationController
           user = User.new( :email => email )
           user.ensure_password
 
+          #trigger validation to ensure organisation
+          user.valid?
+
+          if user.organisation.wayfless_entity.present?
+
+            user.skip_confirmation!
+
+          end
+
         end
 
         @project_group.user = user

@@ -4,6 +4,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def shibboleth
 
+    #user already signed in: return to profile
+    if user_signed_in?
+
+      redirect_to edit_user_registration_path
+      return
+
+    end
+
     auth = request.env['omniauth.auth'] || {}
     uid = auth.uid
 
@@ -11,14 +19,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if uid.blank?
 
       redirect_to root_path
-      return
-
-    end
-
-    #user already signed with existing shibboleth_id: return to profile
-    if user_signed_in? && current_user.shibboleth_id.present?
-
-      redirect_to edit_user_registration_path
       return
 
     end
@@ -32,34 +32,19 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #user found: update info and sign in
     if @user
 
-      flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
+      #clear confirmation
+      @user.confirm! unless @user.confirmed?
+
+      #update shibboleth data
       @user.update_attribute('shibboleth_data',shibboleth_data.to_json)
 
       @user.call_after_auth_shibboleth(auth,request)
+
+      #sign in user
       sign_in @user
-      redirect_to root_path
-      return
 
-    end
-
-    #user already signed in, but apparently did not have his/her shibboleth_id set
-    if user_signed_in? then
-
-      @user.updates_attributes(
-        :shibboleth_id => uid,
-        :shibboleth_data => shibboleth_data.to_json
-      )
-      current_user.update_attributes(
-        :shibboleth_id => uid,
-        :shibboleth_data => shibboleth_data.to_json
-      )
-      user_id = current_user.id
-      sign_out current_user
-      session.delete(:shibboleth_data)
-      @user = User.find(user_id)
-
-      @user.call_after_auth_shibboleth(auth,request)
-      sign_in @user
+      #redirect to new root_path
+      flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
       redirect_to edit_user_registration_path
       return
 

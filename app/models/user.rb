@@ -56,17 +56,10 @@ class User < ActiveRecord::Base
   validates :shibboleth_id,:length => { :minimum => 1 }, :uniqueness => true, :allow_blank => true
 
 	def name(use_email = true)
-    fn = firstname.nil? ? "" : firstname
-    sn = surname.nil? ? "" : surname
-    fn.strip!
-    sn.strip!
-
-    if (fn == "" || sn == "") && use_email
-      return email
-    else
-      name = "#{fn} #{sn}"
-      return name.strip
+    if self.nemo? && use_email
+      return self.email
     end
+    self.firstname+" "+self.surname
 	end
 
 	def is_admin?

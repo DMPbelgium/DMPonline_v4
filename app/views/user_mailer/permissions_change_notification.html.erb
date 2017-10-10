@@ -1,4 +1,4 @@
-<p>Hello <%= @project_group.user.name %></p>
+<p>Hello <%= @project_group.user.name(true) %></p>
 
 <%
 access_level = "read-only"
@@ -17,14 +17,17 @@ end
 
 <% elsif @project_group.user.organisation.wayfless_entity.present? %>
 
-  <%= link_to(
-        "Sign in with #{@project_group.user.organisation.abbreviation}",
-        set_url_query( user_omniauth_shibboleth_path, { :idp => @project_group.user.organisation.wayfless_entity } )
-      )
+  <%
+    uri = URI(user_omniauth_shibboleth_url)
+    form = URI.decode_www_form(uri.query || '') + [[ :idp, @project_group.user.organisation.wayfless_entity ]]
+    uri.query = URI.encode_www_form(form)
+    u = uri.to_s
   %>
+  <%= link_to( "Sign in with #{@project_group.user.organisation.abbreviation}", u ) %> ( <%= u %> )
 
 <% else %>
 
-  <%= link_to "Sign in with ORCID", user_omniauth_authorize_url(:orcid) %>
+  <% u = user_omniauth_authorize_url(:orcid) %>
+  <%= link_to( "Sign in with ORCID", u ) %> ( <%= u %> )
 
 <% end %>
