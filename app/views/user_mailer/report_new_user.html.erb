@@ -1,4 +1,4 @@
 <p>Hello admin</p>
 
-<p>A new <a href="<%= edit_user_path(@user, :only_path => false) %>">user</a> has been added to the database of <%= ENV['DMP_HOST'] %>.<br>
+<p>A new user <%= @user.email %> has been added to the database of <%= ENV['DMP_HOST'] %>.<br>
 He/she belongs to the organisation <%= @user.organisation.name %>.</p>
