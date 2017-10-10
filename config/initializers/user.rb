@@ -20,7 +20,7 @@ User.before_validation do |user|
   end
 
   #only (re)set organisation during creation
-  if user.new_record?
+  if user.new_record? || user.organisation.nil?
 
     if user.email.present?
 
