@@ -55,7 +55,7 @@
               :disabled => :disabled,
               :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.orcid_html') %>
               <% if current_user.orcid_id.blank? %>
-                <%= link_to("Link to ORCID", user_omniauth_authorize_path(:orcid)) %>
+                <%= link_to("Link to ORCID", user_omniauth_authorize_url(:orcid)) %>
               <% end %>
           </td>
         </tr>

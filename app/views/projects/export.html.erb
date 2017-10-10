@@ -10,14 +10,14 @@
 <div class="dmp_details_body">
 	<!--Text describing page content-->
 	<%= raw t('helpers.project.export_text_html')%>
-	
+
 	<!-- If project has plans-->
 	<% if @project.plans.any? %>
 		<% if @project.plans.count == 1 then %>
 			<% @project.plans.each do |plan| %>
 				<%= render :partial => "/shared/export_links", locals: {plan: plan} %>
 			<% end %>
-		<%else%>	
+		<%else%>
 			<% @project.plans.each do |plan| %>
 				<div class="accordion" id="project-accordion">
 					<div class="accordion-group">
@@ -33,9 +33,11 @@
 							</div>
 						</div>
 					</div>
-				</div>				
-			<%end%>	
-		<%end%>		
-	<%end%>	
-	
-</div>						
+				</div>
+			<%end%>
+		<%end%>
+  <% else %>
+   There are no plans to export attached to this project
+	<%end%>
+
+</div>

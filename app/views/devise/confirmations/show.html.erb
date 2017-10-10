@@ -8,11 +8,11 @@
       <table class="dmp_details_table">
         <tr>
           <td class="first"><%= t('helpers.firstname') + ' *' %></td>
-          <td><%= text_field_tag "firstname", @user.firstname %></td>
+          <td><%= text_field_tag "firstname", @user.firstname == User.nemo ? '' : @user.firstname %></td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.surname') + ' *' %></td>
-          <td><%= text_field_tag "surname", @user.surname %></td>
+          <td><%= text_field_tag "surname", @user.surname == User.nemo ? '' : @user.surname %></td>
         </tr>
         <tr>
           <td class="first">ORCID</td>

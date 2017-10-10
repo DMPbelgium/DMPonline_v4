@@ -45,15 +45,10 @@ class Ability
         p.readable_by(user.id)
       end
       unless user.is_guest?
-
         can [:new,:create], Project
-        can [:edit,:update],Project do |p|
-          p.editable_by(user.id)
-        end
-        can [:share,:destroy], Project do |p|
-          p.administerable_by(user.id)
-        end
-
+      end
+      can [:edit,:update,:share,:destroy], Project do |p|
+        p.administerable_by(user.id)
       end
 
       if user.has_role? :admin

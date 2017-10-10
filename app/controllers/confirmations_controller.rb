@@ -78,6 +78,9 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     end
 
+    p[:firstname] = "" if p[:firstname] == User.nemo
+    p[:surname] = "" if p[:surname] == User.nemo
+
     errors = []
     errors << "firstname not given" if p[:firstname].length <= 0
     errors << "surname not given" if p[:surname].length <= 0
@@ -109,7 +112,7 @@ class ConfirmationsController < Devise::ConfirmationsController
           :firstname => p[:firstname],
           :surname => p[:surname]
         }
-        redirect_to user_omniauth_authorize_path(:orcid)
+        redirect_to user_omniauth_authorize_url(:orcid)
         return
 
       end

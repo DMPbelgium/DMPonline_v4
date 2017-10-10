@@ -118,29 +118,16 @@ class Project < ActiveRecord::Base
 
 	def administerable_by(user_id)
 		user = project_groups.find_by_user_id(user_id)
-		if (! user.nil?) && user.project_administrator then
-			return true
-		else
-			return false
-		end
+    ( user && user.project_administrator ) ? true : false
 	end
 
 	def editable_by(user_id)
 		user = project_groups.find_by_user_id(user_id)
-		if (! user.nil?) && user.project_editor then
-			return true
-		else
-			return false
-		end
+    ( user && ( user.project_editor || user.project_administrator ) ) ? true : false
 	end
 
 	def readable_by(user_id)
-		user = project_groups.find_by_user_id(user_id)
-		if (! user.nil?) then
-			return true
-		else
-			return false
-		end
+		( project_groups.find_by_user_id(user_id) ) ? true : false
 	end
 
 	def self.projects_for_user(user_id)

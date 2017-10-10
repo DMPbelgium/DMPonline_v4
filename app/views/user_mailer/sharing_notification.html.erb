@@ -11,8 +11,20 @@ end
 
 <p>You have been given <%= access_level %> access to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
 
-<% unless @project_group.user.confirmed? %>
+<% if !(@project_group.user.confirmed?) %>
 
   <p>An email will follow, containing instructions to unlock your new account.</p>
+
+<% elsif @project_group.user.organisation.wayfless_entity.present? %>
+
+  <%= link_to(
+        "Sign in with #{@project_group.user.organisation.abbreviation}",
+        set_url_query( user_omniauth_shibboleth_path, { :idp => @project_group.user.organisation.wayfless_entity } )
+      )
+  %>
+
+<% else %>
+
+  <%= link_to "Sign in with ORCID", user_omniauth_authorize_url(:orcid) %>
 
 <% end %>
