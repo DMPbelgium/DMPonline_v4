@@ -35,7 +35,7 @@ DMPonline4::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  #config.force_ssl = true
+  config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -61,7 +61,8 @@ DMPonline4::Application.configure do
 
   #devise config
   unless ENV['DMP_HOST'].blank? || ENV['DMP_SMTP_ADDRESS'].blank? || ENV['DMP_SMTP_PORT'].blank? || ENV['DMP_EMAIL_FROM'].blank? || ENV['DMP_SMTP_ADDRESS'].blank? || ENV['DMP_SMTP_PORT'].blank?
-    config.action_mailer.default_url_options = { :host => ENV['DMP_HOST'] }
+    config.action_mailer.default_url_options[:host] = ENV['DMP_HOST']
+    config.action_mailer.default_url_options[:protocol] = "https"
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = { :address => ENV['DMP_SMTP_ADDRESS'], :port => ENV['DMP_SMTP_PORT'] }
 
