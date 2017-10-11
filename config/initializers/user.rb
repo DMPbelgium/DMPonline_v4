@@ -43,25 +43,10 @@ User.before_validation do |user|
 end
 User.after_auth_shibboleth do |user,auth,request|
 
-  #User model makes sure the user always has a default organisation! (see above)
+  if auth['extra'].is_a?(Hash) && auth['extra']['raw_info'].is_a?(Hash)
 
-  #match IDP against wayfless entity of organisation
-  idp = request.env['Shib-Identity-Provider']
-
-  org = Organisation.where(:wayfless_entity => idp).first
-
-  unless org.nil?
-
-    if org.abbreviation.present? && org.abbreviation == 'UGent'
-
-      if auth['extra'].is_a?(Hash) && auth['extra']['raw_info'].is_a?(Hash)
-
-        user.surname = auth['extra']['raw_info']['sn'] if user.surname.blank?
-        user.firstname = auth['extra']['raw_info']['givenname'] if user.firstname.blank?
-
-      end
-
-    end
+    user.surname = auth['extra']['raw_info']['sn'] if user.surname.blank?
+    user.firstname = auth['extra']['raw_info']['givenname'] if user.firstname.blank?
 
   end
 
