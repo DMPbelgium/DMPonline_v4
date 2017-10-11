@@ -196,30 +196,23 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user.firstname = auth['info']['first_name'] if @user.firstname.blank?
       @user.surname = auth['info']['last_name'] if @user.surname.blank?
 
-    #no user found with orcid_id
-    elsif email.present?
+    #user found with email
+    elsif email.present? && User.where( :email => email ).first
 
-      user_with_email = User.where( :email => email ).first
+      #unable to trust this user
+      redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
+      return
 
-      #user found with email
-      if user_with_email
+    #NEW USER. We trust "email" because it has to be confirmed.
+    else
 
-        #unable to trust this user
-        redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
-        return
-
-      #no user found with email: NEW USER. We trust "email" because it has to be confirmed.
-      else
-
-        @user = User.new(
-          :email => email,
-          :orcid_id => auth.uid,
-          :firstname => auth['info']['first_name'],
-          :surname => auth['info']['last_name']
-        )
-        @user.ensure_password
-
-      end
+      @user = User.new(
+        :email => email,
+        :orcid_id => auth.uid,
+        :firstname => auth['info']['first_name'],
+        :surname => auth['info']['last_name']
+      )
+      @user.ensure_password
 
     end
 
