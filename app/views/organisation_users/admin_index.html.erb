@@ -5,7 +5,6 @@
 </h1>
 
 <%= raw t('org_admin.user_text_html')%>
-<% @users = current_user.organisation.users.all %>
 <table id="dmp_table" class="dmp_table tablesorter">
   <thead>
     <tr>
@@ -40,3 +39,4 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to( t("helpers.org_admin_users.export.csv"), org_admin_users_path( :format => "csv" ), { :class => "btn" } ) %>

@@ -55,7 +55,7 @@
 	                	<%= link_to t("org_admin.org_details_label"), admin_show_organisation_path(current_user.organisation_id), :class => "btn header_button btn-primary"%>
 	                </li>
 	                <li>
-	                	<%= link_to t("org_admin.user_list_label"), "/org/admin/users", :class => "btn header_button btn-primary"%>
+	                	<%= link_to t("org_admin.user_list_label"), org_admin_users_path, :class => "btn header_button btn-primary"%>
 	                </li>
                 <% else %>
                 	<% if user_signed_in? %>
