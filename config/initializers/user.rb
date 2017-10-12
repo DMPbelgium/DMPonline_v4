@@ -3,7 +3,7 @@ User.before_validation do |user|
   #downcase email of new user
   if user.new_record?
 
-    user.email.downcase!
+    user.email.downcase! if user.email.present?
 
   #do not allow email changes
   elsif user.email_changed?
