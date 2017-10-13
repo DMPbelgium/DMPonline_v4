@@ -64,6 +64,8 @@ gem 'feedzirra', '0.5.0'
 gem 'ledermann-rails-settings'
 gem 'jbuilder'
 gem 'figaro'
+#force latest oauth2 for orcid
+gem 'omniauth-oauth2', :git => "git@github.com:intridea/omniauth-oauth2.git"
 gem 'omniauth-orcid', :git => "https://github.com/datacite/omniauth-orcid.git"
 gem 'strong_parameters'
 
