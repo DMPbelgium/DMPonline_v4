@@ -1,17 +1,17 @@
 GIT
-  remote: git@github.com:intridea/omniauth-oauth2.git
-  revision: 464fcef6c0a5f1a7526b9701cec37f342ce57ae3
-  specs:
-    omniauth-oauth2 (1.4.0)
-      oauth2 (~> 1.0)
-      omniauth (~> 1.2)
-
-GIT
   remote: https://github.com/datacite/omniauth-orcid.git
   revision: a277f5515bb3aac29f8bf07c8c05bc0324e007fb
   specs:
     omniauth-orcid (1.2.1)
       omniauth-oauth2 (~> 1.3)
+
+GIT
+  remote: https://github.com/intridea/omniauth-oauth2.git
+  revision: 464fcef6c0a5f1a7526b9701cec37f342ce57ae3
+  specs:
+    omniauth-oauth2 (1.4.0)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
 
 GEM
   remote: https://rubygems.org/
