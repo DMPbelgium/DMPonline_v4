@@ -8,7 +8,7 @@ ActiveAdmin.register Organisation do
 
   menu :priority => 14, :label => proc{I18n.t('admin.org')}, :parent => "Organisations management"
 
-	index do   # :abbreviation, :banner_file_id, :description, :domain, :logo_file_id, :name,
+	index do   # :abbreviation, :banner_file_id, :description, :logo_file_id, :name,
 	  #:stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id
     column I18n.t('admin.org_title'), :sortable => :name do |ggn|
       link_to ggn.name, [:admin, ggn]
@@ -55,7 +55,9 @@ ActiveAdmin.register Organisation do
         end
       end
       row :target_url
-      row :domain
+      row :organisation_domains do |org|
+        ( org.organisation_domains.map { |od| link_to(od.name, [:admin, od]) } ).join(', ').html_safe
+      end
       row :wayfless_entity
       row I18n.t('admin.org_parent'), :parent_id do |org_parent|
         if !org_parent.parent_id.nil? then
@@ -90,7 +92,6 @@ ActiveAdmin.register Organisation do
       f.input :description
       f.input :organisation_type_id, :label => I18n.t('admin.org_type'), :as => :select, :collection => OrganisationType.find(:all, :order => 'name ASC').map{|orgt|[orgt.name, orgt.id]}
       f.input :target_url
-      f.input :domain
       f.input :wayfless_entity
       f.input :parent_id, :label => I18n.t('admin.org_parent'), :as => :select, :collection => Organisation.find(:all, :order => 'name ASC').map{|orgp|[orgp.name, orgp.id]}
       f.input :logo_file_id

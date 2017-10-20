@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170928143015) do
+ActiveRecord::Schema.define(:version => 20171020141130) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -138,6 +138,15 @@ ActiveRecord::Schema.define(:version => 20170928143015) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "organisation_domains", :force => true do |t|
+    t.string   "name",            :null => false
+    t.integer  "organisation_id", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "organisation_domains", ["name"], :name => "index_organisation_domains_on_name", :unique => true
+
   create_table "organisation_types", :force => true do |t|
     t.string   "name"
     t.text     "description", :limit => 16777215
@@ -153,7 +162,6 @@ ActiveRecord::Schema.define(:version => 20170928143015) do
     t.integer  "logo_file_id"
     t.integer  "banner_file_id"
     t.integer  "organisation_type_id"
-    t.string   "domain"
     t.text     "wayfless_entity"
     t.integer  "stylesheet_file_id"
     t.datetime "created_at",                               :null => false

@@ -41,6 +41,7 @@ en:
     org: "Organisation"
     orgs: "Organisations"
     org_type: "Organisation type"
+    org_domain: "Organisation domain"
     org_parent: "Parent organisation"
     org_created_message: "Organisation was successfully created."
     org_updated_message: "Organisation was successfully updated."

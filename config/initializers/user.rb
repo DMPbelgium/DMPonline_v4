@@ -27,8 +27,8 @@ User.before_validation do |user|
       parts_email = user.email.split("@")
       if parts_email.size == 2
         #organisation now set at creation time, and not on authentication time ( where wayfless_entity was equal to request.env['Shib-Identity-Provider'] )
-        org = Organisation.where( :domain => parts_email[1] ).first
-        user.organisation = org.nil? ? Organisation.guest_org : org
+        org_domain = OrganisationDomain.where( :name => parts_email[1] ).first
+        user.organisation = org_domain.nil? ? Organisation.guest_org : org_domain.organisation
       end
 
     else

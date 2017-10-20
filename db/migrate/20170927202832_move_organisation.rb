@@ -1,6 +1,6 @@
 class MoveOrganisation < ActiveRecord::Migration
   def up
-    ActiveRecord::Base.connection.select_all("select * from user_org_roles") do |user_org_role|
+    ActiveRecord::Base.connection.select_all("select * from user_org_roles").each do |user_org_role|
 
       user_id = user_org_role["user_id"]
       organisation_id = user_org_role["organisation_id"]

@@ -8,6 +8,7 @@ class Organisation < ActiveRecord::Base
 	has_many :users, :dependent => :destroy, :inverse_of => :organisation
 	has_many :option_warnings, :inverse_of => :organisation, :dependent => :destroy
 	has_many :suggested_answers, :inverse_of => :organisation, :dependent => :destroy
+  has_many :organisation_domains, :inverse_of => :organisation, :dependent => :destroy
 
   belongs_to :parent, :class_name => 'Organisation', :autosave => true
 	has_many :children, :class_name => 'Organisation', :foreign_key => 'parent_id'
@@ -15,11 +16,10 @@ class Organisation < ActiveRecord::Base
 	accepts_nested_attributes_for :organisation_type
 	accepts_nested_attributes_for :dmptemplates
 
-	attr_accessible :abbreviation, :banner_file_id, :description, :domain, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id, :sort_name
+	attr_accessible :abbreviation, :banner_file_id, :description, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id, :sort_name
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
-  validates :domain, :allow_blank => true, :uniqueness => true, :hostname => true
 
   def is_parent?
     self.parent_id.nil?
