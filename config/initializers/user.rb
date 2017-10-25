@@ -43,10 +43,11 @@ User.before_validation do |user|
 end
 User.after_auth_shibboleth do |user,auth,request|
 
-  if auth['extra'].is_a?(Hash) && auth['extra']['raw_info'].is_a?(Hash)
+  if auth['extra'].is_a?(Hash) && auth['extra']['raw_info'].is_a?(Hash) && user.nemo?
 
-    user.surname = auth['extra']['raw_info']['sn'] if user.surname.blank?
-    user.firstname = auth['extra']['raw_info']['givenname'] if user.firstname.blank?
+    #user ALWAYS has default firstname and surname, so checking on "blank?" does not help.
+    user.surname = auth['extra']['raw_info']['sn']
+    user.firstname = auth['extra']['raw_info']['givenname']
 
   end
 
