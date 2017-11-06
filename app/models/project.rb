@@ -62,14 +62,12 @@ class Project < ActiveRecord::Base
 
 	def funder_name=(new_funder_name)
 		write_attribute(:funder_name, new_funder_name)
-		org_table = Organisation.arel_table
-		existing_org = Organisation.where(org_table[:name].matches(new_funder_name))
-		if existing_org.nil?
-			existing_org = Organisation.where(org_table[:abbreviation].matches(new_funder_name))
-		end
-		unless existing_org.empty?
-			self.funder_id=existing_org.id
-		end
+    unless new_funder_name.blank?
+      existing_org = Organisation.where( "name LIKE ? OR abbreviation LIKE ?", new_funder_name, new_funder_name).first
+      unless existing_org.nil?
+        self.funder_id=existing_org.id
+      end
+    end
 	end
 
 	def institution_id=(new_institution_id)
