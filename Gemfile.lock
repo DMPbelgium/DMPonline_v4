@@ -1,18 +1,3 @@
-GIT
-  remote: https://github.com/datacite/omniauth-orcid.git
-  revision: a277f5515bb3aac29f8bf07c8c05bc0324e007fb
-  specs:
-    omniauth-orcid (1.2.1)
-      omniauth-oauth2 (~> 1.3)
-
-GIT
-  remote: https://github.com/intridea/omniauth-oauth2.git
-  revision: 464fcef6c0a5f1a7526b9701cec37f342ce57ae3
-  specs:
-    omniauth-oauth2 (1.4.0)
-      oauth2 (~> 1.0)
-      omniauth (~> 1.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -178,6 +163,11 @@ GEM
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
+    omniauth-oauth2 (1.5.0)
+      oauth2 (~> 1.1)
+      omniauth (~> 1.2)
+    omniauth-orcid (2.0.2)
+      omniauth-oauth2 (~> 1.3)
     omniauth-shibboleth (1.2.1)
       omniauth (>= 1.0.0)
     orm_adapter (0.5.0)
@@ -292,8 +282,7 @@ DEPENDENCIES
   libv8
   mysql2 (~> 0.3.10)
   omniauth
-  omniauth-oauth2!
-  omniauth-orcid!
+  omniauth-orcid (= 2.0.2)
   omniauth-shibboleth
   rails (= 3.2.13)
   recaptcha
