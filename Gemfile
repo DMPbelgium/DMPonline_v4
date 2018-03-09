@@ -66,6 +66,8 @@ gem 'jbuilder'
 gem 'figaro'
 #gem 'omniauth-oauth2', :git => "https://github.com/intridea/omniauth-oauth2.git"
 gem 'omniauth-orcid', "2.0.2"
+#omniauth-orcid uses method Hash#dig which only exists in next version ruby 2.3.0
+gem "ruby_dig"
 gem 'strong_parameters'
 
 gem 'validates_hostname'
