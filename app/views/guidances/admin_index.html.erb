@@ -130,7 +130,7 @@
 			    <%end%>
 			    <% if !guidance.question_id.nil? then %>
 			        <td class="dmp_td_small">
-			        	<%= raw guidance.question.text.truncate(70, omission: '... (continued)') %>
+			        	<%= raw guidance.question.text %>
 			        </td>
 			    <%else%>
 			    	<td class="dmp_td_small">
