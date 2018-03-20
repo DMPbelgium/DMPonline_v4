@@ -31,7 +31,7 @@ ActiveAdmin.register User do
       link_to user.surname, [:admin, user]
     end
    	column I18n.t('admin.last_logged_in'), :last_sign_in_at
-   	column I18n.t('admin.org_title'), :sortable => 'organisation.name' do |user|
+   	column I18n.t('admin.org_title'), :sortable => :organisation_id do |user|
       if user.organisation.nil? then
         "-"
       else
