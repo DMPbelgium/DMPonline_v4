@@ -12,8 +12,8 @@
 
       <table class="dmp_details_table">
         <tr>
-          <td class="first"><%= (t('helpers.email') + ' *') %></td>
-          <td><%= f.email_field :email, :as => :email, :disabled => :disabled %></td>
+          <td class="first"><%= t('helpers.email') %></td>
+          <td><%= current_user.email %></td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.first_name') + ' *' %></td>
@@ -37,37 +37,33 @@
           </td>
         </tr>
         <tr>
-          <td class="first"><%= t('helpers.org_type.organisation') + ' *'%></td>
-          <td>
-            <%= f.text_field :organisation,
-                  :as => :string,
-                  :class => 'text_field has-tooltip',
-                  'data-toggle' => "tooltip",
-                  :disabled => :disabled
-            %>
-            </td>
+          <td class="first"><%= t('helpers.org_type.organisation') %></td>
+          <td><%= current_user.organisation.name %></td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.orcid_id') %></td>
-          <td><%= f.text_field :orcid_id ,
-              :as => :string,
-              :autocomplete => "off" ,
-              :disabled => :disabled,
-              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.orcid_html') %>
-              <% if current_user.orcid_id.blank? %>
-                <%= link_to("Link to ORCID", user_omniauth_authorize_url(:orcid)) %>
-              <% end %>
+          <td>
+            <% if current_user.orcid_id.present? %>
+
+              <a href="https://orcid.org" class="orcid-link">
+                <img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png">
+              </a>
+              <a href="https://orcid.org/<%= current_user.orcid_id %>" class="orcid-link">https://orcid.org/<%= current_user.orcid_id %></a>
+              |
+              <%= link_to "Unlink from ORCID", users_remove_orcid_path(), :data => { :confirm => "Are you sure?" }, :class => 'orcid-link' %>
+
+            <% else %>
+
+              <a class="orcid-link" href="<%= user_omniauth_authorize_url(:orcid) %>">
+                <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"> Link to ORCID
+              </a>
+
+            <% end %>
           </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.shibboleth_id') %></td>
-          <td><%= f.text_field :shibboleth_id ,
-              :as => :string,
-              :autocomplete => "off" ,
-              :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title' => t('helpers.shibboleth_id_html'),
-              :disabled => :disabled
-             %>
-          </td>
+          <td><%= current_user.shibboleth_id %></td>
         </tr>
       </table>
 		  <br>

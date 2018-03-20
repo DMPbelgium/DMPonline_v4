@@ -48,3 +48,17 @@ form.edit_phase table.dmp_details_table td:last-child {
 div.phase_details_body form table.dmp_details_table td:last-child {
   width: 600px;
 }
+
+
+a.orcid-link {
+  text-decoration: none;
+  color: #338caf;
+  font-family: 'Noto Sans',sans-serif;
+  font-style: normal;
+}
+a.orcid-link:hover, a.orcid-link:active, a.orcid-link:focus, a.orcid-link:visited {
+  outline: 0;
+  text-decoration: none;
+  font-family: 'Noto Sans',sans-serif;
+  font-style: normal;
+}

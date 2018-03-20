@@ -8,6 +8,7 @@ DMPonline4::Application.routes.draw do
     get 'users/edit' => 'registrations#edit', :as => 'edit_user_registration'
     put '/users(.:format)' => 'registrations#update', as: 'user_registration'
     delete '/users(.:format)' => 'registrations#destroy'
+    get '/users/remove_orcid' => 'registrations#remove_orcid'
 
   end
   as :user do

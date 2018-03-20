@@ -59,6 +59,20 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def remove_orcid
+
+    if user_signed_in?
+
+      do_remove_orcid
+
+    else
+
+      render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
+
+    end
+
+  end
+
   private
 
   # check if we need password to update user data
@@ -91,6 +105,24 @@ class RegistrationsController < Devise::RegistrationsController
       # Sign in the user bypassing validation in case his password changed
       sign_in @user, :bypass => true
 
+      redirect_to({:controller => "registrations", :action => "edit"}, {:notice => "Details successfully updated."})
+
+    else
+
+      redirect_to after_sign_up_error_path_for(resource), alert: @user.errors.full_messages
+
+    end
+
+  end
+  def do_remove_orcid
+
+    @user = User.find( current_user.id )
+    @user.orcid_id = nil
+
+    if @user.save
+
+      set_flash_message :notice, :updated
+      sign_in @user, :bypass => true
       redirect_to({:controller => "registrations", :action => "edit"}, {:notice => "Details successfully updated."})
 
     else
