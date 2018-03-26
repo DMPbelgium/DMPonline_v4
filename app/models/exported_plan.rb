@@ -31,14 +31,8 @@ class ExportedPlan < ActiveRecord::Base
     self.plan.project.grant_number
   end
 
-  #old (settings are stored..)
   def principal_investigator
-    self.plan.project.principal_investigator_names
-  end
-
-  #new
-  def principal_investigator_names
-    self.plan.project.principal_investigator_names
+    self.plan.project.principal_investigator
   end
 
   def project_data_contact

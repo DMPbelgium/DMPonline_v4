@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
 
 	extend FriendlyId
 
-	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug
+	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug, :old_principal_investigator
 
 	#associations between tables
 	belongs_to :dmptemplate, :inverse_of => :projects, :autosave => true
@@ -98,12 +98,16 @@ class Project < ActiveRecord::Base
 		end
 	end
 
-  def principal_investigators
-    project_groups.where( :project_pi => true ).all.map(&:user)
+  def old_principal_investigator
+    read_attribute("principal_investigator")
   end
 
-  def principal_investigator_names
-    principal_investigators.map { |u| u.render }.to_sentence.html_safe
+  def old_principal_investigator=(pi)
+    write_attribute("principal_investigator",pi)
+  end
+
+  def principal_investigator
+    project_groups.where( :project_pi => true ).all.map(&:user).map { |u| u.render }.to_sentence.html_safe
   end
 
 	def assign_creator(user_id)

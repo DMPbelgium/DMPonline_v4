@@ -4,7 +4,7 @@ module Settings
 
     # TODO: can these be taken from somewhere else rather than hard-coded here?
     DEFAULT_COLUMNS = %i( name owner shared last_edited )
-    ALL_COLUMNS = DEFAULT_COLUMNS + %i( template_owner identifier grant_number principal_investigator_names data_contact description )
+    ALL_COLUMNS = DEFAULT_COLUMNS + %i( template_owner identifier grant_number principal_investigator data_contact description )
 
     validate do
       cols = value["columns"]
