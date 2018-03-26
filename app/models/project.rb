@@ -103,7 +103,7 @@ class Project < ActiveRecord::Base
   end
 
   def principal_investigator_names
-    principal_investigators.map { |u| u.render }.to_sentence
+    principal_investigators.map { |u| u.render }.to_sentence.html_safe
   end
 
 	def assign_creator(user_id)
