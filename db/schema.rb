@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180321090242) do
+ActiveRecord::Schema.define(:version => 20180326131841) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215

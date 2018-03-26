@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :answers, :dependent => :destroy, :inverse_of => :user
   has_many :project_groups, :dependent => :destroy, :inverse_of => :user
 
-  has_many :projects, through: :project_groups do
+  has_many :projects, :uniq => true, through: :project_groups do
     def filter(query)
       return self unless query.present?
 
