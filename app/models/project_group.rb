@@ -5,6 +5,10 @@ class ProjectGroup < ActiveRecord::Base
   belongs_to :user, :inverse_of => :project_groups, :autosave => true
   validates :project, :presence => true
   validates :user, :presence => true
+  validates :user_id, :uniqueness => {
+    :scope => :project_id,
+    :message => I18n.t("activerecord.errors.models.project_group.attributes.user_id.taken")
+  }
 
   attr_accessible :project_creator, :project_editor, :project_administrator, :project_id, :user_id, :email, :access_level
 
