@@ -6,10 +6,14 @@ if @project_group.access_level == 2 then
 	access_level = "editor"
 elsif @project_group.access_level == 3 then
 	access_level = "co-owner"
+elsif @project_group.access_level == 4 then
+  access_level = "general data protection regulator"
+elsif @project_group.access_level == 5 then
+  access_level = "principal investigator"
 end
 %>
 
-<p>You have been given <%= access_level %> access to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
+<p>You have been given access level "<%= access_level %>" to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
 
 <% if !(@project_group.user.confirmed?) %>
 

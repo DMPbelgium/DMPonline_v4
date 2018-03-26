@@ -6,15 +6,16 @@
 <!-- render navigation tabs for the project-->
 <%= render :partial => "project_nav_tabs", locals: {project: @project, active: "share_project"} %>
 <div class="dmp_details_body">
-	
+
 	<!--Text describing page content-->
 	<%= raw t('helpers.project.share.share_text_html')%>
-	
+
 	<div class="dmp_details">
+    <a name="collaborators"></a>
 		<h3><%= t('helpers.project.share.collaborators')%></h3>
-		<div>	
+		<div>
 			<% if @project.project_groups.any? then %>
-			
+
 				<table class="dmp_table">
 					<thead>
 						<tr>
@@ -24,7 +25,7 @@
 						</tr>
 					</thead>
 					<tbody>
-					<% project_people = @project.project_groups.all.select {|pu| pu.user_id != nil}%>	
+					<% project_people = @project.project_groups.all.select {|pu| pu.user_id != nil}%>
 					<%  project_people.each do |group| %>
 						<tr>
 							<th class="dmp_th_border" ><%= group.user.name %></th>
@@ -33,12 +34,14 @@
 									<%= t("helpers.project.share.owner")%>
 								<% else %>
 									<%= form_for group, :url => {:controller => :project_groups, :action => :update, :id => group.id }, :html=>{:method=>:put} do |f| %>
-										<%= f.select :access_level, {t('helpers.project.share.co_owner') => 3, t('helpers.project.share.edit') => 2,  t('helpers.project.share.read_only') => 1}, {}, {:id => "#{group.id}-can-edit", :class => "toggle-existing-user-access has-tooltip", 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
+										<%= f.select :access_level, {t('helpers.project.share.co_owner') => 3, t('helpers.project.share.edit') => 2,  t('helpers.project.share.read_only') => 1, t('helpers.project.share.pi') => 5, t('helpers.project.share.gdpr') => 4}, {}, {:id => "#{group.id}-can-edit", :class => "toggle-existing-user-access has-tooltip", 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
 									<% end %>
 								<% end %>
 							</td>
 							<td class="dmp_td_border">
-								<% unless group.project_creator || group.user == current_user then %>
+								<% if group.project_creator && group.user == current_user then %>
+
+                <% else %>
 									<%= link_to t('helpers.project.share.remove'), group, method: :delete, data: { confirm: t('helpers.project.share.confirmation_question') }, :class => "a-orange" %>
 								<% end %>
 							</td>
@@ -48,10 +51,11 @@
 				</table>
 			<% end %>
 		</div>
-		
+
 		<hr class="orange_break_line">
+    <a name="add_collaborator"></a>
 		<h3><%= t('helpers.project.share.add_collaborator')%></h3>
-		
+
 		<div>
 			<% new_project_group = ProjectGroup.new %>
 			<% new_project_group.project = @project %>
@@ -60,7 +64,7 @@
 					<%= f.input :project_id, :as => :hidden %>
 					<%= f.input :email, :as => :email, :required => true, :label => false, :placeholder => t('helpers.email') %>
 					<p><%= t('helpers.project.share.permissions')%>:</p>
-					<%= f.select :access_level, [[t('helpers.project.share.co_owner'), 3], [ t('helpers.project.share.edit') , 2], [ t('helpers.project.share.read_only'), 1]], {}, {:class => 'has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
+					<%= f.select :access_level, [[t('helpers.project.share.co_owner'), 3], [ t('helpers.project.share.edit') , 2], [ t('helpers.project.share.read_only'), 1], [ t('helpers.project.share.pi'), 5], [ t('helpers.project.share.gdpr'), 4]], {}, {:class => 'has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
 				<% end %>
 				<%= f.actions do %>
 					<%= f.action :submit, :label => I18n.t('helpers.project.share.add_collaborator'), :button_html => { :class => "btn btn-primary" } %>

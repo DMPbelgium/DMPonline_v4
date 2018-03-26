@@ -18,11 +18,33 @@
 			table { border-collapse: collapse; }
 			th, td { border: 1px solid black !important; padding: 2px; }
 			p { margin: 0.25em 0; }
+      a.orcid-link {
+        text-decoration: none !important;
+        color: #338caf !important;
+        font-family: 'Noto Sans',sans-serif !important;
+        font-style: normal !important;
+      }
+      a.orcid-link:hover, a.orcid-link:active, a.orcid-link:focus, a.orcid-link:visited {
+        outline: 0 !important;
+        text-decoration: none !important;
+        font-family: 'Noto Sans',sans-serif !important;
+        font-style: normal !important;
+        color: #a6ce39 !important;
+      }
+      img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        vertical-align: middle;
+        border: 0;
+      }
 		</style>
 	</head>
 	<body>
 		<h1><%= @plan.project.try(:title) %></h1>
-    <h2><%= @plan.title %></h2>
+    <% if @plan.title.present? %>
+      <h2><%= @plan.title %></h2>
+    <% end %>
     <h3>Admin details</h3>
 		<% @exported_plan.admin_details.each do |field|
 		     value = @exported_plan.send(field)

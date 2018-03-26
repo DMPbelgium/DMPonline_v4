@@ -41,22 +41,17 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="first"><%= t('helpers.project.principal_investigator') %></td>
-					<td><% if !@project.principal_investigator.nil? && @project.principal_investigator != "" then%>
-							<%= @project.principal_investigator %>
-						<%else%>
-							 -
-						<%end%>	
-					</td>
+					<td class="first"><%= t('helpers.project.principal_investigator_names') %></td>
+					<td><%= @project.principal_investigator_names %></td>
 				</tr>
-				<% if !@project.principal_investigator_identifier.nil? && @project.principal_investigator_identifier != "" then %>
-					<tr>
-						<td class="first"><%= t('helpers.project.principal_investigator_id') %></td>
-						<td>
-							<%= @project.principal_investigator_identifier %>
-						</td>
-					</tr>
-				<%end%>		
+        <tr>
+          <td class="first">
+            <%= t('helpers.project.principal_investigator') %>
+          </td>
+          <td>
+            <%= @project.principal_investigator.present? ? @project.principal_investigator : "-" %>
+          </td>
+        </tr>
 				<tr>
 					<td class="first"><%= t('helpers.project.project_data_contact') %></td>
 					<td><% if !@project.data_contact.nil? && @project.data_contact != "" then%>
@@ -115,17 +110,38 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="first"><%= t('helpers.project.principal_investigator') %></td>
+							<td class="first"><%= t('helpers.project.principal_investigator_names') %></td>
 							<td>
-								<%= f.text_field :principal_investigator, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.principal_investigator_help_text') %>
+                <%= @project.principal_investigator_names %>
+                <%= @project.principal_investigators.any? ? "|" : "" %>
+                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
 							</td>
 						</tr>
-						<tr>
-							<td class="first"><%= t('helpers.project.principal_investigator_id') %></td>
-							<td>
-								<%= f.text_field :principal_investigator_identifier, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.principal_investigator_id_help_text') %>
-							</td>
-						</tr>
+            <tr>
+              <td class="first">
+                <%= t('helpers.project.principal_investigator') %>
+              </td>
+              <td>
+                <%= f.text_field :principal_investigator, :class => 'text_field', :readonly => true  %>
+                <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_principal_investigator" } ) %>
+                <script type="text/javascript">
+                (function($){
+
+                  $(document).ready(function(){
+
+                    $("#clear_project_principal_investigator").click(function(evt){
+
+                      evt.preventDefault();
+                      $("#project_principal_investigator").val("");
+
+                    });
+
+                  });
+
+                })(jQuery);
+                </script>
+            </td>
+            </tr>
 						<tr>
 							<td class="first"><%= t('helpers.project.project_data_contact') %></td>
 							<td>

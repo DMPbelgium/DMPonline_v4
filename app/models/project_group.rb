@@ -6,7 +6,7 @@ class ProjectGroup < ActiveRecord::Base
   validates :project, :presence => true
   validates :user, :presence => true
 
-  attr_accessible :project_creator, :project_editor, :project_administrator, :project_id, :user_id, :email, :access_level
+  attr_accessible :project_creator, :project_editor, :project_administrator, :project_id, :user_id, :email, :access_level, :project_pi, :project_gdpr
 
   def email
     self.user.nil? ? nil : self.user.email
@@ -17,7 +17,11 @@ class ProjectGroup < ActiveRecord::Base
   end
 
   def access_level
-  	if self.project_administrator
+    if self.project_pi
+      return 5
+    elsif self.project_gdpr
+      return 4
+  	elsif self.project_administrator
   		return 3
   	elsif self.project_editor
   		return 2
@@ -30,6 +34,8 @@ class ProjectGroup < ActiveRecord::Base
   	new_access_level = new_access_level.to_i
     self.project_administrator = new_access_level == 3
     self.project_editor = new_access_level == 2
+    self.project_pi = new_access_level == 5
+    self.project_gdpr = new_access_level == 4
   end
 
 end

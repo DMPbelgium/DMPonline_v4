@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
       conditions = t[:title].matches(q)
 
       columns = %i(
-        grant_number identifier description principal_investigator data_contact
+        grant_number identifier description data_contact
       )
 
       columns.each {|col| conditions = conditions.or(t[col].matches(q)) }
@@ -111,6 +111,31 @@ class User < ActiveRecord::Base
   end
   def nemo?
     self.firstname.blank? || self.surname.blank? || self.firstname == User.nemo || self.surname == User.nemo
+  end
+
+  def render
+
+    str = []
+
+    if orcid_id.present?
+
+      str << %q(<a class="orcid-link" href="https://orcid.org"><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>)
+      str << %q( <a class="orcid-link" href="https://orcid.org/)
+      str << orcid_id
+      str << %q(" title=")
+      str << "https://orcid.org/" << orcid_id
+      str << %q(">)
+      str << name
+      str << %q(</a>)
+
+    else
+
+      str << name
+
+    end
+
+    str.join("").html_safe
+
   end
 
   before_validation do |user|
