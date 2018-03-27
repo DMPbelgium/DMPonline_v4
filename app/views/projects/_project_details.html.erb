@@ -41,8 +41,23 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="first"><%= t('helpers.desc') %></td>
+					<td><% if !@project.description.nil? && @project.description != "" then%>
+							<%= @project.description %>
+						<%else%>
+							 -
+						<%end%>	
+					</td>
+				</tr>
+				<tr>
 					<td class="first"><%= t('helpers.project.principal_investigator') %></td>
-					<td><%= @project.principal_investigator %></td>
+					<td>
+            <% @project.principal_investigators.each do |user| %>
+
+              <p><%= user.render %></p>
+
+            <% end %>
+          </td>
 				</tr>
         <% if @project.old_principal_investigator.present? %>
           <tr>
@@ -56,11 +71,19 @@
         <% end %>
         <tr>
           <td class="first"><%= t('helpers.project.gdpr') %></td>
-          <td><%= @project.gdpr %></td>
+          <td>
+            <% @project.gdprs.each do |user| %>
+              <p><%= user.render %></p>
+            <% end %>
+          </td>
         </tr>
         <tr>
           <td class="first"><%= t('helpers.project.data_contact') %></td>
-          <td><%= @project.data_contact.present? ? @project.data_contact : "-" %></td>
+          <td>
+            <% @project.data_contacts.each do |user| %>
+              <p><%= user.render %></p>
+            <% end %>
+          </td>
         </tr>
         <% if @project.old_data_contact.present? %>
           <tr>
@@ -68,15 +91,6 @@
             <td><%= @project.old_data_contact %></td>
           </tr>
         <% end %>
-				<tr>
-					<td class="first"><%= t('helpers.desc') %></td>
-					<td><% if !@project.description.nil? && @project.description != "" then%>
-							<%= @project.description %>
-						<%else%>
-							 -
-						<%end%>	
-					</td>
-				</tr>
 			</table>
 		</div>
 	</div>
@@ -117,11 +131,19 @@
 							</td>
 						</tr>
 						<tr>
+							<td class="first"><%= t('helpers.desc') %></td>
+							<td>
+								<%= f.text_area :description, { :rows => 7, :class => 'text_area has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title'=> t('helpers.project.project_desc_help_text_html')} %>
+							</td>
+						</tr>
+						<tr>
 							<td class="first"><%= t('helpers.project.principal_investigator') %></td>
 							<td>
-                <%= @project.principal_investigator %>
-                <%= @project.principal_investigator.present? ? "|" : "" %>
-                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
+                <% @project.principal_investigators.each do |user| %>
+
+                  <p><%= user.render %></p>
+
+                <% end %>
 							</td>
 						</tr>
             <% if @project.old_principal_investigator.present? %>
@@ -131,7 +153,7 @@
                 </td>
                 <td>
                   <%= f.text_field :old_principal_investigator, :class => 'text_field', :readonly => true  %>
-                  <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_old_principal_investigator" } ) %>
+                  <%= link_to( "Clear", "#", { :id => "clear_project_old_principal_investigator" } ) %>
                   <script type="text/javascript">
                   (function($){
 
@@ -154,17 +176,17 @@
             <tr>
               <td class="first"><%= t('helpers.project.gdpr') %></td>
               <td>
-                <%= @project.gdpr %>
-                <%= @project.gdpr.present? ? "|" : "" %>
-                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
+                <% @project.gdprs.each do |user| %>
+                  <p><%= user.render %></p>
+                <% end %>
               </td>
             </tr>
             <tr>
 							<td class="first"><%= t('helpers.project.data_contact') %></td>
 							<td>
-                <%= @project.data_contact %>
-                <%= @project.data_contact.present? ? "|" : "" %>
-                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
+                <% @project.data_contacts.each do |user| %>
+                  <p><%= user.render %></p>
+                <% end %>
 							</td>
 						</tr>
             <% if @project.old_data_contact.present? %>
@@ -174,7 +196,7 @@
                 </td>
                 <td>
                   <%= f.text_field :old_data_contact, :class => 'text_field', :readonly => true  %>
-                  <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_old_data_contact" } ) %>
+                  <%= link_to( "Clear", "#", { :id => "clear_project_old_data_contact" } ) %>
                   <script type="text/javascript">
                   (function($){
 
@@ -194,12 +216,12 @@
                 </td>
               </tr>
             <% end %>
-						<tr>
-							<td class="first"><%= t('helpers.desc') %></td>
-							<td>
-								<%= f.text_area :description, { :rows => 7, :class => 'text_area has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title'=> t('helpers.project.project_desc_help_text_html')} %>
-							</td>
-						</tr>
+            <tr>
+              <td class="first"></td>
+              <td>
+                <%= link_to( "Add/Remove collaborators", project_path([@project, "share"]) + "#add_collaborator", { } ) %>
+              </td>
+            </tr>
 					</table>				
 				</div>
 				<% end %>

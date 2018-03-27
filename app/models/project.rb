@@ -106,8 +106,12 @@ class Project < ActiveRecord::Base
     write_attribute("principal_investigator",pi)
   end
 
+  def principal_investigators
+    project_groups.where( :project_pi => true ).all.map(&:user)
+  end
+
   def principal_investigator
-    project_groups.where( :project_pi => true ).all.map(&:user).map { |u| u.render }.to_sentence.html_safe
+    principal_investigators.map { |u| u.render }.to_sentence.html_safe
   end
 
   def old_data_contact
@@ -118,12 +122,20 @@ class Project < ActiveRecord::Base
     write_attribute("data_contact",dc)
   end
 
+  def data_contacts
+    project_groups.where( :project_data_contact => true ).all.map(&:user)
+  end
+
   def data_contact
-    project_groups.where( :project_data_contact => true ).all.map(&:user).map { |u| u.render }.to_sentence.html_safe
+    data_contacts.map { |u| u.render }.to_sentence.html_safe
+  end
+
+  def gdprs
+    project_groups.where( :project_gdpr => true ).all.map(&:user)
   end
 
   def gdpr
-    project_groups.where( :project_gdpr => true ).all.map(&:user).map { |u| u.render }.to_sentence.html_safe
+    gdprs.map { |u| u.render }.to_sentence.html_safe
   end
 
   def assign_data_contact(user_id)
