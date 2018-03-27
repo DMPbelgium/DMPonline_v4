@@ -43,6 +43,10 @@ class ExportedPlan < ActiveRecord::Base
     self.plan.project.description
   end
 
+  def project_gdpr
+    self.plan.project.gdpr
+  end
+
   def funder
     org = self.plan.project.dmptemplate.try(:organisation)
     org.name if org.present? && org.organisation_type.try(:name) == I18n.t('helpers.org_type.funder')

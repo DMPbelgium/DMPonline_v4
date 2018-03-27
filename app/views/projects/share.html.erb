@@ -34,7 +34,16 @@
 									<%= t("helpers.project.share.owner")%>
 								<% else %>
 									<%= form_for group, :url => {:controller => :project_groups, :action => :update, :id => group.id }, :html=>{:method=>:put} do |f| %>
-										<%= f.select :access_level, {t('helpers.project.share.co_owner') => 3, t('helpers.project.share.edit') => 2,  t('helpers.project.share.read_only') => 1, t('helpers.project.share.pi') => 5, t('helpers.project.share.gdpr') => 4}, {}, {:id => "#{group.id}-can-edit", :class => "toggle-existing-user-access has-tooltip", 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
+										<%= f.select :access_level,
+                          ProjectGroup.selectable_access_levels,
+                          {},
+                          {
+                            :id => "#{group.id}-can-edit",
+                            :class => "toggle-existing-user-access has-tooltip",
+                            'data-toggle' => "tooltip",
+                            'title' => t('helpers.project.share.permissions_desc')
+                          }
+                    %>
 									<% end %>
 								<% end %>
 							</td>
@@ -64,7 +73,15 @@
 					<%= f.input :project_id, :as => :hidden %>
 					<%= f.input :email, :as => :email, :required => true, :label => false, :placeholder => t('helpers.email') %>
 					<p><%= t('helpers.project.share.permissions')%>:</p>
-					<%= f.select :access_level, [[t('helpers.project.share.co_owner'), 3], [ t('helpers.project.share.edit') , 2], [ t('helpers.project.share.read_only'), 1], [ t('helpers.project.share.pi'), 5], [ t('helpers.project.share.gdpr'), 4]], {}, {:class => 'has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.share.permissions_desc') } %>
+					<%= f.select :access_level,
+                ProjectGroup.selectable_access_levels,
+                {},
+                {
+                  :class => 'has-tooltip',
+                  'data-toggle' => "tooltip",
+                  'title' => t('helpers.project.share.permissions_desc')
+                }
+          %>
 				<% end %>
 				<%= f.actions do %>
 					<%= f.action :submit, :label => I18n.t('helpers.project.share.add_collaborator'), :button_html => { :class => "btn btn-primary" } %>

@@ -44,23 +44,30 @@
 					<td class="first"><%= t('helpers.project.principal_investigator') %></td>
 					<td><%= @project.principal_investigator %></td>
 				</tr>
+        <% if @project.old_principal_investigator.present? %>
+          <tr>
+            <td class="first">
+              <%= t('helpers.project.old_principal_investigator') %>
+            </td>
+            <td>
+              <%= @project.old_principal_investigator %>
+            </td>
+          </tr>
+        <% end %>
         <tr>
-          <td class="first">
-            <%= t('helpers.project.old_principal_investigator') %>
-          </td>
-          <td>
-            <%= @project.old_principal_investigator.present? ? @project.old_principal_investigator : "-" %>
-          </td>
+          <td class="first"><%= t('helpers.project.gdpr') %></td>
+          <td><%= @project.gdpr %></td>
         </tr>
-				<tr>
-					<td class="first"><%= t('helpers.project.project_data_contact') %></td>
-					<td><% if !@project.data_contact.nil? && @project.data_contact != "" then%>
-							<%= @project.data_contact %>
-						<%else%>
-							 -
-						<%end%>	
-					</td>
-				</tr>
+        <tr>
+          <td class="first"><%= t('helpers.project.data_contact') %></td>
+          <td><%= @project.data_contact.present? ? @project.data_contact : "-" %></td>
+        </tr>
+        <% if @project.old_data_contact.present? %>
+          <tr>
+            <td class="first"><%= t('helpers.project.old_data_contact') %></td>
+            <td><%= @project.old_data_contact %></td>
+          </tr>
+        <% end %>
 				<tr>
 					<td class="first"><%= t('helpers.desc') %></td>
 					<td><% if !@project.description.nil? && @project.description != "" then%>
@@ -117,37 +124,76 @@
                 <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
 							</td>
 						</tr>
-            <tr>
-              <td class="first">
-                <%= t('helpers.project.old_principal_investigator') %>
-              </td>
-              <td>
-                <%= f.text_field :old_principal_investigator, :class => 'text_field', :readonly => true  %>
-                <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_old_principal_investigator" } ) %>
-                <script type="text/javascript">
-                (function($){
+            <% if @project.old_principal_investigator.present? %>
+              <tr>
+                <td class="first">
+                  <%= t('helpers.project.old_principal_investigator') %>
+                </td>
+                <td>
+                  <%= f.text_field :old_principal_investigator, :class => 'text_field', :readonly => true  %>
+                  <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_old_principal_investigator" } ) %>
+                  <script type="text/javascript">
+                  (function($){
 
-                  $(document).ready(function(){
+                    $(document).ready(function(){
 
-                    $("#clear_project_old_principal_investigator").click(function(evt){
+                      $("#clear_project_old_principal_investigator").click(function(evt){
 
-                      evt.preventDefault();
-                      $("#project_old_principal_investigator").val("");
+                        evt.preventDefault();
+                        $("#project_old_principal_investigator").val("");
+
+                      });
 
                     });
 
-                  });
-
-                })(jQuery);
-                </script>
-            </td>
+                  })(jQuery);
+                  </script>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="first"><%= t('helpers.project.gdpr') %></td>
+              <td>
+                <%= @project.gdpr %>
+                <%= @project.gdpr.present? ? "|" : "" %>
+                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
+              </td>
             </tr>
-						<tr>
-							<td class="first"><%= t('helpers.project.project_data_contact') %></td>
+            <tr>
+							<td class="first"><%= t('helpers.project.data_contact') %></td>
 							<td>
-								<%= f.text_field :data_contact, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.project_data_contact_help_text') %>	
+                <%= @project.data_contact %>
+                <%= @project.data_contact.present? ? "|" : "" %>
+                <%= link_to( "Add/Remove", project_path([@project, "share"]) + "#add_collaborator", { :class => "orcid-link" } ) %>
 							</td>
 						</tr>
+            <% if @project.old_data_contact.present? %>
+              <tr>
+                <td class="first">
+                  <%= t('helpers.project.old_data_contact') %>
+                </td>
+                <td>
+                  <%= f.text_field :old_data_contact, :class => 'text_field', :readonly => true  %>
+                  <%= link_to( "Clear", "#", { :class => "orcid-link", :id => "clear_project_old_data_contact" } ) %>
+                  <script type="text/javascript">
+                  (function($){
+
+                    $(document).ready(function(){
+
+                      $("#clear_project_old_data_contact").click(function(evt){
+
+                        evt.preventDefault();
+                        $("#project_old_data_contact").val("");
+
+                      });
+
+                    });
+
+                  })(jQuery);
+                  </script>
+                </td>
+              </tr>
+            <% end %>
 						<tr>
 							<td class="first"><%= t('helpers.desc') %></td>
 							<td>

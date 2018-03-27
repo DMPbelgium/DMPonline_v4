@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180326131841) do
+ActiveRecord::Schema.define(:version => 20180326134731) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(:version => 20180326131841) do
     t.boolean  "project_administrator"
     t.boolean  "project_pi"
     t.boolean  "project_gdpr"
+    t.boolean  "project_data_contact"
   end
 
   create_table "project_guidance", :id => false, :force => true do |t|
