@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     render :text => exception.message ,:status => 403
   end
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    render :text => exception.message, :status => 404
+    render :text => "You are not authorized to access this page.", :status => 403
   end
 
  	after_filter :store_location
