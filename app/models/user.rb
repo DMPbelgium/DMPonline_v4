@@ -115,22 +115,23 @@ class User < ActiveRecord::Base
 
   def render
 
-    str = []
+    str = [ name ]
 
     if orcid_id.present?
 
-      str << %q(<a class="orcid-link" href="https://orcid.org"><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>)
-      str << %q( <a class="orcid-link" href="https://orcid.org/)
-      str << orcid_id
+      orcid_base_url = "https://orcid.org"
+      orcid_url = orcid_base_url + "/" + orcid_id
+
+      str << %q( <a class="orcid-link" href=")
+      str << orcid_base_url
+      str << %q("><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>)
+      str << %q( <a class="orcid-link" href=")
+      str << orcid_url
       str << %q(" title=")
-      str << "https://orcid.org/" << orcid_id
+      str << orcid_url
       str << %q(">)
-      str << name
+      str << orcid_url
       str << %q(</a>)
-
-    else
-
-      str << name
 
     end
 
