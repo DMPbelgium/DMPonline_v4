@@ -51,14 +51,15 @@ div.phase_details_body form table.dmp_details_table td:last-child {
 
 
 a.orcid-link {
-  text-decoration: none;
-  color: #338caf;
-  font-family: 'Noto Sans',sans-serif;
-  font-style: normal;
+  text-decoration: none !important;
+  color: #338caf !important;
+  font-family: 'Noto Sans',sans-serif !important;
+  font-style: normal !important;
 }
 a.orcid-link:hover, a.orcid-link:active, a.orcid-link:focus, a.orcid-link:visited {
-  outline: 0;
-  text-decoration: none;
-  font-family: 'Noto Sans',sans-serif;
-  font-style: normal;
+  outline: 0 !important;
+  text-decoration: none !important;
+  font-family: 'Noto Sans',sans-serif !important;
+  font-style: normal !important;
+  color: #a6ce39 !important;
 }

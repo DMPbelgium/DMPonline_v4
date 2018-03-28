@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180326113848) do
+ActiveRecord::Schema.define(:version => 20180326134731) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -209,9 +209,10 @@ ActiveRecord::Schema.define(:version => 20180326113848) do
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
     t.boolean  "project_administrator"
+    t.boolean  "project_pi"
+    t.boolean  "project_gdpr"
+    t.boolean  "project_data_contact"
   end
-
-  add_index "project_groups", ["project_id", "user_id"], :name => "index_project_groups_on_project_id_and_user_id", :unique => true
 
   create_table "project_guidance", :id => false, :force => true do |t|
     t.integer "project_id",        :null => false

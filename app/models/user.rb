@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :answers, :dependent => :destroy, :inverse_of => :user
   has_many :project_groups, :dependent => :destroy, :inverse_of => :user
 
-  has_many :projects, through: :project_groups do
+  has_many :projects, :uniq => true, through: :project_groups do
     def filter(query)
       return self unless query.present?
 
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
       conditions = t[:title].matches(q)
 
       columns = %i(
-        grant_number identifier description principal_investigator data_contact
+        grant_number identifier description data_contact
       )
 
       columns.each {|col| conditions = conditions.or(t[col].matches(q)) }
@@ -111,6 +111,32 @@ class User < ActiveRecord::Base
   end
   def nemo?
     self.firstname.blank? || self.surname.blank? || self.firstname == User.nemo || self.surname == User.nemo
+  end
+
+  def render
+
+    str = [ name ]
+
+    if orcid_id.present?
+
+      orcid_base_url = "https://orcid.org"
+      orcid_url = orcid_base_url + "/" + orcid_id
+
+      str << %q( <a class="orcid-link" href=")
+      str << orcid_base_url
+      str << %q("><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>)
+      str << %q( <a class="orcid-link" href=")
+      str << orcid_url
+      str << %q(" title=")
+      str << orcid_url
+      str << %q(">)
+      str << orcid_url
+      str << %q(</a>)
+
+    end
+
+    str.join("").html_safe
+
   end
 
   before_validation do |user|

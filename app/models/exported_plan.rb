@@ -43,6 +43,10 @@ class ExportedPlan < ActiveRecord::Base
     self.plan.project.description
   end
 
+  def project_gdpr
+    self.plan.project.gdpr
+  end
+
   def funder
     org = self.plan.project.dmptemplate.try(:organisation)
     org.name if org.present? && org.organisation_type.try(:name) == I18n.t('helpers.org_type.funder')
@@ -133,7 +137,32 @@ class ExportedPlan < ActiveRecord::Base
   end
 
   def html_for_docx
-    docx_html_source = "<html><head></head><body><div><h1>#{self.plan.project.try(:title)}</h1><h2>#{self.plan.title}</h2>"
+    docx_html_source = %q(<!doctype html><html><head>)
+    docx_html_source << %q(
+      <style type="text/css">
+      a.orcid-link {
+        text-decoration: none !important;
+        color: #338caf !important;
+        font-family: 'Noto Sans',sans-serif !important;
+        font-style: normal !important;
+      }
+      a.orcid-link:hover, a.orcid-link:active, a.orcid-link:focus, a.orcid-link:visited {
+        outline: 0 !important;
+        text-decoration: none !important;
+        font-family: 'Noto Sans',sans-serif !important;
+        font-style: normal !important;
+        color: #a6ce39 !important;
+      }
+      img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        vertical-align: middle;
+        border: 0;
+      }
+      </style>
+    )
+    docx_html_source << "</head><body><div><h1>#{self.plan.project.try(:title)}</h1><h2>#{self.plan.title}</h2>"
     if self.admin_details.present?
         docx_html_source << "<div><h3>Admin Details</h3>"
         self.admin_details.each do |field|

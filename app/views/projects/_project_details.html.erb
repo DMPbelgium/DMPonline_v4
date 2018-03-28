@@ -41,32 +41,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="first"><%= t('helpers.project.principal_investigator') %></td>
-					<td><% if !@project.principal_investigator.nil? && @project.principal_investigator != "" then%>
-							<%= @project.principal_investigator %>
-						<%else%>
-							 -
-						<%end%>	
-					</td>
-				</tr>
-				<% if !@project.principal_investigator_identifier.nil? && @project.principal_investigator_identifier != "" then %>
-					<tr>
-						<td class="first"><%= t('helpers.project.principal_investigator_id') %></td>
-						<td>
-							<%= @project.principal_investigator_identifier %>
-						</td>
-					</tr>
-				<%end%>		
-				<tr>
-					<td class="first"><%= t('helpers.project.project_data_contact') %></td>
-					<td><% if !@project.data_contact.nil? && @project.data_contact != "" then%>
-							<%= @project.data_contact %>
-						<%else%>
-							 -
-						<%end%>	
-					</td>
-				</tr>
-				<tr>
 					<td class="first"><%= t('helpers.desc') %></td>
 					<td><% if !@project.description.nil? && @project.description != "" then%>
 							<%= @project.description %>
@@ -75,6 +49,48 @@
 						<%end%>	
 					</td>
 				</tr>
+				<tr>
+					<td class="first"><%= t('helpers.project.principal_investigator') %></td>
+					<td>
+            <% @project.principal_investigators.each do |user| %>
+
+              <p><%= user.render %></p>
+
+            <% end %>
+          </td>
+				</tr>
+        <% if @project.old_principal_investigator.present? %>
+          <tr>
+            <td class="first">
+              <%= t('helpers.project.old_principal_investigator') %>
+            </td>
+            <td>
+              <%= @project.old_principal_investigator %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="first"><%= t('helpers.project.gdpr') %></td>
+          <td>
+            <% @project.gdprs.each do |user| %>
+              <p><%= user.render %></p>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td class="first"><%= t('helpers.project.data_contact') %></td>
+          <td>
+            <% @project.data_contacts.each do |user| %>
+              <p><%= user.render %></p>
+            <% end %>
+          </td>
+        </tr>
+        <% if @project.old_data_contact.present? %>
+          <tr>
+            <td class="first"><%= t('helpers.project.old_data_contact') %></td>
+            <td><%= @project.old_data_contact %></td>
+          </tr>
+        <% end %>
 			</table>
 		</div>
 	</div>
@@ -115,29 +131,97 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="first"><%= t('helpers.project.principal_investigator') %></td>
-							<td>
-								<%= f.text_field :principal_investigator, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.principal_investigator_help_text') %>
-							</td>
-						</tr>
-						<tr>
-							<td class="first"><%= t('helpers.project.principal_investigator_id') %></td>
-							<td>
-								<%= f.text_field :principal_investigator_identifier, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.principal_investigator_id_help_text') %>
-							</td>
-						</tr>
-						<tr>
-							<td class="first"><%= t('helpers.project.project_data_contact') %></td>
-							<td>
-								<%= f.text_field :data_contact, :class => 'text_field has-tooltip', 'data-toggle' => "tooltip", 'title' => t('helpers.project.project_data_contact_help_text') %>	
-							</td>
-						</tr>
-						<tr>
 							<td class="first"><%= t('helpers.desc') %></td>
 							<td>
 								<%= f.text_area :description, { :rows => 7, :class => 'text_area has-tooltip', 'data-toggle' => "tooltip", 'data-html' => "true", 'title'=> t('helpers.project.project_desc_help_text_html')} %>
 							</td>
 						</tr>
+						<tr>
+							<td class="first"><%= t('helpers.project.principal_investigator') %></td>
+							<td>
+                <% @project.principal_investigators.each do |user| %>
+
+                  <p><%= user.render %></p>
+
+                <% end %>
+							</td>
+						</tr>
+            <% if @project.old_principal_investigator.present? %>
+              <tr>
+                <td class="first">
+                  <%= t('helpers.project.old_principal_investigator') %>
+                </td>
+                <td>
+                  <%= f.text_field :old_principal_investigator, :class => 'text_field', :readonly => true  %>
+                  <%= link_to( "Clear", "#", { :id => "clear_project_old_principal_investigator" } ) %>
+                  <script type="text/javascript">
+                  (function($){
+
+                    $(document).ready(function(){
+
+                      $("#clear_project_old_principal_investigator").click(function(evt){
+
+                        evt.preventDefault();
+                        $("#project_old_principal_investigator").val("");
+
+                      });
+
+                    });
+
+                  })(jQuery);
+                  </script>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="first"><%= t('helpers.project.gdpr') %></td>
+              <td>
+                <% @project.gdprs.each do |user| %>
+                  <p><%= user.render %></p>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+							<td class="first"><%= t('helpers.project.data_contact') %></td>
+							<td>
+                <% @project.data_contacts.each do |user| %>
+                  <p><%= user.render %></p>
+                <% end %>
+							</td>
+						</tr>
+            <% if @project.old_data_contact.present? %>
+              <tr>
+                <td class="first">
+                  <%= t('helpers.project.old_data_contact') %>
+                </td>
+                <td>
+                  <%= f.text_field :old_data_contact, :class => 'text_field', :readonly => true  %>
+                  <%= link_to( "Clear", "#", { :id => "clear_project_old_data_contact" } ) %>
+                  <script type="text/javascript">
+                  (function($){
+
+                    $(document).ready(function(){
+
+                      $("#clear_project_old_data_contact").click(function(evt){
+
+                        evt.preventDefault();
+                        $("#project_old_data_contact").val("");
+
+                      });
+
+                    });
+
+                  })(jQuery);
+                  </script>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="first"></td>
+              <td>
+                <%= link_to( "Add/Remove collaborators", project_path([@project, "share"]) + "#add_collaborator", { } ) %>
+              </td>
+            </tr>
 					</table>				
 				</div>
 				<% end %>

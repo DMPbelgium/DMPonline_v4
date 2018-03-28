@@ -1,15 +1,6 @@
 <p>Hello <%= @project_group.user.name(true) %></p>
 
-<%
-access_level = "read-only"
-if @project_group.access_level == 2 then
-	access_level = "editor"
-elsif @project_group.access_level == 3 then
-	access_level = "co-owner"
-end
-%>
-
-<p>You have been given <%= access_level %> access to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
+<p>You have been given access level "<%= @project_group.t_access_level %>" to the DMP "<%= link_to @project_group.project.title, project_path(@project_group.project, :only_path => false) %>".</p>
 
 <% if !(@project_group.user.confirmed?) %>
 

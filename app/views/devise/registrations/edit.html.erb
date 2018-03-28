@@ -45,9 +45,7 @@
           <td>
             <% if current_user.orcid_id.present? %>
 
-              <a href="https://orcid.org" class="orcid-link">
-                <img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png">
-              </a>
+              <a href="https://orcid.org" class="orcid-link"><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>
               <a href="https://orcid.org/<%= current_user.orcid_id %>" class="orcid-link">https://orcid.org/<%= current_user.orcid_id %></a>
               |
               <%= link_to "Unlink from ORCID", users_remove_orcid_path(), :data => { :confirm => "Are you sure?" }, :class => 'orcid-link' %>

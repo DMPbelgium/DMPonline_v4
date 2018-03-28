@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
 
 	extend FriendlyId
 
-	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug
+	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug, :old_principal_investigator, :old_data_contact
 
 	#associations between tables
 	belongs_to :dmptemplate, :inverse_of => :projects, :autosave => true
@@ -98,34 +98,87 @@ class Project < ActiveRecord::Base
 		end
 	end
 
+  def old_principal_investigator
+    read_attribute("principal_investigator")
+  end
+
+  def old_principal_investigator=(pi)
+    write_attribute("principal_investigator",pi)
+  end
+
+  def principal_investigators
+    project_groups.where( :project_pi => true ).all.map(&:user)
+  end
+
+  def principal_investigator
+    principal_investigators.map { |u| u.render }.to_sentence.html_safe
+  end
+
+  def old_data_contact
+    read_attribute("data_contact")
+  end
+
+  def old_data_contact=(dc)
+    write_attribute("data_contact",dc)
+  end
+
+  def data_contacts
+    project_groups.where( :project_data_contact => true ).all.map(&:user)
+  end
+
+  def data_contact
+    data_contacts.map { |u| u.render }.to_sentence.html_safe
+  end
+
+  def gdprs
+    project_groups.where( :project_gdpr => true ).all.map(&:user)
+  end
+
+  def gdpr
+    gdprs.map { |u| u.render }.to_sentence.html_safe
+  end
+
+  def assign_data_contact(user_id)
+    project_groups.build( :user_id => user_id, :project_data_contact => true )
+  end
+
 	def assign_creator(user_id)
-		add_user(user_id, true, true, true)
+    project_groups.build( :user_id => user_id, :project_creator => true )
 	end
 
 	def assign_editor(user_id)
-		add_user(user_id, true)
+		project_groups.build( :user_id => user_id, :project_editor => true )
 	end
 
 	def assign_reader(user_id)
-		add_user(user_id)
+		project_groups.build( :user_id => user_id )
 	end
 
 	def assign_administrator(user_id)
-		add_user(user_id, true, true)
+		project_groups.build( :user_id => user_id, :project_administrator => true )
 	end
 
+  def assign_pi(user_id)
+    project_groups.build( :user_id => user_id, :project_pi => true )
+  end
+
+  def assign_gdpr(user_id)
+    project_groups.build( :user_id => user_id, :project_gdpr => true )
+  end
+
 	def administerable_by(user_id)
-		user = project_groups.find_by_user_id(user_id)
-    ( user && user.project_administrator ) ? true : false
+    return false if user_id.nil?
+		project_groups.where( "user_id = ? AND (project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_gdpr = ?)", user_id, true, true, true, true ).count > 0
 	end
 
 	def editable_by(user_id)
-		user = project_groups.find_by_user_id(user_id)
-    ( user && ( user.project_editor || user.project_administrator ) ) ? true : false
+    return false if user_id.nil?
+    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_gdpr = ?)", user_id, true, true, true, true, true ).count > 0
 	end
 
 	def readable_by(user_id)
-		( project_groups.find_by_user_id(user_id) ) ? true : false
+    return false if user_id.nil?
+    project_groups.where( "user_id = ?", user_id ).count > 0
 	end
 
 	def self.projects_for_user(user_id)
@@ -184,15 +237,6 @@ class Project < ActiveRecord::Base
 	end
 
 	private
-
-	def add_user(user_id, is_editor = false, is_administrator = false, is_creator = false)
-		group = ProjectGroup.new
-		group.user_id = user_id
-		group.project_creator = is_creator
-		group.project_editor = is_editor
-		group.project_administrator = is_administrator
-		project_groups << group
-	end
 
 	def create_plans
 		dmptemplate.phases.each do |phase|
