@@ -130,7 +130,7 @@ class PlansController < ApplicationController
           encoding: "UTF-8",
 			    margin: @formatting[:margin],
 			  	footer: {
-			  	  center:    t('helpers.plan.export.pdf.generated_by'),
+			  	  center:    t('helpers.plan.export.pdf.generated_by') + " - last updated at " + I18n.l( @plan.updated_at, :format => :custom ),
 			  	  font_size: 8,
 			  	  spacing:   (@formatting[:margin][:bottom] / 2) - 4,
 			  	  right:     '[page] of [topage]'

@@ -24,7 +24,7 @@ en:
     formats:
       default: "%a, %d %b %Y %H:%M:%S %z"
       short: "%d %b %H:%M"
-      custom: "%d/%m/%Y %H:%M"
+      custom: "%Y/%m/%d %H:%M"
       long: "%B %d, %Y %H:%M"
     am: "am"
     pm: "pm"
