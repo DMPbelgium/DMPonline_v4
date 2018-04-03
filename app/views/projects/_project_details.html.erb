@@ -69,14 +69,16 @@
             </td>
           </tr>
         <% end %>
+        <!--
         <tr>
-          <td class="first"><%= t('helpers.project.gdpr') %></td>
+          <td class="first"><%#= t('helpers.project.gdpr') %></td>
           <td>
-            <% @project.gdprs.each do |user| %>
-              <p><%= user.render %></p>
-            <% end %>
+            <%# @project.gdprs.each do |user| %>
+              <p><%#= user.render %></p>
+            <%# end %>
           </td>
         </tr>
+        -->
         <tr>
           <td class="first"><%= t('helpers.project.data_contact') %></td>
           <td>
@@ -173,14 +175,16 @@
                 </td>
               </tr>
             <% end %>
+            <!--
             <tr>
-              <td class="first"><%= t('helpers.project.gdpr') %></td>
+              <td class="first"><%#= t('helpers.project.gdpr') %></td>
               <td>
-                <% @project.gdprs.each do |user| %>
-                  <p><%= user.render %></p>
-                <% end %>
+                <%# @project.gdprs.each do |user| %>
+                  <p><%#= user.render %></p>
+                <%# end %>
               </td>
             </tr>
+            -->
             <tr>
 							<td class="first"><%= t('helpers.project.data_contact') %></td>
 							<td>

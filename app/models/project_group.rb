@@ -4,7 +4,6 @@ class ProjectGroup < ActiveRecord::Base
     "helpers.project.share.owner",
     "helpers.project.share.co_owner",
     "helpers.project.share.pi",
-    "helpers.project.share.gdpr",
     "helpers.project.share.edit",
     "helpers.project.share.data_contact",
     "helpers.project.share.read_only",
@@ -34,14 +33,12 @@ class ProjectGroup < ActiveRecord::Base
       return 1
     elsif self.project_pi
       return 2
-  	elsif self.project_gdpr
-  		return 3
   	elsif self.project_editor
-  		return 4
+  		return 3
     elsif self.project_data_contact
-      return 5
+      return 4
   	else
-  		return 6
+  		return 5
   	end
   end
 
@@ -49,14 +46,13 @@ class ProjectGroup < ActiveRecord::Base
   	new_access_level = new_access_level.to_i
     self.project_administrator = new_access_level == 1
     self.project_pi = new_access_level == 2
-    self.project_gdpr = new_access_level == 3
-    self.project_editor = new_access_level == 4
-    self.project_data_contact = new_access_level == 5
+    self.project_editor = new_access_level == 3
+    self.project_data_contact = new_access_level == 4
   end
 
   def self.assignable_access_levels
 
-    (1..6).to_a
+    (1..5).to_a
 
   end
 
