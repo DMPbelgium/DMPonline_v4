@@ -1,7 +1,7 @@
 class Option < ActiveRecord::Base
 
 	#associations between tables
-	belongs_to :question, :inverse_of => :options, :autosave => true
+	belongs_to :question, :inverse_of => :options
 
   has_many :option_warnings, :dependent => :destroy, :inverse_of => :option
 	has_and_belongs_to_many :answers, join_table: "answers_options"
