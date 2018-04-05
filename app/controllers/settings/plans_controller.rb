@@ -3,13 +3,14 @@ module Settings
 
     before_filter :get_settings
 
-    def show
-      respond_to do |format|
-        format.html
-        format.partial
-        format.json { render json: settings_json }
-      end
-    end
+#disabled: view already included in app/views/shared/_export_links.html.erb
+#    def show
+#      respond_to do |format|
+#        format.html
+#        format.partial
+#        format.json { render json: settings_json }
+#      end
+#    end
 
     def update
 

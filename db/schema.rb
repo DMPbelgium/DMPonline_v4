@@ -324,13 +324,6 @@ ActiveRecord::Schema.define(:version => 20180326134731) do
     t.boolean  "is_example"
   end
 
-  create_table "test", :id => false, :force => true do |t|
-    t.binary "data", :limit => 2147483647
-    t.string "id",                         :null => false
-  end
-
-  add_index "test", ["id"], :name => "id", :unique => true
-
   create_table "themes", :force => true do |t|
     t.string   "title"
     t.text     "description", :limit => 16777215

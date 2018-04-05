@@ -15,7 +15,7 @@ DMPonline4::Application.routes.draw do
     match '/users/confirmation' => 'confirmations#update', :via => :put, :as => :update_user_confirmation
   end
 
-  resources :contacts, :controllers => {:contacts => 'contacts'}
+  resources :contacts, :controllers => {:contacts => 'contacts'}, :only => [:new, :create]
 
   # WAYFless access point - use query param idp
   get 'auth/shibboleth' => 'users/omniauth_shibboleth_request#redirect', :as => 'user_omniauth_shibboleth'
@@ -35,7 +35,7 @@ DMPonline4::Application.routes.draw do
   #organisation admin area
   get "org/admin/users" => 'organisation_users#admin_index', :as => "org/admin/users"
 
- 	resources :organisations, :path => 'org/admin' do
+	resources :organisations, :path => 'org/admin', :only => [] do
   	member do
 			get 'children'
 			get 'templates'
@@ -45,7 +45,7 @@ DMPonline4::Application.routes.draw do
 		end
 	end
 
- 	resources :guidances, :path => 'org/admin/guidance' do
+ 	resources :guidances, :path => 'org/admin/guidance', :only => [] do
   	member do
   		get 'admin_show'
   		get 'admin_index'
@@ -62,7 +62,7 @@ DMPonline4::Application.routes.draw do
    	end
   end
 
- 	resources :guidance_groups, :path => 'org/admin/guidancegroup' do
+ 	resources :guidance_groups, :path => 'org/admin/guidancegroup', :only => [] do
  		member do
  			get 'admin_show'
  			get 'admin_new'
@@ -73,11 +73,11 @@ DMPonline4::Application.routes.draw do
   	end
   end
 
- 	resource :organisation
+ 	#resource :organisation
 
   #resources :splash_logs
 
-  resources :dmptemplates, :path => 'org/admin/templates' do
+  resources :dmptemplates, :path => 'org/admin/templates', :only => [] do
  		member do
  			get 'admin_index'
  			get 'admin_template'
@@ -124,7 +124,7 @@ DMPonline4::Application.routes.draw do
     end
   end
 
-  resources :projects do
+  resources :projects, :except => [:edit] do
   	resources :plans do
       member do
         get 'status'
@@ -154,7 +154,7 @@ DMPonline4::Application.routes.draw do
 
   #only used in functional testing (see test/functional/project_partners_controller_test.rb)
   #resources :project_partners
-  resources :project_groups
+  resources :project_groups, :only => [:create,:update,:destroy]
 
   #resources :users
   #resources :user_statuses
@@ -178,8 +178,8 @@ DMPonline4::Application.routes.draw do
   #resources :file_uploads
 
   namespace :settings do
-    resource :projects
-    resources :plans
+    resource :projects, :only => [:show,:update]
+    resources :plans, :only => [:update]
   end
 
   #get "sso_user/edit", :controller => :sso_user, :action => :edit, :as => :edit_sso_user
