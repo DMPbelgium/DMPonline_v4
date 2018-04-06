@@ -113,7 +113,8 @@ DMPonline4::Application.routes.draw do
   #resources :questions
   #resources :question_themes
 
-  resources :themes
+  #not used anywhere
+  #resources :themes
 
   resources :answers, :only => [:create]
   #only used in functional testing (see test/functional/plan_sections_controller_test.rb)
