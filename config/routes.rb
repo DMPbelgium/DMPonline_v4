@@ -115,7 +115,7 @@ DMPonline4::Application.routes.draw do
 
   resources :themes
 
-  resources :answers
+  resources :answers, :only => [:create]
   #only used in functional testing (see test/functional/plan_sections_controller_test.rb)
   #resources :plan_sections
   resources :comments, :except => [:index,:destroy] do

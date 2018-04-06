@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
 	# POST /answers
 	# POST /answers.json
 	def create
-		@answer = Answer.new(params[:answer])
+		@answer = Answer.new(params.require(:answer))
     authorize! :create,@answer
 
 		old_answer = @answer.plan.answer(@answer.question_id, false)
