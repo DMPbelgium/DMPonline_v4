@@ -118,7 +118,7 @@ DMPonline4::Application.routes.draw do
   resources :answers
   #only used in functional testing (see test/functional/plan_sections_controller_test.rb)
   #resources :plan_sections
-  resources :comments do
+  resources :comments, :except => [:index,:destroy] do
     member do
       put 'archive'
     end
