@@ -2,7 +2,6 @@
 
 <%= form_for(comment, :url => {:controller => :comments, :action => :archive } , :html => { :method => :put, :class => "archive_comment_form", :id => "archive_comment_form_#{comment.id}"}) do |f| %>
     <%= f.hidden_field :id, :value => comment.id %>
-    <%= f.hidden_field :archived_by, :value => current_user.id %>
 	
     <%= render :partial => "view_comment", locals: {comment: comment} %> 
     

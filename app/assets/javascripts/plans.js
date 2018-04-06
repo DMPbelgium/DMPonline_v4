@@ -205,13 +205,13 @@ $( document ).ready(function() {
         $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        $("#new_comment_form_" + q_id).submit();
         
     });
     
      //action to view a comment block
     $('.view_comment_button').click(function(e){
-        var c_id = $(this).next(".comment_id").val();
+        e.preventDefault();
+        var c_id = $(this).attr("data-comment-id");
         var q_id = $(this).closest(".comment-area").find(".question_id").val();
         $('.view_comment_class').hide();
         $('.edit_comment_class').hide();
@@ -223,12 +223,12 @@ $( document ).ready(function() {
         $('#view_comment_div_'+ c_id).show();
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
-        e.preventDefault();
     });
   
     //action to edit a comment block
     $('.edit_comment_button').click(function(e){
-        var c_id = $(this).prev(".comment_id").val();
+        e.preventDefault();
+        var c_id = $(this).attr("data-comment-id");
         var q_id = $(this).closest(".comment-area").find(".question_id").val();
         $('.edit_comment_class').hide();
         $('.view_comment_class').hide();
@@ -240,24 +240,23 @@ $( document ).ready(function() {
         $('#edit_comment_div_'+ c_id).show();
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
-        e.preventDefault();
     });
     
      //submit edit comment button
     $('.edit_comment_submit_button').click(function(e){
-        var c_id = $(this).parent().children(".comment_id").val();
+        var c_id = $(this).attr("data-comment-id");
         var s_id = $(this).parent().children(".section_id").val();
         
         $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        $("#edit_comment_form_" + c_id).submit();
         
     });
     
     //action to archive a comment block
     $('.archive_comment_button').click(function(e){
-        var c_id = $(this).prev(".comment_id").val();
+        e.preventDefault();
+        var c_id = $(this).attr("data-comment-id");
         var q_id = $(this).closest(".comment-area").find(".question_id").val();
         $('.edit_comment_class').hide();
         $('.view_comment_class').hide();
@@ -269,28 +268,26 @@ $( document ).ready(function() {
         $('#archive_comment_div_'+ c_id).show()
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
-        e.preventDefault();
     });
     
      //submit archived comment button
     $('.archive_comment_submit_button').click(function(e){
-        var c_id = $(this).parent().children(".comment_id").val();
+        var c_id = $(this).attr("data-comment-id");
         var s_id = $(this).parent().children(".section_id").val();
         
         $("#collapse-" + s_id).children(".accordion-inner").find(".removing").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        $("#archive_comment_form_" + c_id).submit();
         
     });
     
     //action to cancel archive block
     $(".cancel_archive_comment").click(function(e){
-		var c_id = $(this).prev(".comment_id").val();
+        e.preventDefault();
+		    var c_id = $(this).attr("data-comment-id");
         $('.archive_comment_class').hide();
         $('#view_comment_div_'+ c_id).show();
-        e.preventDefault();
-	 });
+	  });
     
 });
 

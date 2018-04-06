@@ -2,15 +2,14 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!
   # GET /comments
   # GET /comments.json
-  def index
-    @comments = Comment.all
-    authorize! :index, Comment
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @comments }
-    end
-  end
+#  def index
+#    @comments = Comment.all
+#    authorize! :index, Comment
+#
+#    respond_to do |format|
+#      format.json { render json: @comments }
+#    end
+#  end
 
   # GET /comments/1
   # GET /comments/1.json
@@ -19,7 +18,7 @@ class CommentsController < ApplicationController
     authorize! :show,@comment
 
     respond_to do |format|
-      format.html # show.html.erb
+      #format.html # show.html.erb
       format.json { render json: @comment }
     end
   end
@@ -34,13 +33,14 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    authorize! :create, Comment
 
     @comment = Comment.new(params[:new_comment])
     @comment.text = params["#{params[:new_comment][:question_id]}new_comment_text"]
     @comment.question_id = params[:new_comment][:question_id]
     @comment.user_id = params[:new_comment][:user_id]
     @comment.plan_id = params[:new_comment][:plan_id]
+
+    authorize! :create, @comment
 
     @plan = Plan.find(@comment.plan_id)
     @project = Project.find(@plan.project_id)
@@ -80,7 +80,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:comment][:id])
     authorize! :archive,@comment
     @comment.archived = true
-    @comment.archived_by = params[:comment][:archived_by]
+    @comment.archived_by = current_user.id
 
     @plan = Plan.find(@comment.plan_id)
     @project = Project.find(@plan.project_id)

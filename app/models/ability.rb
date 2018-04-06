@@ -31,8 +31,19 @@ class Ability
         answer.plan.editable_by(user.id)
       end
 
-      can :index,Comment
-      can [:create,:show,:edit,:update,:archive],Comment
+      can :create, Comment do |comment|
+        comment.creatable_by( user.id )
+      end
+      can :show, Comment do |comment|
+        comment.readable_by( user.id )
+      end
+      can [:edit,:update], Comment do |comment|
+        comment.editable_by( user.id )
+      end
+      can :archive, Comment do |comment|
+        comment.archivable_by( user.id )
+      end
+
       can :manage_settings, User do |viewed_user|
         viewed_user.present? && user.id == viewed_user.id
       end
@@ -54,6 +65,10 @@ class Ability
       if user.has_role? :admin
 
         can :manage, :all
+        #'can' does not override 'can', but is logically or'ed
+        cannot [:edit,:update], Comment do |comment|
+          !comment.editable_by( user.id )
+        end
 
       elsif user.is_org_admin?
 

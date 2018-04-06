@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   belongs_to :organisation, :inverse_of => :users, :autosave => true
   has_many :answers, :dependent => :destroy, :inverse_of => :user
   has_many :project_groups, :dependent => :destroy, :inverse_of => :user
+  has_many :comments, :dependent => :destroy, :inverse_of => :user
 
   has_many :projects, :uniq => true, through: :project_groups do
     def filter(query)
