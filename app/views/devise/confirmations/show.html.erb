@@ -14,14 +14,17 @@
           <td class="first"><%= t('helpers.surname') + ' *' %></td>
           <td><%= text_field_tag "surname", @user.surname == User.nemo ? '' : @user.surname %></td>
         </tr>
+        <% if @user.orcid_id.present? %>
         <tr>
           <td class="first">ORCID</td>
-          <td><%= text_field_tag "orcid_id", @user.orcid_id, :disabled => :disabled %></td>
+          <td><%= @user.orcid_link %></td>
         </tr>
+        <% end %>
         <tr>
           <td class="first"></td>
           <td>
-            <%= submit_tag t('helpers.sign_in'), :class => "btn btn-primary" %>
+            <% help_txt = @user.orcid_id.present? ? t('helpers.sign_in') : "Link with ORCID" %>
+            <%= submit_tag help_txt, :class => "btn btn-primary" %>
           </td>
         </tr>
       </table>

@@ -118,23 +118,39 @@ class User < ActiveRecord::Base
 
     str = [ name ]
 
-    if orcid_id.present?
+    l = orcid_link
 
-      orcid_base_url = "https://orcid.org"
-      orcid_url = orcid_base_url + "/" + orcid_id
+    str << " " << l unless l.nil?
 
-      str << %q( <a class="orcid-link" href=")
-      str << orcid_base_url
-      str << %q("><img alt="ORCID logo" src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>)
-      str << %q( <a class="orcid-link" href=")
-      str << orcid_url
-      str << %q(" title=")
-      str << orcid_url
-      str << %q(">)
-      str << orcid_url
-      str << %q(</a>)
+    str.join("").html_safe
 
-    end
+  end
+
+  def self.orcid_logo
+    "https://orcid.org/sites/default/files/images/orcid_16x16.png"
+  end
+
+  def orcid_link
+
+    return nil unless orcid_id.present?
+
+    str = []
+
+    orcid_base_url = "https://orcid.org"
+    orcid_url = orcid_base_url + "/" + orcid_id
+
+    str << %q(<a class="orcid-link" href=")
+    str << orcid_base_url
+    str << %q("><img alt="ORCID logo" src=")
+    str << User.orcid_logo
+    str << %q("></a>)
+    str << %q( <a class="orcid-link" href=")
+    str << orcid_url
+    str << %q(" title=")
+    str << orcid_url
+    str << %q(">)
+    str << orcid_url
+    str << %q(</a>)
 
     str.join("").html_safe
 
