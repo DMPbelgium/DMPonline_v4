@@ -63,3 +63,20 @@ a.orcid-link:hover, a.orcid-link:active, a.orcid-link:focus, a.orcid-link:visite
   font-style: normal !important;
   color: #a6ce39 !important;
 }
+button.orcid-btn {
+  border: 1px solid #D3D3D3;
+	padding: .3em;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 1px 1px 3px #999;
+	cursor: pointer;
+	color: #999;
+	font-weight: bold;
+	font-size: .8em;
+	line-height: 24px;
+	vertical-align: middle;
+}
+button.orcid-btn:hover {
+  border: 1px solid #338caf;
+	color: #338caf;
+}

@@ -23,8 +23,17 @@
         <tr>
           <td class="first"></td>
           <td>
-            <% help_txt = @user.orcid_id.present? ? t('helpers.sign_in') : "Link with ORCID" %>
-            <%= submit_tag help_txt, :class => "btn btn-primary" %>
+            <% if @user.orcid_id.present? %>
+
+              <%= submit_tag t('helpers.sign_in'), :class => "btn btn-primary" %>
+
+            <% else %>
+
+              <button type="submit" class="orcid-btn">
+                <img src="<%= User.orcid_logo %>"> Update and link to ORCID
+              </button>
+
+            <% end %>
           </td>
         </tr>
       </table>
