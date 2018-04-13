@@ -297,7 +297,7 @@ Devise.setup do |config|
     ENV["ORCID_CLIENT_ID"],
     ENV["ORCID_CLIENT_SECRET"],
     :member => true,
-    :sandbox => true,
+    :sandbox => !Rails.env.production?,
     :authorize_params => {
       :scope => "/read-limited"
     }
