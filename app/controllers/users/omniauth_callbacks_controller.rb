@@ -204,7 +204,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
 
     #NEW USER. We trust "email" because it has to be confirmed.
-    else
+    elsif email.present?
 
       @user = User.new(
         :email => email,
@@ -213,6 +213,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         :surname => auth['info']['last_name']
       )
       @user.ensure_password
+
+    else
+
+      flash[:alert] = I18n.t('devise.omniauth_callbacks.failure', :kind => 'ORCID', :reason => 'could not retrieve email address. Please check the visibility settings in ORCID')
+      redirect_to root_path
+      return
 
     end
 
