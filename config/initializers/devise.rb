@@ -296,14 +296,9 @@ Devise.setup do |config|
   config.omniauth :orcid,
     ENV["ORCID_CLIENT_ID"],
     ENV["ORCID_CLIENT_SECRET"],
-    :member => false,
-    :sandbox => false,
-    :client_options => {
-      :site => ENV['ORCID_SITE'],
-      :authorize_url => ENV['ORCID_AUTHORIZE_URL'],
-      :token_url => ENV['ORCID_TOKEN_URL']
-    },
+    :member => true,
+    :sandbox => Rails.env.production? ? false : true,
     :authorize_params => {
-      :scope => "/authenticate"
+      :scope => "/read-limited"
     }
 end
