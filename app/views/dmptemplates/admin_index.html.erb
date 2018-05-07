@@ -41,7 +41,7 @@
 	  				<%= org_template.title%>
 	  			</td>
 		        <td class="dmp_td_medium">
-		        	<%= raw org_template.description %>
+		        	<%= sanitize(org_template.description, :tags => []).truncate(100) %>
 		        </td>
 		        <td class="dmp_td_small">
 			       	<%= org_template.published %>
@@ -93,7 +93,7 @@
                             <%= org_template.title%>
                         </td>
                         <td class="dmp_td_medium">
-                            <%= raw org_template.description %>
+                            <%= sanitize(org_template.description, :tags => []).truncate(100) %>
                         </td>
                         <td class="dmp_td_small">
                             <%= org_template.published %>
