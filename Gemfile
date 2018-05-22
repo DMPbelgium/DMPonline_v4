@@ -65,7 +65,9 @@ gem 'ledermann-rails-settings'
 gem 'jbuilder'
 gem 'figaro'
 #gem 'omniauth-oauth2', :git => "https://github.com/intridea/omniauth-oauth2.git"
-gem 'omniauth-orcid', "2.0.2"
+#gem 'omniauth-orcid', "2.0.2"
+#use own version for now
+gem "omniauth-orcid", :git => "https://github.com/nicolasfranck/omniauth-orcid.git", :branch => "master"
 #omniauth-orcid uses method Hash#dig which only exists in next version ruby 2.3.0
 gem "ruby_dig"
 gem 'strong_parameters'
