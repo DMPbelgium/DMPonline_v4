@@ -1,5 +1,12 @@
 class ConfirmationsController < Devise::ConfirmationsController
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
+  before_filter :force_relogin, :only => [ :show, :update ]
+
+  def force_relogin
+
+    sign_out :user if user_signed_in?
+
+  end
 
   def after_confirmation_path_for(resource_name, resource)
     root_path

@@ -45,4 +45,17 @@
 
 </div>
 
+<!--logout user out of orcid : START-->
+<%
+  orcid_logout_url = Devise.omniauth_configs[:orcid].strategy.sandbox ? "https://sandbox.orcid.org" : "https://orcid.org"
+  orcid_logout_url += "/userStatus.json?logUserOut=true&callback=after_logout_orcid"
+%>
+<script type="text/javascript">
+function after_logout_orcid(res){
+  console.log(res);
+}
+</script>
+<script type="text/javascript" src="<%= orcid_logout_url %>"></script>
+<!--logout user out of orcid : END-->
+
 <%= render "devise/shared/links" %>
