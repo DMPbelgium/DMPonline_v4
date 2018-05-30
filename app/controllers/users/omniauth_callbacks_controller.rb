@@ -199,11 +199,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #user found with email
     elsif email.present? && User.where( :email => email ).first
 
+      #don't match this: multiple orcid records with same email available. This would make it possible
+      #to log in to the same user using different orcid records..
+
       #unable to trust this user
       redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
       return
 
-    #NEW USER. We trust "email" because it has to be confirmed.
+    #NEW USER. We trust "email" because ORCID marks it as confirmed
     elsif email.present?
 
       @user = User.new(
@@ -212,22 +215,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         :firstname => auth['info']['first_name'],
         :surname => auth['info']['last_name']
       )
+      @user.skip_confirmation!
       @user.ensure_password
 
     else
 
       flash[:alert] = I18n.t('devise.omniauth_callbacks.failure', :kind => 'ORCID', :reason => 'could not retrieve email address. Please check the visibility settings in ORCID')
-      redirect_to root_path
-      return
-
-    end
-
-    #wait for confirmation (always, even if not a guest organisation)
-    if @user.new_record?
-
-      @user.save
-
-      flash[:alert] = I18n.t("devise.confirmations.send_instructions")
       redirect_to root_path
       return
 
