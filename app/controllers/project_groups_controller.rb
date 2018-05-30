@@ -38,6 +38,10 @@ class ProjectGroupsController < ApplicationController
 
             user.skip_confirmation!
 
+          else
+
+            user.skip_confirmation_notification!
+
           end
 
         end

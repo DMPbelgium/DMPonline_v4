@@ -4,7 +4,9 @@
 
 <% if !(@project_group.user.confirmed?) %>
 
-  <p>An email will follow, containing instructions to unlock your new account.</p>
+  <p>
+    <%= link_to 'Sign in', confirmation_url( @project_group.user, :confirmation_token => @project_group.user.confirmation_token) %>
+  </p>
 
 <% elsif @project_group.user.organisation.wayfless_entity.present? %>
 
