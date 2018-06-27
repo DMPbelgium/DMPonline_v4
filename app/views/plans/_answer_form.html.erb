@@ -46,7 +46,7 @@
 					<!--checkbox display-->
 					<% if q_format.title == t("helpers.checkbox") then %>
 						<% if readonly then %>
-							<%= f.input :options, :as => :check_boxes, :collection => options, :label => false, input_html => { :disabled => true, :id => "options-#{question.id}" } %>
+							<%= f.input :options, :as => :check_boxes, :collection => options, :label => false, :input_html => { :disabled => true, :id => "options-#{question.id}" } %>
 						<% else %>
 							<%= f.input :options, :as => :check_boxes, :collection => options, :label => false, :input_html => { :id => "options-#{question.id}" } %>
 						<% end %>
