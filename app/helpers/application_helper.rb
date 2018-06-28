@@ -49,6 +49,6 @@ module ApplicationHelper
       login_links << [label,url]
 
     end
-    login_links
+    login_links.sort { |a,b| a[0] <=> b[0] }
   end
 end
