@@ -19,12 +19,14 @@
 
   <% end %>
   <li>
-    <h3>or..</h3>
+    <h3>or with your ORCID iD</h3>
   </li>
   <li>
     <%= link_to('Sign in with ORCID', user_omniauth_authorize_path(:orcid)) %>
   </li>
+  <!-- Do not display this at the moment
   <li>
     <%= link_to('Sign in with local account',user_session_path) %>
   </li>
+  -->
 </ul>
