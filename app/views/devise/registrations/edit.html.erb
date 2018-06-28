@@ -63,9 +63,11 @@
           <td><%= current_user.shibboleth_id %></td>
         </tr>
       </table>
+
+      <% if current_user.is_guest? %>
+
 		  <br>
    		<p><%= raw t('helpers.edit_password_info')%></p>
-
 		  <table class="dmp_details_table">
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -92,6 +94,9 @@
           </td>
         </tr>
 		  </table>
+
+      <% end %>
+
 	  <% end %>
 
 		<br>
