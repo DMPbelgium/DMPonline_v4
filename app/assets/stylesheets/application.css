@@ -80,3 +80,7 @@ button.orcid-btn:hover {
   border: 1px solid #338caf;
 	color: #338caf;
 }
+ul.list-simple {
+  list-style-type:disc !important;
+  padding-left:1.5em !important;
+}
