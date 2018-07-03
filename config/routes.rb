@@ -31,6 +31,7 @@ DMPonline4::Application.routes.draw do
   get "help" => 'static_pages#help', :as => "help"
   get "roadmap" => 'static_pages#roadmap', :as => "roadmap"
   get "terms" => 'static_pages#termsuse', :as => "terms"
+  get "privacy" => "static_pages#privacy", :as => "privacy"
 
   #organisation admin area
   get "org/admin/users" => 'organisation_users#admin_index', :as => "org/admin/users"
