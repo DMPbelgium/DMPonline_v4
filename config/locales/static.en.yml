@@ -28,7 +28,7 @@ en:
     title: "Help"
     tab_1: "On DMPonline.be"
     tab_2: "On data management planning"
-    body_text_tab_2_html: "<h3>Useful resources on Data Management Planning</h3>
+    body_text_tab_2_html: "<h2>Useful resources on Data Management Planning</h2>
       <ul class='help_ul'>
         <li>
           <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/resource/DMP_Checklist_2013.pdf'>DCC Checklist for a Data Management Plan</a> [PDF, 3 pages]<br />
@@ -38,7 +38,7 @@ en:
           <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/publications/reports/guides/How%20to%20Develop.pdf'>How to develop a Data Management and Sharing Plan</a> [PDF, 8 pages]<br />A guide by the Digital Curation Centre that outlines typical funder requirements for DMPs and the types of considerations to make when responding.
         </li>
      </ul>
-    <h3>Example Data Management Plans</h3>
+    <h2>Example Data Management Plans</h2>
     <ul class='help_ul'>
       <li>
         <a target='_blank' href='http://www.dcc.ac.uk/sites/default/files/documents/adocs/Leeds-RoaDMaP-DMPs.pdf'>Two social science DMPs</a> [PDF, 7 pages]<br />
@@ -69,7 +69,7 @@ en:
   Three example DMPs from the USA shared by NECDMC, an instructional tool for teaching RDM to undergraduates, graduate students, and researchers in the health sciences, sciences and engineering.
       </li>
     </ul>
-    <h3>Useful guides on Research Data Management in general</h3>
+    <h2>Useful guides on Research Data Management in general</h2>
     <ul class='help_ul'>
       <li>
         <a target='_blank' href='http://www.data-archive.ac.uk/media/2894/managingsharing.pdf'>Managing and Sharing Data: best practice for researchers</a> [PDF, 36 pages]<br />
@@ -94,9 +94,9 @@ en:
     </ul>"
 
     body_text_tab_1_html: "<p>When you login to DMPonline.be you will be directed to your profile page. From there you can navigate to the 'view plans' menu on top to edit, share, export or delete any of your plans. You will also see plans that have been shared with you by others.</p>
-    <h3>Create a plan</h3>
+    <h2>Create a plan</h2>
     <p>To create a plan, click the 'Create plan' button from the 'My plans' page or the top menu. Select options from the drop-down menus and tickboxes to determine what questions and guidance you should be presented with. Confirm your selection by clicking 'Yes, create plan'.</p>
-    <h3>Write your plan</h3>
+    <h2>Write your plan</h2>
     <p>The tabbed interface allows you to navigate through different functions when editing your plan.</p>
     <ul class='list-simple'>
       <li>'Plan details' includes basic administrative details, tells you what sets of questions and guidance your plan is based on and gives you an overview to the questions that you will be asked.</li>
@@ -107,9 +107,9 @@ en:
     <p>When viewing any of the question tabs, you will see the different sections of your plan displayed. Click into these in turn to answer the questions. You can format your responses using the text editing buttons.</p>
     <p>Guidance is displayed in the right-hand panel. Click the '+' symbol to view this.</p>
     <p>Remember to 'save' your responses before moving on.</p>
-    <h3>Share plans</h3>
+    <h2>Share plans</h2>
     <p>Insert the email address of any collaborators you would like to add and invite to your plan. Set the role and level of permissions you would like to grant them via the drop-down options and click 'Add collaborator'.</p>
-    <h3>Export plans</h3>
+    <h2>Export plans</h2>
     <p>From here you can download your plan in various formats. This may be useful if you need to submit your plan as part of a grant application or later on in your project. Choose what format you would like to view/download your plan in and click to export.</p>"
 
   contact_page:
@@ -134,7 +134,7 @@ en:
     <p><a href='http://www.dcc.ac.uk/sites/default/files/documents/tools/dmpOnline/DMPonline-roadmap.png' target='_blank'><img alt='' src='http://www.dcc.ac.uk/webfm_send/1957' style='font-size: 14px; width: 600px; height: 266px;'/></a></p>
     <p>To make sure we’re on the right track, we work to develop our roadmap in conjunction with our DMPonline user group.</p>
     </br>
-    <h3>Current release</h3>
+    <h2>Current release</h2>
     <p>The current version of DMPonline is 4.1  This was released in May 2015 and included a comment feature, improved guidance on signing in with institutional credentials, enhanced deployment guidance and proposed methods for internationalisation. Full details can be found in the release note and associated documents.</p>
     <ul class='list-simple'>
       <li><a href='/files/DMPonline-DeliveryNote-May2015.pdf' target='_blank'>Release Note</a></li>
@@ -143,7 +143,7 @@ en:
     </ul>
     <p>The code is available on <a target='_blank' href='https://github.com/Universiteitsbibliotheek/DMPonline_v4'>GitHub</a></p>
     </br>
-    <h3>Future plans</h3>
+    <h2>Future plans</h2>
     <p>A number of new features are planned in forthcoming release. These include:</p>
     <ul class='list-simple'>
         <li>Institutional branding</li>
@@ -157,21 +157,21 @@ en:
     <p>If you would like to help shape our future plans you could join the user group. More information on how you can engage with us is available under the 'Get involved' tab.</p>"
 
     body_text_tab_2_html: "<p>DMPonline is developed and maintained by the UK Digital Curation Centre. We’re a small team, and are happy to collaborate with others. There are various ways you can get involved:</p>
-    <h3>Join the user group</h3>
+    <h2>Join the user group</h2>
     <p>We want to engage with our users more actively so invite you to join the user group. We run a <a target='_blank' href='https://www.jiscmail.ac.uk/cgi-bin/webadmin?A0=DMPONLINE-USER-GROUP'>listserv</a> for the group that you can request to join. We also host periodic meetings to consult on our plans</p>
     <p>Our user group sessions are usually focused around a certain topic (e.g. fleshing out use cases for an API) so invites are sent based on your areas of expertise. It is also helpful for us to know what type of user you are –researcher, institutional administrator, librarian, developer, funder etc.</p>
     <p>Please let us know your interests and share your ideas for future developments via the mailing list so the community as a whole can feedback on them.</p>
     </br>
-    <h3>Customise DMPonline</h3>
+    <h2>Customise DMPonline</h2>
     <p>DMPonline can be customised by institutions and disciplines. You can add templates for users in your organisation and tailored guidance that explains local support and services. Example answers can also be offered to help users understand what to write in a Data Management Plan. To do this you’ll need to request admin access, so please email us on <a href='mailto:info@dmponline.be?Subject=DMPonline%20Admin%20access' target='_top'>info@dmponline.be</a>.</p>
     <p>Futher guidance on customising DMPonline is available on the <a href='http://www.dcc.ac.uk/dmponline' target='_blank'>DCC website</a>.</p>
     </br>
-    <h3>Contribute to the code</h3>
+    <h2>Contribute to the code</h2>
     <p>DMPonline is a Ruby on Rails application. The source code is made available under a GNU Affero General Public License. This permits others to reuse the code freely, but obligates you to share the source code for any extensions in the same way. Please inform us if you install an instance of DMPonline and offer your contributions back to the community.</p>
     <p>If you install an instance of DMPonline we require that you credit the DCC as originators of the tool. We recommend that the acknowledgement takes the form of the DMPonline logo with a link back to the DCC-hosted version of the tool.</p>
     <p>We are willing to work with external developers to add new features to the tool. We are also open to delivering new features on a chargeable basis. If there are extensions you would like to see prioritised and have resource to support additional developer effort, please contact us on info@dmponline.be to negotiate terms.</p>
     </br>
-    <h3>Support our work</h3>
+    <h2>Support our work</h2>
     <p>We are impressed by the uptake of DMPonline both in the UK and internationally and are really keen to hear  how you are using the tool and promoting it in your context. We are aware that others have run training courses, developed guidance materials and advocated use of the tool. Please notify us of this as it helps to show impact.</p>
     <p>We are currently investigating options for revenue generation. This will help us serve the increased demand more effectively and safeguard the long-term sustainability of DMPonline. Plans will be released for consultation soon but we also welcome your suggestions on how best to support our work.</p> "
 
@@ -180,22 +180,22 @@ en:
     body_text_html: "<div class='white_background'>
     <p>Use of the tool indicates that you understand and agree to these terms and conditions.</p>
 
-    <h3>Limitations of liability</h3>
+    <h2>Limitations of liability</h2>
     <p>Although this website has been conceived with the utmost care, none of the DMPbelgium Consortium members can accept any liability for this website. The aim is for this service to be as complete and accurate as possible. However, all the data on this website is not necessarily comprehensive, accurate or up to date. If you draw our attention to inaccuracies or incompleteness, e.g. by sending <a href='mailto:info@dmponline.be?Subject=DMPonline%20Liability' target='_top'>an email to info@dmponline.be</a>, we will make the necessary corrections and/or adjustments as quickly as possible. As a visitor to this website you agree to these limitations of liability.</p>
 
-    <h3>Privacy</h3>
+    <h2>Privacy</h2>
     <p>This website does not use spyware and does not attempt in any way to violate your privacy. Your e-mail address is not passed on or sold to third parties.</p>
     <p>The web server keeps comprehensive log files on every visit to this website. These log files can be thoroughly processed and analysed with a view to improving this website. The log files are never made available to third parties. To improve the operation of the site and to make its use as user-friendly as possible for you, we can place ‘cookies’ on your computer. These cookies are used for nothing more than the simplification of your site visit. We do not include cookies for third parties.</p>
     <p>If you have any comments or queries about our privacy policy, please do not hesitate to contact us, e.g. by sending <a href='mailto:info@dmponline.be'>an email to info@dmponline.be</a>. The same applies in the event you wish to consult or alter your data.</p>
 
-    <h3>Log in</h3>
+    <h2>Log in</h2>
     <p>A number of services on this website require user identification which in turn necessitates a valid ORCID account with public email address and/or a user account at one of the member institutions of the DMPbelgium Consortium.</p>
 
-    <h3>Your data management plans and other contributions</h3>
+    <h2>Your data management plans and other contributions</h2>
     <p>DMPonline.be is hosted at BELNET, which holds/stores your data management plans on your behalf on secure servers in Belgium. However, the plans are your property and responsibility.</p>
     <p>The information you enter into DMPonline.be can only be accessed by you, people you choose to share access with (e.g. collaborators), and – for the sole purpose of maintaining the service – system administrators appointed by DMPbelgium Consortium. At any point in time, you can decide to update or delete (parts of) your information stored by DMPonline.be. If you decide you need to share this information in other contexts, you can export it in a number of formats. We may collect aggregated metadata information from data management plans, but will not directly access, make use of, publish or in any way share your plans with anyone else without your permission.</p>
 
-    <h3>Applicable licences on templates and guidance</h3>
+    <h2>Applicable licences on templates and guidance</h2>
 
     <ul class='list-simple'>
         <li><em>DMPonline software</em><br />
@@ -214,12 +214,12 @@ en:
         </li>
     </ul>
 
-    <h3>Hyperlinks</h3>
+    <h2>Hyperlinks</h2>
     <p>Since the website includes hyperlinks to websites managed by third parties, DMPbelgium Consortium members do not accept any liability for their content, nor for their availability, their actual existence nor for any use that could be made of the aforementioned websites. DMPbelgium Consortium members cannot be held responsible for any errors in website addresses or domain names on this website.</p>
     <p>The fact that hyperlinks to other websites are included on our website does not signify that we would approve of the information contained on these websites.</p>
 
 
-    <h3>Competent court</h3>
+    <h2>Competent court</h2>
     <p>Belgian law is applicable to any and all disputes relating to this website and its conditions of use. The court of Brussels has sole jurisdiction in these disputes.</p>
     </div>"
 
@@ -255,7 +255,7 @@ en:
 
     <p><strong>By using our Websites, you agree to the terms of this Privacy Policy.</strong></p>
 
-    <h3>1. Definitions</h3>
+    <h2>1. Definitions</h2>
 
     <p>We use the following terms frequently in this Privacy Policy:</p>
 
@@ -301,14 +301,14 @@ en:
       publications, grants, and patents.</li>
     </ul>
 
-    <h3>2. Information We Collect and How We Collect It</h3>
+    <h2>2. Information We Collect and How We Collect It</h2>
 
     <p>DMPbelgium collects information from users of the Websites in four ways: information you
     directly give us; information given to us by third parties; information we collect from your use
     of the Websites; and information we collect from cookies, also known as tracking
     technologies.</p>
 
-    <h4>2.1 Information You Give Us</h4>
+    <h3>2.1 Information You Give Us</h3>
 
     <p>You can use DMPonline to write a Data Management Plan for your research. We securely store the
     information you enter in these areas of our Websites for you. Therefore, to use DMPonline, you
@@ -324,7 +324,7 @@ en:
     email address) with your activities creating and updating DMPs (with your collaborators) for your
     research projects.</p>
 
-    <h4>2.2 Information Provided by Others</h4>
+    <h3>2.2 Information Provided by Others</h3>
 
     <p><strong>Trusted Individuals</strong></p>
 
@@ -356,7 +356,7 @@ en:
     email address, we request permission to read from your ORCID Record, according to the privacy
     preferences you set at ORCID. DMPonline will not change information in your ORCID Record.</p>
 
-    <h4>2.3 Information DMPbelgium Collects from your Use of the Websites</h4>
+    <h3>2.3 Information DMPbelgium Collects from your Use of the Websites</h3>
 
     <p>DMPbelgium will collect information about your use of the Websites. We do this for a variety
     of reasons, including to monitor when and by whom DMP information has been changed, to help
@@ -370,7 +370,7 @@ en:
     collect about you. DMPbelgium will ensure anonymization of these log data after 18 months at the
     latest.</p>
 
-    <h4>2.4 Information from Cookies and other Tracking Technologies</h4>
+    <h3>2.4 Information from Cookies and other Tracking Technologies</h3>
 
     <p>You can control the use of cookies at the individual browser level. If you reject cookies, you
     may still use our Websites, but your ability to use some features or areas of our site may be
@@ -382,7 +382,7 @@ en:
     these companies on an individual as well as aggregated basis. DMPbelgium will ensure
     anonymization of all data for these providers before it leaves our Websites.</p>
 
-    <h3>3. How We Use Information We Collect</h3>
+    <h2>3. How We Use Information We Collect</h2>
 
     <p>We use the information we collect only to operate, protect, evaluate and improve the Websites,
     and DMPonline operations generally.</p>
@@ -406,14 +406,14 @@ en:
     understand how the DMPonline Websites are being used. We will only do so in a way that your
     personal identity is protected.</p>
 
-    <h3>4.0 Choices You Have About Sharing Information</h3>
+    <h2>4. Choices You Have About Sharing Information</h2>
 
     <p>A core DMPbelgium principle is that your data is considered confidential. To that end,
     DMPonline allows you to control how your DMPs are shared with other DMPonline users as Trusted
     Individuals and how they can be exported (e.g. to be published or to be included in a grant
     application).</p>
 
-    <h4>4.1 Default Settings for Sharing</h4>
+    <h3>4.1 Default Settings for Sharing</h3>
 
     <p>Data which you have entered into a DMP may be viewed through the Websites only by you and any
     Trusted Individuals you designate.</p>
@@ -422,7 +422,7 @@ en:
     you are the owner of the data in that DMP. You cannot use DMPbelgium Websites to make any element
     visible on the public Internet, you have to export the DMP and publish elsewhere.</p>
 
-    <h4>4.2 Trusted Individuals</h4>
+    <h3>4.2 Trusted Individuals</h3>
 
     <p>Trusted Individuals you designate, are granted access on a DMP per DMP basis. You will choose
     their level of access when you invite them and can change these permissions at any time. A
@@ -453,26 +453,26 @@ en:
     cannot control how a Trusted Individual will interact with your DMP. You may revoke Trusted
     Individual status at any time via the Sharing page of your DMP.</p>
 
-    <h4>4.3 Changing Settings</h4>
+    <h3>4.3 Changing Settings</h3>
 
     <p>You can change your settings for sharing a DMP at any time. However, the new settings will
     only apply after you have made the change. DMPbelgium has no control over uses of data already
     made available via the Websites or disclosures made in places other than the Websites.</p>
 
-    <h3>5. How We Share Information We Collect</h3>
+    <h2>5. How We Share Information We Collect</h2>
 
     <p>Except as set forth in this Privacy Policy, or as required by law, DMPbelgium does not share
     any information about you with other parties. For example, we do not share or sell your
     information to marketers, advertisers or other entities.</p>
 
-    <h4>5.1 With authenticated users of DMPonline</h4>
+    <h3>5.1 With authenticated users of DMPonline</h3>
 
     <p>Your designated Trusted Individuals have access to all of the information in the DMPs you
     granted them access to, but not to your (entire) Account. According to the levels of access you
     grant them, they will be able to change the information in your DMP and/or invite further Trusted
     Individuals. You can change settings for sharing your DMP at any time.</p>
 
-    <h4>5.2 With DMPbelgium Members</h4>
+    <h3>5.2 With DMPbelgium Members</h3>
 
     <p>DMPbelgium Members cannot access any element from your DMP unless you share a DMP with their
     staff.</p>
@@ -494,7 +494,7 @@ en:
     (ii) the Member has separate agreements with you about how and to whom such data will be
     disclosed.</p>
 
-    <h4>5.3 With our Contractors</h4>
+    <h3>5.3 With our Contractors</h3>
 
     <p>We may share your information with agents or contractors (for example, BELNET is hosting
     DMPbelgium's servers, or a contractor may need to check backup data for inconsistencies), but
@@ -503,7 +503,7 @@ en:
     purposes. These companies are authorized to use your personal data only as necessary to provide
     these services to us.</p>
 
-    <h4>5.4 Government Data Requests</h4>
+    <h3>5.4 Government Data Requests</h3>
 
     <p>If we are required by law, public safety or public policy, or by the courts, we may provide
     your information to regulators, enforcement agents, courts and/or other government entities. To
@@ -511,7 +511,7 @@ en:
     we deem necessary in the situation. To the extent allowed, we will promptly provide information
     about any government data requests received and accounts affected to the relevant DMP owners.</p>
 
-    <h4>5.5 International Data Transfer</h4>
+    <h3>5.5 International Data Transfer</h3>
 
     <p>Note that we store and process personal data on servers located in Belgium on the BELNET
     network. DMPbelgium will not transfer your personal data to facilities outside the BELNET network
@@ -520,7 +520,7 @@ en:
     <p>Backups may be stored outside the BELNET network for added security, but not outside of
     Belgium.</p>
 
-    <h3>6. Access, Review, Editing and Changing Data</h3>
+    <h2>6. Access, Review, Editing and Changing Data</h2>
 
     <p>You may review, delete, and edit information in your DMPs in DMPonline and change Account
     details. Please note that changes will be applied prospectively. For example, if you change a
@@ -557,7 +557,7 @@ en:
     caused by you or your Trusted Individuals. To ensure transparency of our processes, we will post
     information on our websites when we make changes.</p>
 
-    <h3>7. Email deactivated by the Identity Provider</h3>
+    <h2>7. Email deactivated by the Identity Provider</h2>
 
     <p>A DMPonline Account that was created when you were still affiliated with an Identity Provider
     is maintained as is when the institution deactivates your email address, according to the
@@ -588,7 +588,7 @@ en:
       be handled by DMPonline admin users.</li>
     </ul>
 
-    <h3>8. Account Deactivated by DMPbelgium</h3>
+    <h2>8. Account Deactivated by DMPbelgium</h2>
 
     <p>Your DMPonline Account can be deactivated by DMPbelgium:</p>
 
@@ -602,7 +602,7 @@ en:
     you with our services, including reactivation. We will retain and use your information as
     necessary to comply with our legal obligations, resolve disputes, and enforce our agreements.</p>
 
-    <h3>9. Transparency &amp; Complaints</h3>
+    <h2>9. Transparency &amp; Complaints</h2>
 
     <p>This Privacy Policy is governed by and any disputes shall be resolved under the laws and
     courts of Belgium.</p>
@@ -629,7 +629,7 @@ en:
     GDPR, you have the right to lodge a complaint with DPA, the <a href=
     'https://www.dataprotectionauthority.be/'>Belgian Supervisory Authority</a>.</p>
 
-    <h3>10. Information Security</h3>
+    <h2>10. Information Security</h2>
 
     <p>We are committed to protecting the Websites and our users from unauthorized access or
     unauthorized alteration, disclosure or destruction of personal data in the Websites or which we
@@ -671,7 +671,7 @@ en:
     <p>If you have any questions about security on our Websites, please contact DMPbelgium at
     <a href='https://dmponline.be/about_us'>https://dmponline.be/about_us</a>.</p>
 
-    <h3>11. Changes to this Policy</h3>
+    <h2>11. Changes to this Policy</h2>
 
     <p>We may change our Privacy Policy from time to time. We will post any changes to this Privacy
     Policy on this page. Your continued use of the Websites will be deemed conclusive acceptance of
