@@ -45,10 +45,10 @@
 							<td class="dmp_td_border" >	
 								<% if section.questions.any? %>
 									<% questions = section.questions.order("number ASC") %>
-									<ul class="question_ul">
+									<ul class="list-simple">
 										<% questions.each do |ques|%>
 											<li>
-												- <%= ques.text %>
+												<%= ques.text %>
 											</li>	
 										<%end%>
 									</ul>

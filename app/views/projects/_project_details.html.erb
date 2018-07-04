@@ -285,10 +285,10 @@
 	        						<td class="dmp_td_border" >	
 										<% if section.questions.any? %>
 											<% questions = section.questions.sort_by(&:number) %>
-											<ul class="question_ul">
+											<ul class="list-simple">
 												<% questions.each do |ques|%>
 													<li>
-														- <%= ques.text %>
+														<%= ques.text %>
 													</li>	
 												<%end%>
 											</ul>
@@ -341,10 +341,10 @@
 					        						<td class="dmp_td_border" >	
 														<% if section.questions.any? %>
 															<% questions = section.questions.sort_by(&:number) %>
-															<ul class="question_ul">
+															<ul class="list-simple">
 																<% questions.each do |ques|%>
 																	<li>
-																		- <%= ques.text %>
+																		<%= ques.text %>
 																	</li>	
 																<%end%>
 															</ul>

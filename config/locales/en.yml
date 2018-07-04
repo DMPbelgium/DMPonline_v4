@@ -241,11 +241,11 @@ en:
       delete_suggested_answer_message: "You are about to delete a suggested answer/ example for '%{question_text}'. Are you sure?"
       default_value_label: "Default value"
       number_help_text: "This allows you to order questions within a section."
-      question_format_help_text_html: "You can choose from:<ul><li>- text area (large box for paragraphs);</li> <li>- text field (for a short answer);</li>
-      <li>- checkboxes where options are presented in a list and multiple values can be selected;</li>
-      <li>- radio buttons where options are presented in a list but only one can be selected;</li>
-      <li>- dropdown like this box - only one option can be selected;</li>
-      <li>- multiple select box allows users to select several options from a scrollable list, using the CTRL key;</li></ul>"
+      question_format_help_text_html: "You can choose from:<ul class=\"list-simple\"><li>text area (large box for paragraphs);</li> <li>text field (for a short answer);</li>
+      <li>checkboxes where options are presented in a list and multiple values can be selected;</li>
+      <li>radio buttons where options are presented in a list but only one can be selected;</li>
+      <li>dropdown like this box - only one option can be selected;</li>
+      <li>multiple select box allows users to select several options from a scrollable list, using the CTRL key;</li></ul>"
       default_answer_help_text_html: "Anything you enter here will display in the answer box. If you want an answer in a certain format (e.g. tables), you can enter that style here."
       themes_label: "Themes"
       question_themes_help_text_html: "<p>Select themes that are relevant to this question.</p>
