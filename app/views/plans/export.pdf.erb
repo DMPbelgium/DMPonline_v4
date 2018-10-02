@@ -75,11 +75,10 @@
                                         <li><%= option.text %></li>
                                     <% end %>
                                 </ul>
-                            <%else%>
+                            <% end %>
                                 <% if !answer.text.nil? then %>
                                     <%= raw answer.text.gsub(/<tr>(\s|<td>|<\/td>|&nbsp;)*(<\/tr>|<tr>)/,"") %>
                                 <%end%>    
-                            <% end %>
                        
 						
 					<% end %>
