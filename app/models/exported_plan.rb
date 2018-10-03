@@ -124,10 +124,11 @@ class ExportedPlan < ActiveRecord::Base
           answer = self.plan.answer(question.id, false)
 
           if answer.nil? || answer.text.nil? then
-            output += "Question not answered.\n"
+            output += "\nQuestion not answered.\n"
           else
-            output += answer.options.collect {|o| o.text}.join("\n")
-            output += "#{sanitize_text(answer.text)}\n"
+            opts = answer.options.collect {|o| o.text}
+            output += opts.size() > 0 ? opts.join("\n") + "\n" : ""
+            output += "\n#{sanitize_text(answer.text)}\n"
           end
         end
       end
