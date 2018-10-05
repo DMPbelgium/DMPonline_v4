@@ -28,7 +28,7 @@
 								<%= text_area_tag("guidance-text", @guidance.text, class: "tinymce") %>
 							</div>
 							<div class="div_right_icon_g">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_text_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.text_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_text_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.text_help_text_html').to_str)%>
 							</div>
 							<div class="clearfix"></div>
 						</td>
@@ -47,7 +47,7 @@
 									t('org_admin.guidance.by_question_label') => 2}, select_op) %>
 							</div>
 							<div class="div_right_icon_g">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_apply_to_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.apply_to_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_apply_to_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.apply_to_help_text_html').to_str)%>
 							</div>
 							<div class="clearfix"></div>
 							
@@ -59,7 +59,7 @@
 									:id, :title, {:prompt => false, :include_blank => 'None'}, {:multiple => true})%>
 								</div>
 								<div class="div_right_icon_g">
-									<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_by_themes_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.by_themes_help_text_html'))%>
+									<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_by_themes_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.by_themes_help_text_html').to_str)%>
 								</div>
 								<div class="clearfix"></div>
 								
@@ -93,7 +93,7 @@
 		  							<%end%>
 		  						</div>
 								<div class="div_right_icon_g">
-									<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_by_question_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.by_question_help_text_html'))%>
+									<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_by_question_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.by_question_help_text_html').to_str)%>
 								</div>
 								<div class="clearfix"></div>	
 							</div>	
@@ -108,7 +108,7 @@
 								:id, :name, {:prompt => false, :include_blank => 'None'}, {:multiple => false})%>
 							</div>
 							<div class="div_right_icon_g">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_select_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.guidance_group_select_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_select_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance.guidance_group_select_help_text_html').to_str)%>
 							</div>
 							<div class="clearfix"></div>
 							

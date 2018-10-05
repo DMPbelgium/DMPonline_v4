@@ -43,7 +43,7 @@
 								<%= text_area_tag("section-desc-#{section.id}", section.description , class: "tinymce") %>
 							</div>
 							<div class="div_right_icon">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'section_desc_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.templates.section_desc_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'section_desc_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.templates.section_desc_help_text_html').to_str)%>
 							</div>
 						</td>
 					</tr>

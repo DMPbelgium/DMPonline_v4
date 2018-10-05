@@ -27,7 +27,7 @@
 								:class => 'text_field' %>
 							</div>
 							<div class="div_right_icon_g">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_title_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance_group.title_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_title_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance_group.title_help_text_html').to_str)%>
 							</div>
 							
 						</td>
@@ -40,7 +40,7 @@
 								{:prompt => false , :multiple => true}%>
 							</div>
 							<div class="div_right_icon_g">
-								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_template_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance_group.template_help_text_html'))%>
+								<%= link_to( image_tag('help_button.png'), '#', :class => 'guidance_group_template_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.guidance_group.template_help_text_html').to_str)%>
 							</div>
 						</td>
 					</tr>

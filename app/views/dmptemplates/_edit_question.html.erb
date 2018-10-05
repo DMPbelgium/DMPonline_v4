@@ -37,7 +37,7 @@ in the admin interface.
 								{},	:id => "#{question.id}-select-format"%>
 						</div>
 						<div class="div_right_icon">
-							<%= link_to( image_tag('help_button.png'), '#', :class => 'question_format_popover', :rel => "popover", 'data-html' => "true",  'data-content' => t('org_admin.questions.question_format_help_text_html'))%>
+							<%= link_to( image_tag('help_button.png'), '#', :class => 'question_format_popover', :rel => "popover", 'data-html' => "true",  'data-content' => t('org_admin.questions.question_format_help_text_html').to_str)%>
 						</div>
 												
 					</div>	
@@ -50,7 +50,7 @@ in the admin interface.
 									<th nowrap class="small"><%= t('org_admin.option_order_label')%></th>
 									<th nowrap class="medium"><%= t('org_admin.option_text_label')%></th>
 									<th nowrap class="small"><%= t('org_admin.option_default_label')%></th>
-									<th nowrap class="small"><%= link_to( image_tag('help_button.png'), '#', :class => 'question_options_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_options_help_text_html'))%></th>	
+									<th nowrap class="small"><%= link_to( image_tag('help_button.png'), '#', :class => 'question_options_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_options_help_text_html').to_str)%></th>	
 								</tr>
 							</thead>
 							<tbody class="options_tbody">
@@ -95,7 +95,7 @@ in the admin interface.
 							<%= text_area_tag("question-default-value-#{question.id}", question.default_value, class: "tinymce") %>
 						</div>
 						<div class="div_right_icon">
-							<%= link_to( image_tag('help_button.png'), '#', :class => 'default_answer_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.default_answer_help_text_html'))%>
+							<%= link_to( image_tag('help_button.png'), '#', :class => 'default_answer_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.default_answer_help_text_html').to_str)%>
 						</div>
 						
 					</div>	
@@ -123,7 +123,7 @@ in the admin interface.
 					<%end%>
 					</div>
 					<div class="div_right_icon">
-						<%= link_to( image_tag('help_button.png'), '#', :class => 'suggested_answer_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.suggested_answer_help_text_html'))%>
+						<%= link_to( image_tag('help_button.png'), '#', :class => 'suggested_answer_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.suggested_answer_help_text_html').to_str)%>
 					</div>
 					<div class="clearfix"></div>			
 					<div class="border_bottom"></div>
@@ -137,7 +137,7 @@ in the admin interface.
 						<%= text_area_tag("question-guidance-#{question.id}", question.guidance , class: "tinymce") %>
 					</div>
 					<div class="div_right_icon">
-						<%= link_to( image_tag('help_button.png'), '#', :class => 'question_guidance_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_guidance_help_text_html'))%>
+						<%= link_to( image_tag('help_button.png'), '#', :class => 'question_guidance_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_guidance_help_text_html').to_str)%>
 					</div>
 					<div class="clearfix"></div>			
 					<div class="border_bottom"></div>
@@ -154,7 +154,7 @@ in the admin interface.
 							:id, :title, {:prompt => false, :include_blank => 'None'}, {:multiple => true})%>
 					</div>
 					<div class="div_right_icon">
-						<%= link_to( image_tag('help_button.png'), '#', :class => 'question_themes_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_themes_help_text_html'))%>
+						<%= link_to( image_tag('help_button.png'), '#', :class => 'question_themes_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.questions.question_themes_help_text_html').to_str)%>
 					</div>
 					
 				</td>

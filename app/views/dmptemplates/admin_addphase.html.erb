@@ -52,7 +52,7 @@
 									<%= text_area_tag("phase-desc","" , class: "tinymce") %>
 								</div>
 								<div class="div_right_icon">
-									<%= link_to( image_tag('help_button.png'), '#', :class => 'phase_desc_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.templates.phase_desc_help_text_html'))%>
+									<%= link_to( image_tag('help_button.png'), '#', :class => 'phase_desc_popover', :rel => "popover", 'data-html' => "true", 'data-content' => t('org_admin.templates.phase_desc_help_text_html').to_str)%>
 								</div>
 								<div class="clearfix"></div>
 							</td>
