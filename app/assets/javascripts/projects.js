@@ -1,5 +1,11 @@
 $( document ).ready(function() {
 
+  $("input[name=project_gdpr]").change(function(){
+    update_funder_options();
+    $("#funder-control-group").show();
+    $("#project_funder_id").trigger("change");
+  });
+
 	$("#project_funder_id").change(function () {
 		update_template_options();
 		update_guidance_options();
@@ -102,14 +108,47 @@ $( document ).ready(function() {
 		$("#new_project").submit();
 	});
 
+  function update_funder_options(){
+    var gdpr = $("input[name=project_gdpr]:checked").val() == "true" ? true : false;
+    var options = {};
+    $.ajax({
+      type: 'GET',
+      url: "possible_funders.json?gdpr="+gdpr,
+      dataType: 'json',
+      async: false, //Needs to be synchronous, otherwise end up mixing up answers
+      success: function(data) {
+        options = data;
+      }
+    });
+    var select_element = $("#project_funder_id");
+    select_element.find("option").remove();
+    var count = 0;
+    select_element.append("<option value=''>--Select your funder--</option>");
+    for (var id in options) {
+      if (count == 0) {
+        select_element.append("<option value='"+id+"' selected='selected'>"+options[id]+"</option>");
+      }
+      else {
+        select_element.append("<option value='"+id+"'>"+options[id]+"</option>");
+      }
+      count++;
+    }
+  }
 
 	function update_template_options() {
 		var options = {};
 		var funder = $("#project_funder_id").select2('val');
+    if( funder == undefined || funder == null ){
+      funder = "";
+    }
 		var institution = $("#project_institution_id").select2('val');
+    if( institution == undefined || institution == null ){
+      institution = "";
+    }
+    var gdpr = $("input[name=project_gdpr]:checked").val() == "true" ? true : false;
 		$.ajax({
 			type: 'GET',
-			url: "possible_templates.json?institution="+institution+"&funder="+funder,
+			url: "possible_templates.json?institution="+institution+"&funder="+funder+"&gdpr="+gdpr,
 			dataType: 'json',
 			async: false, //Needs to be synchronous, otherwise end up mixing up answers
 			success: function(data) {

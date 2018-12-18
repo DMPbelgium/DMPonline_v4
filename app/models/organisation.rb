@@ -111,6 +111,10 @@ class Organisation < ActiveRecord::Base
 		return dmptemplates.find_all_by_published(1)
 	end
 
+  def gdpr_templates
+    dmptemplates.where(:gdpr => true)
+  end
+
   def self.guest_org
     org = Organisation.find_by_name("guests")
 

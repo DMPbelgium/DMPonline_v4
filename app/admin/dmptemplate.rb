@@ -76,6 +76,7 @@ ActiveAdmin.register Dmptemplate do
         link_to org_title.organisation.name, [:admin, org_title.organisation]
       end
       row :published
+      row :gdpr
       row :is_default
       row :created_at
       row :updated_at
@@ -101,6 +102,7 @@ ActiveAdmin.register Dmptemplate do
         :as => :select,
         :collection => Organisation.find(:all, :order => 'name ASC').map{|orgp|[orgp.name, orgp.id]}
       f.input :published
+      f.input :gdpr
       f.input :is_default
     end
     f.actions

@@ -149,6 +149,7 @@ DMPonline4::Application.routes.draw do
       post 'create'
     end
     collection do
+      get 'possible_funders'
       get 'possible_templates'
       get 'possible_guidance'
     end

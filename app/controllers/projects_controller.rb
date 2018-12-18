@@ -76,7 +76,7 @@ class ProjectsController < ApplicationController
     authorize! :create,Project
 
 		@project = Project.new(params[:project])
-		if @project.dmptemplate.nil? && params[:project][:funder_id] != "" then # this shouldn't be necessary - see setter for funder_id in project.rb
+		if @project.dmptemplate.nil? && params[:project][:funder_id].present? then # this shouldn't be necessary - see setter for funder_id in project.rb
 			funder = Organisation.find(params[:project][:funder_id])
 			if funder.dmptemplates.count == 1 then
 				@project.dmptemplate = funder.published_templates.first
@@ -132,8 +132,22 @@ class ProjectsController < ApplicationController
 		end
 	end
 
+  # GET /projects/possible_funders.json
+  def possible_funders
+    gdpr = params[:gdpr].present? && params[:gdpr] == "true" ? true : false
+    funder_orgs = {}
+    orgs_of_type(t('helpers.org_type.funder'), true).each do |org|
+      next if org.dmptemplates.where(:gdpr => gdpr,:published => true).count <= 0
+      funder_orgs[ org.id ] = org.name
+    end
+    respond_to do |format|
+      format.json { render json: funder_orgs.to_json }
+    end
+  end
+
 	# GET /projects/possible_templates.json
 	def possible_templates
+    gdpr = params[:gdpr].present? && params[:gdpr] == "true" ? true : false
 		if !params[:funder].nil? && params[:funder] != "" && params[:funder] != "undefined" then
 			funder = Organisation.find(params[:funder])
 		else
@@ -147,15 +161,18 @@ class ProjectsController < ApplicationController
 		templates = {}
 		unless funder.nil? then
 			funder.published_templates.each do |t|
+        next if t.gdpr != gdpr
 				templates[t.id] = t.title
 			end
 		end
 		if templates.count == 0 && !institution.nil? then
 			institution.published_templates.each do |t|
+        next if t.gdpr != gdpr
 				templates[t.id] = t.title
 			end
 			institution.children.each do |o|
 				o.published_templates.each do |t|
+          next if t.gdpr != gdpr
 					templates[t.id] = t.title
 				end
 			end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180326134731) do
+ActiveRecord::Schema.define(:version => 20181217082922) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -46,11 +46,14 @@ ActiveRecord::Schema.define(:version => 20180326134731) do
     t.boolean  "published"
     t.integer  "user_id"
     t.integer  "organisation_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.string   "locale"
     t.boolean  "is_default"
+    t.boolean  "gdpr",                                :default => false, :null => false
   end
+
+  add_index "dmptemplates", ["gdpr"], :name => "index_dmptemplates_on_gdpr"
 
   create_table "dmptemplates_guidance_groups", :id => false, :force => true do |t|
     t.integer "dmptemplate_id"

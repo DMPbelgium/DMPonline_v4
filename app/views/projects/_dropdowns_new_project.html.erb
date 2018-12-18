@@ -9,6 +9,16 @@
 
 			</div>
 			<div class="dropdowns">
+        <div class="control-group" id="gdpr-control-group">
+          <div class="controls">
+            <label class="radio">
+              <input type="radio" name="project_gdpr" value="false"> <%= t('helpers.project.create_page.gdpr_false') %>
+            </label>
+            <label class="radio">
+              <input type="radio" name="project_gdpr" value="true"> <%= t('helpers.project.create_page.gdpr_true') %>
+            </label>
+          </div>
+        </div>
 				<div class="control-group" id="funder-control-group">
 					<div class="controls">
 						<%= f.input :funder_id, :as => :select, :collection => @funders, :label => t('helpers.project.create_page.funders_question'), :input_html => { :multiple => false, :class => "typeahead" }, :include_blank =>  t('helpers.project.create_page.choose_funder') %>
@@ -27,7 +37,7 @@
 				</div>
 				<div class="control-group" id="institution-control-group">
 					<div class="controls">
-						<%= f.input :institution_id, :as => :select, :collection => @institutions, :label => t('helpers.project.create_page.institution_question'), :input_html => { :multiple => false, :class => "typeahead" }, :include_blank => t('helpers.project.create_page.choose_funder')  %>
+						<%= f.input :institution_id, :as => :select, :collection => @institutions, :label => t('helpers.project.create_page.institution_question'), :input_html => { :multiple => false, :class => "typeahead" }, :include_blank => t('helpers.project.create_page.choose_organisation')  %>
 						<div class="div_clear"></div>
 						<div class="move_2_right">
 							<a href='#' id="no-institution"><%= t('helpers.project.not_applicable')%></a>
