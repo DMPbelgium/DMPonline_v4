@@ -3,9 +3,12 @@
 # This script will install the needed gem requirements for the DMPonline application
 export RAILS_ENV=production
 
+#as of januari 2019, bundler has stopped supporting ruby < 2.3
+#so please install bundler from 2018
+
 source "/usr/local/rvm/scripts/rvm" &&
 cd /opt/DMPonline_v4 &&
-gem install bundler &&
+gem install bundler --version="1.17.3" &&
 bundle install --deployment &&
 bundle exec rake db:migrate &&
 #sprocket cache hanging around for no good reason
