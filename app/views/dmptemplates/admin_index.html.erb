@@ -29,6 +29,7 @@
 		      	<th class="dmp_th_small"><%= t('org_admin.templates.title_label') %></th>
 		      	<th class="dmp_th_medium"><%= t('org_admin.templates.desc_label') %></th>
 		      	<th class="dmp_th_small"><%= t('org_admin.templates.published_label') %></th>
+		      	<th class="dmp_th_small">GDPR</th>
 		      	<th class="dmp_th_small"><%= t('org_admin.templates.last_updated') %></th>
 		      	<td class="dmp_th_small"><%= t('org_admin.templates.actions') %></td>
 		    </tr>
@@ -46,6 +47,9 @@
 		        <td class="dmp_td_small">
 			       	<%= org_template.published %>
 			    </td>
+          <td class="dmp_td_small">
+            <%= org_template.gdpr %>
+          </td>
 			    <td class="dmp_td_small">
 		        	<%= l org_template.updated_at.to_date, :formats => :short %>
 		        </td>
@@ -82,6 +86,7 @@
                     <th class="dmp_th_small"><%= t('org_admin.templates.title_label') %></th>
                     <th class="dmp_th_medium"><%= t('org_admin.templates.desc_label') %></th>
                     <th class="dmp_th_small"><%= t('org_admin.templates.published_label') %></th>
+                    <th class="dmp_th_small">GDPR</th>
                     <th class="dmp_th_small"><%= t('org_admin.templates.last_updated') %></th>
                     <td class="dmp_th_small"><%= t('org_admin.templates.actions') %></td>
                 </tr>
@@ -97,6 +102,9 @@
                         </td>
                         <td class="dmp_td_small">
                             <%= org_template.published %>
+                        </td>
+                        <td class="dmp_td_small">
+                            <%= org_template.gdpr %>
                         </td>
                         <td class="dmp_td_small">
                             <%= l org_template.updated_at.to_date, :formats => :short %>

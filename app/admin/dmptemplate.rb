@@ -55,6 +55,7 @@ ActiveAdmin.register Dmptemplate do
       link_to org_title.organisation.name, [:admin, org_title.organisation]
     end
     column :published
+    column :gdpr
     column :is_default
 
     actions defaults: true do |template|
