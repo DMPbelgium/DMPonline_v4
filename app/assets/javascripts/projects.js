@@ -1,6 +1,8 @@
 $( document ).ready(function() {
 
   $("input[name=project_gdpr]").change(function(){
+    var val = $(this).filter(":checked").val();
+    if(val == undefined || val == null || val == "") return;
     update_funder_options();
     $("#funder-control-group").show();
     $("#project_funder_id").trigger("change");
@@ -204,4 +206,6 @@ $( document ).ready(function() {
 			$("#guidance-control-group").hide();
 		}
 	}
+
+  $("input[name=project_gdpr]").trigger("change");
 });

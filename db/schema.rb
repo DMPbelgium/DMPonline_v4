@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20181217082922) do
+ActiveRecord::Schema.define(:version => 20190311143446) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -167,12 +167,15 @@ ActiveRecord::Schema.define(:version => 20181217082922) do
     t.integer  "organisation_type_id"
     t.text     "wayfless_entity"
     t.integer  "stylesheet_file_id"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
     t.integer  "parent_id"
     t.boolean  "is_other"
     t.string   "sort_name"
+    t.boolean  "gdpr",                                     :default => false, :null => false
   end
+
+  add_index "organisations", ["gdpr"], :name => "index_organisations_on_gdpr"
 
   create_table "phases", :force => true do |t|
     t.string   "title"

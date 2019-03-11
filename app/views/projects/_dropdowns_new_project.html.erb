@@ -9,21 +9,29 @@
 
 			</div>
 			<div class="dropdowns">
-        <div class="control-group" id="gdpr-control-group">
-          <div class="controls">
-            <label class="radio">
-              <input type="radio" name="project_gdpr" value="false"> <%= t('helpers.project.create_page.gdpr_false') %>
-            </label>
-            <label class="radio">
-              <input type="radio" name="project_gdpr" value="true"> <%= t('helpers.project.create_page.gdpr_true') %>
-            </label>
-            <br>
-            <div class="alert alert-info">
-              <a href="#" class="close" data-dismiss="alert">&times;</a>
-              <%= t('helpers.project.create_page.gdpr_info').html_safe %>
+        <% if current_user.organisation.gdpr %>
+
+          <div class="control-group" id="gdpr-control-group">
+            <div class="controls">
+              <label class="radio">
+                <input type="radio" name="project_gdpr" value="false"> <%= t('helpers.project.create_page.gdpr_false') %>
+              </label>
+              <label class="radio">
+                <input type="radio" name="project_gdpr" value="true"> <%= t('helpers.project.create_page.gdpr_true') %>
+              </label>
+              <br>
+              <div class="alert alert-info">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <%= t('helpers.project.create_page.gdpr_info').html_safe %>
+              </div>
             </div>
           </div>
-        </div>
+
+        <% else %>
+
+          <input type="radio" style="display:none" name="project_gdpr" value="false" checked>
+
+        <% end %>
 				<div class="control-group" id="funder-control-group">
 					<div class="controls">
 						<%= f.input :funder_id, :as => :select, :collection => @funders, :label => t('helpers.project.create_page.funders_question'), :input_html => { :multiple => false, :class => "typeahead" }, :include_blank =>  t('helpers.project.create_page.choose_funder') %>

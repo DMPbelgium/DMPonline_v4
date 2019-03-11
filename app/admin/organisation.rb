@@ -68,6 +68,7 @@ ActiveAdmin.register Organisation do
       row :logo_file_id
       row :banner_file_id
       row :stylesheet_file_id
+      row :gdpr
       row :created_at
       row :updated_at
 		end
@@ -97,6 +98,7 @@ ActiveAdmin.register Organisation do
       f.input :logo_file_id
       f.input :banner_file_id
       f.input :stylesheet_file_id
+      f.input :gdpr
     end
     f.actions
   end

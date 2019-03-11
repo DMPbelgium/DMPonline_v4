@@ -91,6 +91,13 @@ class ProjectsController < ApplicationController
 		@project.title = I18n.t('helpers.project.my_project_name')+' ('+@project.dmptemplate.title+')'
 		@project.assign_creator(current_user.id)
     @project.assign_pi(current_user.id)
+
+    user_org = current_user.organisation
+    if user_org.gdpr
+      user_org.org_gdprs.each do |u|
+        @project.assign_gdpr(u.id)
+      end
+    end
 		respond_to do |format|
 			if @project.save
 				format.html { redirect_to({:action => "show", :id => @project.slug, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }

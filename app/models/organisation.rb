@@ -16,7 +16,7 @@ class Organisation < ActiveRecord::Base
 	accepts_nested_attributes_for :organisation_type
 	accepts_nested_attributes_for :dmptemplates
 
-	attr_accessible :abbreviation, :banner_file_id, :description, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id, :sort_name
+	attr_accessible :abbreviation, :banner_file_id, :description, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id, :sort_name, :gdpr
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
@@ -131,6 +131,17 @@ class Organisation < ActiveRecord::Base
     end
 
     org
+  end
+
+  def org_gdprs
+
+    User.all(
+      :joins => :roles,
+      :conditions => {
+        :roles => { :name => "org_gdpr" },
+        :organisation_id => self.id }
+    )
+
   end
 
 end

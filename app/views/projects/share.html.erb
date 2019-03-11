@@ -32,6 +32,14 @@
 							<td class="dmp_td_border">
 								<% if group.project_creator then %>
 									<%= t("helpers.project.share.owner")%>
+                <%#
+                  Data Protection Officers are added automatically and so must not be removed.
+                  They are always org_admin
+                %>
+                <% elsif group.project_gdpr && group.user.is_org_admin? %>
+
+                  <%= t("helpers.project.share.gdpr")%>
+
 								<% else %>
 									<%= form_for group, :url => {:controller => :project_groups, :action => :update, :id => group.id }, :html=>{:method=>:put} do |f| %>
 										<%= f.select :access_level,
@@ -49,6 +57,12 @@
 							</td>
 							<td class="dmp_td_border">
 								<% if group.project_creator && group.user == current_user then %>
+
+                <%#
+                  Data Protection Officers are added automatically and so must not be removed.
+                  They are always org_admin
+                %>
+                <% elsif group.project_gdpr && group.user.is_org_admin? %>
 
                 <% else %>
 									<%= link_to t('helpers.project.share.remove'), group, method: :delete, data: { confirm: t('helpers.project.share.confirmation_question') }, :class => "a-orange" %>
