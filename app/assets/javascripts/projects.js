@@ -71,7 +71,7 @@ $( document ).ready(function() {
 		}
     var $confirm_guidance = $("#confirm-guidance");
     var $confirm_guidance_none = $("#confirm-guidance-none");
-    var $guidances = $("input:checked");
+    var $guidances = $("input[name=project\\[guidance_group_ids\\]\\[\\]]").filter(":checked");
     $confirm_guidance.empty().hide();
     $confirm_guidance_none.hide();
 
