@@ -211,4 +211,12 @@ $( document ).ready(function() {
 	}
 
   $("input[name=project_gdpr]").trigger("change");
+
+  $("#create-plan-button").on("click",function(evt){
+
+    evt.preventDefault();
+
+    $("#project-confirmation-dialog").modal("show");
+
+  });
 });

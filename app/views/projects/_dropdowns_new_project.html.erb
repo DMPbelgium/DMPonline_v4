@@ -14,6 +14,7 @@
               :title,
               :as => :string,
               :label => false,
+              :required => true,
               :placeholder => "Project title (required)",
               :input_html => { :style => "width:99%" }
             )
@@ -91,6 +92,6 @@
 	<% end %>
 	<!-- submit buttons -->
 	<%= f.actions do %>
-		<button type="submit" id="create-plan-button" style="display:none;" data-toggle="modal" href="#project-confirmation-dialog" class="btn btn-primary"><%= t('helpers.project.create')%></button>
+		<button type="button" id="create-plan-button" style="display:none;" class="btn btn-primary"><%= t('helpers.project.create')%></button>
 	<% end %>
 <% end %>
