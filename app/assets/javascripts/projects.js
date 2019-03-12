@@ -69,6 +69,9 @@ $( document ).ready(function() {
 		else {
 			$("#confirm-template").closest("div").show();
 		}
+    $("#confirm-title").text(
+      $("#project_title").val()
+    );
     var $confirm_guidance = $("#confirm-guidance");
     var $confirm_guidance_none = $("#confirm-guidance-none");
     var $guidances = $("input[name=project\\[guidance_group_ids\\]\\[\\]]").filter(":checked");

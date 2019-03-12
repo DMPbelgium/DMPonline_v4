@@ -8,6 +8,18 @@
 				<p><%= raw t('helpers.project.create_page.desc_html')%></p>
 
 			</div>
+      <div class="control-group">
+        <div class="controls">
+        <%= f.input(
+              :title,
+              :as => :string,
+              :label => false,
+              :placeholder => "Project title (required)",
+              :input_html => { :style => "width:99%" }
+            )
+        %>
+        </div>
+      </div>
 			<div class="dropdowns">
         <% if current_user.organisation.gdpr %>
 
@@ -79,6 +91,6 @@
 	<% end %>
 	<!-- submit buttons -->
 	<%= f.actions do %>
-		<a id="create-plan-button" style="display:none;" data-toggle="modal" href="#project-confirmation-dialog" class="btn btn-primary"><%= t('helpers.project.create')%></a>
+		<button type="submit" id="create-plan-button" style="display:none;" data-toggle="modal" href="#project-confirmation-dialog" class="btn btn-primary"><%= t('helpers.project.create')%></button>
 	<% end %>
 <% end %>

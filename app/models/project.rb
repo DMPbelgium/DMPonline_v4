@@ -17,6 +17,7 @@ class Project < ActiveRecord::Base
 
   #validation - start
   validates :dmptemplate,:presence => true
+  validates :title, :presence => true, :length => { :minimum => 1 }
   #validation - end
 
 	def funder_id=(new_funder_id)

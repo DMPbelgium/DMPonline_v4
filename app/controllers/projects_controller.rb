@@ -88,7 +88,7 @@ class ProjectsController < ApplicationController
 				@project.dmptemplate = @project.organisation.published_templates.first
 			end
 		end
-		@project.title = I18n.t('helpers.project.my_project_name')+' ('+@project.dmptemplate.title+')'
+		#@project.title = I18n.t('helpers.project.my_project_name')+' ('+@project.dmptemplate.title+')'
 		@project.assign_creator(current_user.id)
     @project.assign_pi(current_user.id)
 
