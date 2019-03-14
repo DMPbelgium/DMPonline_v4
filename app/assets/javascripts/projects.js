@@ -96,7 +96,7 @@ $( document ).ready(function() {
       $("#confirm-template").css({ color: "inherit" }).text(template);
     }
     else{
-			$("#confirm-template").css({ color: "red" }).text("None");
+			$("#confirm-template").css({ color: "red" }).text(gdpr_enabled() ? "None" : "Default" );
 		}
 
     var confirm_title = $("#confirm-title");
