@@ -49,6 +49,10 @@
 						<td class="first"><%= t('org_admin.org_type') %></td>
 						<td><%= @organisation.organisation_type.name %></td>
 					</tr>
+          <tr>
+            <td class="first">GDPR</td>
+            <td><%= f.check_box :gdpr %></td>
+          </tr>
 				</table>
 			
 			<!-- submit buttons -->
