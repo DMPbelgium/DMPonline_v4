@@ -20,13 +20,14 @@ class Project < ActiveRecord::Base
   validates :title, :presence => true, :length => { :minimum => 1 }
   #validation - end
 
+  #TODO: remove this? -> no, needed in assigment, but it shouldn't do anything
 	def funder_id=(new_funder_id)
-		if new_funder_id != "" then
-			new_funder = Organisation.find(new_funder_id);
-			if new_funder.dmptemplates.count == 1 then
-				dmptemplate = new_funder.dmptemplates.first
-			end
-		end
+#		if new_funder_id != "" then
+#			new_funder = Organisation.find(new_funder_id);
+#			if new_funder.dmptemplates.count == 1 then
+#				dmptemplate = new_funder.dmptemplates.first
+#			end
+#		end
 	end
 
 	def funder_id
@@ -63,12 +64,13 @@ class Project < ActiveRecord::Base
 
 	def funder_name=(new_funder_name)
 		write_attribute(:funder_name, new_funder_name)
-    unless new_funder_name.blank?
-      existing_org = Organisation.where( "name LIKE ? OR abbreviation LIKE ?", new_funder_name, new_funder_name).first
-      unless existing_org.nil?
-        self.funder_id=existing_org.id
-      end
-    end
+#Too dangerous
+#    unless new_funder_name.blank?
+#      existing_org = Organisation.where( "name LIKE ? OR abbreviation LIKE ?", new_funder_name, new_funder_name).first
+#      unless existing_org.nil?
+#        self.funder_id=existing_org.id
+#      end
+#    end
 	end
 
 	def institution_id=(new_institution_id)
@@ -169,12 +171,12 @@ class Project < ActiveRecord::Base
 
 	def administerable_by(user_id)
     return false if user_id.nil?
-		project_groups.where( "user_id = ? AND (project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_gdpr = ?)", user_id, true, true, true, true ).count > 0
+		project_groups.where( "user_id = ? AND (project_administrator = ? OR project_creator = ? OR project_pi = ?)", user_id, true, true, true ).count > 0
 	end
 
 	def editable_by(user_id)
     return false if user_id.nil?
-    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_gdpr = ? OR project_data_contact = ?)", user_id, true, true, true, true, true, true ).count > 0
+    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_data_contact = ?)", user_id, true, true, true, true, true ).count > 0
 	end
 
 	def readable_by(user_id)

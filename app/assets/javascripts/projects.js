@@ -1,8 +1,34 @@
 $( document ).ready(function() {
 
+  function is_string(str){
+    return str != null && str != undefined && typeof(str) == "string" && str.trim() != "";
+  }
+
+  function gdpr_enabled(){
+    return $("input[name=project_gdpr]:checked").val() == "true" ? true : false;
+  }
+
   $("input[name=project_gdpr]").change(function(){
     var val = $(this).filter(":checked").val();
     if(val == undefined || val == null || val == "") return;
+
+    /*
+      force org if gdpr == true
+    */
+    if( gdpr_enabled() ){
+
+      var org_id = $("#current_user_organisation_id").val();
+      $("#project_institution_id").val( org_id ).trigger("change").select2("readonly",true);
+      $("#no-institution").hide();
+
+    }
+    else {
+
+      $("#project_institution_id").select2("readonly",false);
+      $("#no-institution").show();
+
+    }
+
     update_funder_options();
     $("#funder-control-group").show();
     $("#project_funder_id").trigger("change");
@@ -44,7 +70,8 @@ $( document ).ready(function() {
 		$("#confirm-institution").text($("#project_institution_id").select2('data').text);
 	});
 
-	$("#no-institution").click(function() {
+	$("#no-institution").click(function(e) {
+    e.preventDefault();
 		$("#project_institution_id").select2("val", "");
 		update_template_options();
 		update_guidance_options();
@@ -63,15 +90,27 @@ $( document ).ready(function() {
 		if ($("#confirm-funder").text() == "") {
 			$("#confirm-funder").text("None");
 		}
-		if ($("#confirm-template").text() == "") {
-			$("#confirm-template").closest("div").hide();
+
+    var template = $("#project_dmptemplate_id :selected").text();
+		if( is_string(template) ){
+      $("#confirm-template").css({ color: "inherit" }).text(template);
+    }
+    else{
+			$("#confirm-template").css({ color: "red" }).text("None");
 		}
-		else {
-			$("#confirm-template").closest("div").show();
-		}
-    $("#confirm-title").text(
-      $("#project_title").val()
-    );
+
+    var confirm_title = $("#confirm-title");
+    var title = $("#project_title").val();
+    if( is_string(title) ){
+
+      confirm_title.css({ color: "inherit" }).text(title);
+
+    }
+    else{
+
+      confirm_title.css({ color: "red" }).text("None");
+
+    }
     var $confirm_guidance = $("#confirm-guidance");
     var $confirm_guidance_none = $("#confirm-guidance-none");
     var $guidances = $("input[name=project\\[guidance_group_ids\\]\\[\\]]").filter(":checked");
@@ -89,32 +128,19 @@ $( document ).ready(function() {
 		$('.select2-choice').hide();
 	});
 
-	$("#new-project-cancelled").click(function (){
+	$("#new-project-cancelled").click(function (e){
+    e.preventDefault();
 		$("#project-confirmation-dialog").modal("hide");
 		$('.select2-choice').show();
 	});
 
-	$("#new-project-confirmed").click(function (){
-		$("#new_project").submit();
-	});
-
-    //for the default template alert
-	$("#default-template-confirmation-dialog").on("show", function(){
-		$('.select2-choice').hide();
-	});
-
-	$("#default-template-cancelled").click(function (){
-		$("#default-template-confirmation-dialog").modal("hide");
-		$('.select2-choice').show();
-	});
-
-	$("#default-template-confirmed").click(function (){
-		$("#default_tag").val('true');
+	$("#new-project-confirmed").click(function (e){
+    e.preventDefault();
 		$("#new_project").submit();
 	});
 
   function update_funder_options(){
-    var gdpr = $("input[name=project_gdpr]:checked").val() == "true" ? true : false;
+    var gdpr = gdpr_enabled();
     var options = {};
     $.ajax({
       type: 'GET',
@@ -150,7 +176,7 @@ $( document ).ready(function() {
     if( institution == undefined || institution == null ){
       institution = "";
     }
-    var gdpr = $("input[name=project_gdpr]:checked").val() == "true" ? true : false;
+    var gdpr = gdpr_enabled();
 		$.ajax({
 			type: 'GET',
 			url: "possible_templates.json?institution="+institution+"&funder="+funder+"&gdpr="+gdpr,

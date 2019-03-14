@@ -75,19 +75,45 @@ class ProjectsController < ApplicationController
 	def create
     authorize! :create,Project
 
+    gdpr = params[:project_gdpr].present? && params[:project_gdpr] == "true" ? true : false
+
 		@project = Project.new(params[:project])
-		if @project.dmptemplate.nil? && params[:project][:funder_id].present? then # this shouldn't be necessary - see setter for funder_id in project.rb
-			funder = Organisation.find(params[:project][:funder_id])
-			if funder.dmptemplates.count == 1 then
-				@project.dmptemplate = funder.published_templates.first
+
+    #choose funder template
+		if @project.dmptemplate.nil? && params[:project][:funder_id].present? && (funder = Organisation.where(:id => params[:project][:funder_id]).first) then
+
+      funder_template = funder.dmptemplates.where(:gdpr => gdpr,:published => true).first
+
+			if !(funder_template.nil?) then
+
+				@project.dmptemplate = funder_template
+
 			end
-		elsif @project.dmptemplate.nil? || params[:default_tag] == 'true' then
-			if @project.organisation.nil?  || params[:default_tag] == 'true'  || @project.organisation.published_templates.first.nil? then
-				@project.dmptemplate = Dmptemplate.find_by_is_default(true)
+
+    #choose organisation template
+		elsif @project.dmptemplate.nil? then
+
+      org = @project.organisation
+      org_template = org.nil? ? nil : org.dmptemplates.where(:gdpr => gdpr,:published => true).first
+
+      #or choose default template when organisation template cannot be found
+			if org.nil? || org_template.nil? then
+
+        #sorry, no magic default for gdpr
+        if !gdpr
+
+				  @project.dmptemplate = Dmptemplate.where(:is_default => true,:published => true).first
+
+        end
+
 			else
-				@project.dmptemplate = @project.organisation.published_templates.first
+
+				@project.dmptemplate = org_template
+
 			end
+
 		end
+
 		#@project.title = I18n.t('helpers.project.my_project_name')+' ('+@project.dmptemplate.title+')'
 		@project.assign_creator(current_user.id)
     @project.assign_pi(current_user.id)
@@ -98,13 +124,44 @@ class ProjectsController < ApplicationController
         @project.assign_gdpr(u.id)
       end
     end
+
+    #"is_valid?" clears errors before validation, so we need to do this here, and then add own errors
+    project_is_valid = @project.valid?
+
+    #check gdpr inconsistencies
+    if !(@project.dmptemplate.nil?) && @project.dmptemplate.gdpr != gdpr
+
+      @project.errors[:base] << I18n.t("activerecord.errors.models.project.attributes.base.gdpr_diff")
+
+    end
+
+    #org must allow gdpr
+    if gdpr
+
+      #must be same org
+      if @project.organisation_id != current_user.organisation_id
+
+        @project.errors[:base] << I18n.t("activerecord.errors.models.project.attributes.base.gdpr_only_own_org")
+
+      end
+      #if dmptemplate is organisational, then it must be of the own org
+      if !(@project.dmptemplate.nil?) && @project.dmptemplate.org_type == "Institution" && @project.dmptemplate.organisation_id != current_user.organisation_id
+
+        @project.errors[:base] << I18n.t("activerecord.errors.models.project.attributes.base.gdpr_dmptemplate_only_own_org")
+
+      end
+
+    end
+
+    project_is_valid = @project.errors.count == 0
+
 		respond_to do |format|
-			if @project.save
+			if project_is_valid
+        @project.save({ :validate => false })
 				format.html { redirect_to({:action => "show", :id => @project.slug, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }
 				format.json { render json: @project, status: :created, location: @project }
 			else
-        flash[:alert] = @project.errors.full_messages
-				format.html { render action: "new" }
+				format.html { redirect_to( {:action => "new"},{ :alert => @project.errors.full_messages } ) }
 				format.json { render json: @project.errors, status: :unprocessable_entity }
 			end
 		end
@@ -155,32 +212,33 @@ class ProjectsController < ApplicationController
 	# GET /projects/possible_templates.json
 	def possible_templates
     gdpr = params[:gdpr].present? && params[:gdpr] == "true" ? true : false
+    funder = nil
 		if !params[:funder].nil? && params[:funder] != "" && params[:funder] != "undefined" then
-			funder = Organisation.find(params[:funder])
-		else
-			funder = nil
+			funder = Organisation.where(:id => params[:funder]).first
 		end
+    institution = nil
 		if !params[:institution].nil? && params[:institution] != "" && params[:institution] != "undefined" then
-			institution = Organisation.find(params[:institution])
-		else
-			institution = nil
+			institution = Organisation.where(:id => params[:institution]).first
 		end
 		templates = {}
 		unless funder.nil? then
 			funder.published_templates.each do |t|
         next if t.gdpr != gdpr
 				templates[t.id] = t.title
+        templates[t.id] += " [GDPR]" if t.gdpr
 			end
 		end
 		if templates.count == 0 && !institution.nil? then
 			institution.published_templates.each do |t|
         next if t.gdpr != gdpr
 				templates[t.id] = t.title
+        templates[t.id] += " [GDPR]" if t.gdpr
 			end
 			institution.children.each do |o|
 				o.published_templates.each do |t|
           next if t.gdpr != gdpr
 					templates[t.id] = t.title
+          templates[t.id] += " [GDPR]" if t.gdpr
 				end
 			end
 		end
@@ -191,12 +249,12 @@ class ProjectsController < ApplicationController
 
 	def possible_guidance
 		if !params[:template].nil? && params[:template] != "" && params[:template] != "undefined" then
-			template = Dmptemplate.find(params[:template])
+			template = Dmptemplate.where(:id => params[:template]).first
 		else
 			template = nil
 		end
 		if !params[:institution].nil? && params[:institution] != "" && params[:institution] != "undefined" then
-			institution = Organisation.find(params[:institution])
+			institution = Organisation.where(:id => params[:institution]).first
 		else
 			institution = nil
 		end

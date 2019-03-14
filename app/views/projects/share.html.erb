@@ -33,10 +33,9 @@
 								<% if group.project_creator then %>
 									<%= t("helpers.project.share.owner")%>
                 <%#
-                  Data Protection Officers are added automatically and so must not be removed.
-                  They are always org_admin
+                  Data Protection Officers are added automatically and so should not be removed.
                 %>
-                <% elsif group.project_gdpr && group.user.is_org_admin? %>
+                <% elsif group.project_gdpr && !(current_user.is_admin?) %>
 
                   <%= t("helpers.project.share.gdpr")%>
 
@@ -59,10 +58,9 @@
 								<% if group.project_creator && group.user == current_user then %>
 
                 <%#
-                  Data Protection Officers are added automatically and so must not be removed.
-                  They are always org_admin
+                  Data Protection Officers are added automatically and so should not be removed.
                 %>
-                <% elsif group.project_gdpr && group.user.is_org_admin? %>
+                <% elsif group.project_gdpr && !(current_user.is_admin?) %>
 
                 <% else %>
 									<%= link_to t('helpers.project.share.remove'), group, method: :delete, data: { confirm: t('helpers.project.share.confirmation_question') }, :class => "a-orange" %>
