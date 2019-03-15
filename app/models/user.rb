@@ -63,6 +63,14 @@ class User < ActiveRecord::Base
     self.firstname+" "+self.surname
 	end
 
+  def reference
+
+    self.nemo? ?
+      self.email :
+      self.firstname + " " + self.surname + " (" + self.email + ")"
+
+  end
+
 	def is_admin?
 		admin = roles.find_by_name("admin")
 		return !admin.nil?

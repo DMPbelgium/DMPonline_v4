@@ -52,7 +52,7 @@ class ProjectGroupsController < ApplicationController
 
           if @project_group.user.id != current_user.id
 
-            UserMailer.sharing_notification(@project_group).deliver
+            UserMailer.sharing_notification(@project_group,current_user).deliver
 
           end
 
@@ -97,7 +97,7 @@ class ProjectGroupsController < ApplicationController
 
         if @project_group.user.id != current_user.id
 
-				  UserMailer.permissions_change_notification(@project_group).deliver
+				  UserMailer.permissions_change_notification(@project_group,current_user).deliver
 
         end
 
@@ -130,7 +130,7 @@ class ProjectGroupsController < ApplicationController
 
       if user.id != current_user.id
 
-			  UserMailer.project_access_removed_notification(user, project).deliver
+			  UserMailer.project_access_removed_notification(user, project, current_user).deliver
 
       end
 

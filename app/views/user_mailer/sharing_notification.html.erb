@@ -10,7 +10,7 @@
 
 <% end %>
 
-<p>You have been given access level "<%= @project_group.t_access_level %>" to the DMP "<%= project_title %>".</p>
+<p><%= @changed_by.reference %> has given you access level "<%= @project_group.t_access_level %>" to the DMP <b>"<%= project_title %>"</b>.</p>
 
 <% if !(@project_group.user.confirmed?) %>
 
