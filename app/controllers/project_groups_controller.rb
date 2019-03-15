@@ -50,7 +50,12 @@ class ProjectGroupsController < ApplicationController
 
         if @project_group.save
 
-          UserMailer.sharing_notification(@project_group).deliver
+          if @project_group.user.id != current_user.id
+
+            UserMailer.sharing_notification(@project_group).deliver
+
+          end
+
           flash[:notice] = "User added to project"
           format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
           format.json { render json: @project_group, status: :created, location: @project_group }
@@ -89,7 +94,13 @@ class ProjectGroupsController < ApplicationController
 			if @project_group.save
 
 				flash[:notice] = 'Sharing details successfully updated.'
-				UserMailer.permissions_change_notification(@project_group).deliver
+
+        if @project_group.user.id != current_user.id
+
+				  UserMailer.permissions_change_notification(@project_group).deliver
+
+        end
+
 				format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
 				format.json { head :no_content }
 
@@ -117,8 +128,13 @@ class ProjectGroupsController < ApplicationController
 
 		respond_to do |format|
 
+      if user.id != current_user.id
+
+			  UserMailer.project_access_removed_notification(user, project).deliver
+
+      end
+
 			flash[:notice] = 'Access removed'
-			UserMailer.project_access_removed_notification(user, project).deliver
 			format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
 			format.json { head :no_content }
 
