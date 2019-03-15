@@ -62,7 +62,27 @@
 						<% if readonly then %>
 							<%= f.input :options, :as => :radio, :collection => options, :label => false, :input_html => { :disabled => true , :id => "options-#{question.id}" } %>
 						<% else %>
-							<%= f.input :options, :as => :radio, :collection => options, :label => false, :input_html => { :id => "options-#{question.id}" }%>
+              <%
+                #formtastic does not support preselected values for radio buttons anymore
+                #cf. https://github.com/justinfrench/formtastic/wiki/Deprecation-of-%3Aselected-option
+                options2 = []
+                if answer.options.count > 0
+
+                  options2 = options.map { |o|
+                    [o.text,o.id,{
+                      :checked => answer.options.any? { |ao| ao.id == o.id }
+                    }]
+                  }
+
+                else
+
+                  options2 = options.map { |o|
+                    [o.text,o.id,{ :checked => o.is_default }]
+                  }
+
+                end
+              %>
+							<%= f.input :options, :as => :radio, :collection => options2, :label => false, :input_html => { :id => "options-#{question.id}" }%>
 						<% end %>
                     <!--dropdown display-->
 					<% elsif q_format.title == t("helpers.dropdown") then%>
