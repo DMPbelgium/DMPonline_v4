@@ -8,9 +8,12 @@
 
     <div class="dmp_details">
 
-		  <p><%= raw t('helpers.user_details_paragraph_html')%></p>
-
       <table class="dmp_details_table">
+        <tr>
+          <td colspan="2">
+            <p class="inline-title"><%= raw t('helpers.user_details_paragraph_html')%></p>
+          </td>
+        </tr>
         <tr>
           <td class="first"><%= t('helpers.email') %></td>
           <td><%= current_user.email %></td>
@@ -62,50 +65,59 @@
           <td class="first"><%= t('helpers.shibboleth_id') %></td>
           <td><%= current_user.shibboleth_id %></td>
         </tr>
-      </table>
 
-      <% if current_user.is_guest? %>
+        <% if current_user.is_guest? %>
 
-		  <br>
-   		<p><%= raw t('helpers.edit_password_info')%></p>
-		  <table class="dmp_details_table">
+          <tr>
+            <td colspan="2">
+              <p class="inline-title"><%= raw t('helpers.edit_password_info')%></p>
+            </td>
+          </tr>
 
-        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+
+            <tr>
+              <td colspan="2">
+                <p class="inline-title">Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+              </td>
+            </tr>
+
+          <% end %>
+
+          <tr>
+            <td class="first"><%= t('helpers.current_password') %></td>
+            <td><%= f.password_field :current_password, :as => :password %></td>
+          </tr>
+          <tr>
+            <td class="first"><%= t('helpers.new_password') %></td>
+            <td><%= f.password_field :password, :as => :password, :autocomplete => "off" %></td>
+          </tr>
+          <tr>
+            <td class="first"><%= t('helpers.password_conf') %></td>
+            <td><%= f.password_field :password_confirmation, :as => :password, :autocomplete => "off" %></td>
+          </tr>
+
         <% end %>
 
         <tr>
-          <td class="first"><%= t('helpers.current_password') %></td>
-          <td><%= f.password_field :current_password, :as => :password %></td>
-        </tr>
-        <tr>
-          <td class="first"><%= t('helpers.new_password') %></td>
-          <td><%= f.password_field :password, :as => :password, :autocomplete => "off" %></td>
-        </tr>
-        <tr>
-          <td class="first"><%= t('helpers.password_conf') %></td>
-          <td><%= f.password_field :password_confirmation, :as => :password, :autocomplete => "off" %></td>
-        </tr>
-        <tr>
           <td></td>
           <td>
+            <div class="inline-title">
             <%= f.submit t('helpers.submit.save'), :class => 'btn btn-primary' %>
             <%= link_to t('helpers.submit.cancel'), :back, :class => 'btn btn-primary' %>
+            </div>
           </td>
         </tr>
+
 		  </table>
 
-      <% end %>
+    </div>
 
-	  <% end %>
+  <% end %>
 
-		<br>
-		<h3>Cancel my account</h3>
-		<p>
-			<%= button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-primary' %>
-		</p>
-
-	</div>
+  <p>
+	  <%= button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-link' %>
+  </p>
 
 </div>
 

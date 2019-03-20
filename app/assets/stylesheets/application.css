@@ -84,3 +84,7 @@ ul.list-simple {
   list-style-type:disc !important;
   padding-left:1.5em !important;
 }
+.inline-title {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
