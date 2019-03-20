@@ -22,6 +22,88 @@ namespace :dmponline do
     end
   end
 
+  desc "template duplicate"
+  task :template_dup,[:id,:title] => :environment do |t,args|
+
+    t   = Dmptemplate.find(args[:id])
+    t2  = t.dup
+    t2.title = args[:title]
+    unless t2.save
+      $stderr.puts t2.errors.full_messages.inspect
+      exit(1)
+    end
+
+    $stdout.puts "new template with id: " + t2.id.to_s + ", title: " + t2.title
+
+    t.phases.all.each do |phase|
+
+      p2 = phase.dup
+      t2.phases << p2
+      $stderr.puts "  phase #{p2.id.to_s} added to template #{p2.dmptemplate_id.to_s}"
+
+      p2.reload
+
+      phase.versions.all.each do |version|
+
+        version2 = version.dup
+        p2.versions << version2
+
+        $stderr.puts "    version #{version2.id.to_s} added to phase #{version2.phase_id.to_s}"
+
+        version.sections.all.each do |section|
+
+          section2 = section.dup
+          version2.sections << section2
+
+          $stderr.puts "      section #{section2.id.to_s} added to version #{section2.version_id.to_s}"
+
+          section.questions.all.each do |question|
+
+            question2 = question.dup
+            section2.questions << question2
+
+            $stderr.puts "        question #{question2.id.to_s} added to section #{question2.section_id.to_s}"
+
+            question.options.all.each do |option|
+
+              option2 = option.dup
+              question2.options << option2
+
+              $stderr.puts "          option #{option2.id.to_s} added to question #{option2.question_id.to_s}"
+
+            end
+
+            question.suggested_answers.all.each do |suggested_answer|
+
+              suggested_answer2 = suggested_answer.dup
+              question2.suggested_answers << suggested_answer2
+
+              $stderr.puts "          suggested_answer #{suggested_answer2.id.to_s} added to question #{suggested_answer2.question_id.to_s}"
+
+            end
+
+            question2.theme_ids = question.theme_ids
+
+            question2.theme_ids.each do |theme_id|
+              $stderr.puts "          assigned existing theme_id #{theme_id.to_s} to question #{question2.id.to_s}"
+            end
+
+            question2.guidance_ids = question.guidance_ids
+
+            question2.guidance_ids.each do |guidance_id|
+              $stderr.puts "          assigned existing guidance_id #{guidance_id.to_s} to question #{question2.id.to_s}"
+            end
+
+          end
+
+        end
+
+      end
+
+    end
+
+  end
+
   desc "backup data to git repo"
   task :git_backup => :environment do |t,args|
 
