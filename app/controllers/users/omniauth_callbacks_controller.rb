@@ -7,7 +7,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #user already signed in: return to profile
     if user_signed_in?
 
-      redirect_to edit_user_registration_path
+      redirect_to root_path
       return
 
     end
@@ -45,7 +45,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       #redirect to new root_path
       flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'Shibboleth')
-      redirect_to edit_user_registration_path
+      redirect_to root_path
       return
 
     end
@@ -82,6 +82,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.call_after_auth_shibboleth(auth,request)
 
     sign_in @user
+
+    #redirect new user to profile page
     redirect_to edit_user_registration_path
 
   end
@@ -226,6 +228,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     end
 
+    is_new = @user.new_record?
+
     #just save record and login
     @user.save
 
@@ -233,7 +237,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     flash[:notice] = I18n.t('devise.omniauth_callbacks.success', :kind => 'ORCID')
 
     sign_in @user
-    redirect_to edit_user_registration_path
+    redirect_to( is_new ? edit_user_registration_path : root_path )
 
   end
 
