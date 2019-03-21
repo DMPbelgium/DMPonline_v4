@@ -262,17 +262,17 @@ class DmptemplatesController < ApplicationController
     authorize! :admin_cloneversion, Dmptemplate
 
     @old_version = Version.find(params[:version_id])
-		@version = @old_version.amoeba_dup
+    @version = @old_version.custom_clone
 		@phase = @version.phase
     @sections = @version.sections
 
 		respond_to do |format|
-		  if @version.save
+		  if @version
 		    format.html { redirect_to admin_phase_dmptemplate_path(@phase, :version_id => @version.id, :edit => 'true'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
 		    format.html { render action: "admin_phase" }
-		    format.json { render json: @version.errors, status: :unprocessable_entity }
+		    format.json { render json: [], status: :unprocessable_entity }
 		  end
 		end
 	end
