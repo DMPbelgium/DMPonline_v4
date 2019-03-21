@@ -28,6 +28,7 @@ namespace :dmponline do
     t   = Dmptemplate.find(args[:id])
     t2  = t.dup
     t2.title = args[:title]
+    t2.published = false
     unless t2.save
       $stderr.puts t2.errors.full_messages.inspect
       exit(1)
@@ -46,6 +47,7 @@ namespace :dmponline do
       phase.versions.all.each do |version|
 
         version2 = version.dup
+        version2.published = false
         p2.versions << version2
 
         $stderr.puts "    version #{version2.id.to_s} added to phase #{version2.phase_id.to_s}"
@@ -88,10 +90,12 @@ namespace :dmponline do
               $stderr.puts "          assigned existing theme_id #{theme_id.to_s} to question #{question2.id.to_s}"
             end
 
-            question2.guidance_ids = question.guidance_ids
+            question.guidances.all.each do |guidance|
 
-            question2.guidance_ids.each do |guidance_id|
-              $stderr.puts "          assigned existing guidance_id #{guidance_id.to_s} to question #{question2.id.to_s}"
+              guidance2 = guidance.dup
+              question2.guidances << guidance2
+              $stderr.puts "          guidance #{guidance2.id.to_s} added to question #{guidance2.question.id}"
+
             end
 
           end

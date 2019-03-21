@@ -69,7 +69,13 @@ class Version < ActiveRecord::Base
         end
 
         question2.theme_ids = question.theme_ids
-        question2.guidance_ids = question.guidance_ids
+
+        question.guidances.all.each do |guidance|
+
+          guidance2 = guidance.dup
+          question2.guidances << guidance2
+
+        end
 
       end
 
