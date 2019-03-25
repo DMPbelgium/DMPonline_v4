@@ -60,6 +60,23 @@ class ProjectGroup < ActiveRecord::Base
 
   end
 
+  def t
+    if project_creator
+      return I18n.t("helpers.project.share.owner")
+    elsif project_administrator
+      return I18n.t("helpers.project.share.co_owner")
+    elsif project_pi
+      return I18n.t("helpers.project.share.pi")
+    elsif project_editor
+      return I18n.t("helpers.project.share.edit")
+    elsif project_data_contact
+      return I18n.t("helpers.project.share.data_contact")
+    elsif project_gdpr
+      return I18n.t("helpers.project.share.gdpr")
+    end
+    I18n.t("helpers.project.share.read_only")
+  end
+
   def self.t_access_level(access_level)
 
     I18n.t( @@t_access_levels[ access_level ] )
@@ -77,5 +94,6 @@ class ProjectGroup < ActiveRecord::Base
     self.assignable_access_levels.map { |a| [ self.t_access_level(a), a ] }
 
   end
+
 
 end

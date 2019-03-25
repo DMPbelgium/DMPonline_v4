@@ -133,7 +133,7 @@ class Organisation < ActiveRecord::Base
     org
   end
 
-  def org_gdprs
+  def gdprs
 
     User.all(
       :joins => :roles,

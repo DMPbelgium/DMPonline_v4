@@ -48,8 +48,34 @@ class Ability
         viewed_user.present? && user.id == viewed_user.id
       end
 
-      can [:create,:update,:destroy], ProjectGroup do |pg|
+      can [:create], ProjectGroup do |pg|
         pg.project.administerable_by(user.id)
+      end
+
+      can [:update,:destroy], ProjectGroup do |pg|
+
+        v = false
+
+        if pg.project.administerable_by(user.id)
+
+          v = true
+
+          #cannot remove creator
+          if pg.project_creator
+            v = false
+          #Data Protection Officers are added automatically and so should not be removed.
+          elsif pg.project_gdpr
+            v = !(pg.project.dmptemplate.organisation.gdprs.any? {|u| u.id == pg.user_id })
+          end
+
+        else
+
+          v = false
+
+        end
+
+        v
+
       end
 
       can [:index,:show,:export],Project do |p|

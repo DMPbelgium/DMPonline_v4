@@ -118,13 +118,6 @@ class ProjectsController < ApplicationController
 		@project.assign_creator(current_user.id)
     @project.assign_pi(current_user.id)
 
-    user_org = current_user.organisation
-    if user_org.gdpr
-      user_org.org_gdprs.each do |u|
-        @project.assign_gdpr(u.id)
-      end
-    end
-
     #"is_valid?" clears errors before validation, so we need to do this here, and then add own errors
     project_is_valid = @project.valid?
 

@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
 	friendly_id :title, use: :slugged, :use => :history
 
 	after_create :create_plans
+  after_create :add_gdprs
 
   #validation - start
   validates :dmptemplate,:presence => true
@@ -251,4 +252,17 @@ class Project < ActiveRecord::Base
 			end
 		end
 	end
+
+  def add_gdprs
+    if self.dmptemplate.gdpr
+      self.dmptemplate.organisation.gdprs.each do |user|
+        ProjectGroup.create(
+          :user_id => user.id,
+          :project_id => self.id,
+          :project_gdpr => true
+        )
+      end
+    end
+  end
+
 end
