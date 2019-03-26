@@ -95,6 +95,9 @@ class Ability
         cannot [:edit,:update], Comment do |comment|
           !comment.editable_by( user.id )
         end
+        cannot [:update,:destroy], ProjectGroup do |pg|
+          !pg.project_creator
+        end
 
       elsif user.is_org_admin?
 
