@@ -63,9 +63,37 @@ class Ability
           #cannot remove creator
           if pg.project_creator
             v = false
+
           #Data Protection Officers are added automatically and so should not be removed.
           elsif pg.project_gdpr
-            v = !(pg.project.dmptemplate.organisation.gdprs.any? {|u| u.id == pg.user_id })
+
+            project = pg.project
+            dmptemplate = project.dmptemplate
+
+            #gdpr template
+            if dmptemplate.gdpr
+
+              organisation = project.organisation
+
+              #gdpr, but no organisation: no dpo's should be added
+              if organisation.nil?
+
+                v = true
+
+              #organisational dpo?
+              else
+
+                v = !(organisation.gdprs.any? {|u| u.id == pg.user_id })
+
+              end
+
+            #dpo in non gdpr template? can be removed
+            else
+
+              v = true
+
+            end
+
           end
 
         else

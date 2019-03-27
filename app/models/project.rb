@@ -254,8 +254,8 @@ class Project < ActiveRecord::Base
 	end
 
   def add_gdprs
-    if self.dmptemplate.gdpr
-      self.dmptemplate.organisation.gdprs.each do |user|
+    if self.dmptemplate.gdpr && !(self.organisation.nil?)
+      self.organisation.gdprs.each do |user|
         ProjectGroup.create(
           :user_id => user.id,
           :project_id => self.id,
