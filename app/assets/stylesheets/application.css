@@ -88,3 +88,7 @@ ul.list-simple {
   padding-top: 1em;
   padding-bottom: 1em;
 }
+
+.accordion-group a, .accordion-group a:hover, .accordion-group a:visited, .accordion-group a:focus {
+  color: white !important;
+}
