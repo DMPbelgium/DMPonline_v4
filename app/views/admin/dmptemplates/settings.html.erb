@@ -26,7 +26,7 @@
     <ol>
       <li>
         <%= label_tag('settings_export_max_pages', t('helpers.settings.plans.max_pages')) %>
-        <%= select_tag('settings[export][max_pages]', options_for_select((1..10).to_a, @settings.max_pages)) %>
+        <%= number_field_tag("settings[export][max_pages]", @settings.max_pages, { :min => 1, :step => 1 }) %>
       </li>
     </ol>
   </fieldset>
