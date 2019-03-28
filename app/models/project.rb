@@ -231,8 +231,13 @@ class Project < ActiveRecord::Base
 	end
 
 	def shared?
-		self.project_groups.count > 1
+		self.project_groups.all.map(&:user_id).uniq.count > 1
 	end
+
+  def shared_with
+    n = self.project_groups.all.map(&:user_id).uniq.count
+    n > 0 ? n - 1 : 0
+  end
 
 	alias_method :shared, :shared?
 

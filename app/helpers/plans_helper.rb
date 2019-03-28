@@ -26,7 +26,7 @@ module PlansHelper
 
         [ 'tmp_td_small', text ]
       when :shared
-        shared_num = project.project_groups.count - 1
+        shared_num = project.shared_with
         text = shared_num > 0 ? (t('helpers.yes') + " (with #{shared_num} people) ") : t('helpers.no')
         [ 'dmp_td_small', text ]
       when :last_edited
