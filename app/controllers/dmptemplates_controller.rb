@@ -167,7 +167,7 @@ class DmptemplatesController < ApplicationController
     @dmptemplate = Dmptemplate.find(params[:id])
 		@phase = Phase.new
 		if @dmptemplate.phases.count == 0 then
-			@phase.number = '1'
+			@phase.number = 1
 		else
 			@phase.number = @dmptemplate.phases.count + 1
 		end
