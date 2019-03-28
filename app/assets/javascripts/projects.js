@@ -24,7 +24,7 @@ $( document ).ready(function() {
     }
     else {
 
-      $("#project_institution_id").select2("readonly",false);
+      $("#project_institution_id").val("").trigger("change").select2("readonly",false);
       $("#no-institution").show();
 
     }
@@ -153,16 +153,9 @@ $( document ).ready(function() {
     });
     var select_element = $("#project_funder_id");
     select_element.find("option").remove();
-    var count = 0;
-    select_element.append("<option value=''>--Select your funder--</option>");
+    select_element.append("<option value='' selected='selected'>--Select your funder--</option>");
     for (var id in options) {
-      if (count == 0) {
-        select_element.append("<option value='"+id+"' selected='selected'>"+options[id]+"</option>");
-      }
-      else {
-        select_element.append("<option value='"+id+"'>"+options[id]+"</option>");
-      }
-      count++;
+      select_element.append("<option value='"+id+"'>"+options[id]+"</option>");
     }
   }
 
