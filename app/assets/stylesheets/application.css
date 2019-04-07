@@ -89,6 +89,6 @@ ul.list-simple {
   padding-bottom: 1em;
 }
 
-.accordion-group a, .accordion-group a:hover, .accordion-group a:visited, .accordion-group a:focus {
+.section_desc a, .section_desc a:hover, .section_desc a:visited, .section_desc a:focus {
   color: white !important;
 }
