@@ -112,7 +112,8 @@ class PlansController < ApplicationController
 		end
 
 		@exported_plan.save! # FIXME: handle invalid request types without erroring?
-		file_name = @exported_plan.project_name
+    #sanitize file name (forward slashes are directory separators!)
+		file_name = @exported_plan.project_name.gsub(/[\s\/]+/,"_")
 
 		respond_to do |format|
       #format.html
@@ -121,8 +122,11 @@ class PlansController < ApplicationController
       #format.csv  { send_data @exported_plan.as_csv, filename: "#{file_name}.csv" }
       format.text { send_data @exported_plan.as_txt, filename: "#{file_name}.txt" }
 			format.docx do
-				file = Htmltoword::Document.create @exported_plan.html_for_docx, file_name
-				send_file file.path, :disposition => "attachment"
+        #warning: do not use unsanitized version of project_name as base for this file,
+        #as it uses this as a base for a temporary file, which, having a forward slash
+        #,leads to a "file not found exception"
+				file = Htmltoword::Document.create @exported_plan.html_for_docx, "doc"
+				send_file file.path, :disposition => "attachment",:filename => file_name + ".docx"
 			end
       format.pdf do
         @formatting = @plan.settings(:export).formatting
