@@ -32,6 +32,8 @@ DMPonline4::Application.routes.draw do
   get "roadmap" => 'static_pages#roadmap', :as => "roadmap"
   get "terms" => 'static_pages#termsuse', :as => "terms"
   get "privacy" => "static_pages#privacy", :as => "privacy"
+  get "contracts" => "static_pages#contracts", :as => "contracts"
+  get "uploads/:file" => "static_pages#uploads", :constraints => { :file => /[^\/]+/ }, :as => "upload"
 
   #organisation admin area
   get "org/admin/users" => 'organisation_users#admin_index', :as => "org/admin/users"

@@ -24,3 +24,6 @@
 /app/assets/stylesheets/.sass-cache
 /git-data/
 *.swap
+
+/uploads
+!/uploads/.keep

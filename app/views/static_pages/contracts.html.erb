@@ -1,0 +1,16 @@
+<h1>
+	<%= t('contracts_page.title')%>
+</h1>
+<div class="white_background">
+
+  <%= raw t('contracts_page.body_text_html')%>
+
+  <ul>
+  <% @uploads.each do |upload| %>
+    <li>
+      <a href="<%= url_for(:controller => "static_pages", :action => "uploads", :file => upload) %>"><%= upload %></a>
+    </li>
+  <% end %>
+  </ul>
+
+</div>

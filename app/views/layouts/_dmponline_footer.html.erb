@@ -1,21 +1,21 @@
 <!-- footer container -->
-<footer class="footer">
-  <div class="left_side_footer">
-    <div class="first_row">
-        <ul class="footer-links">
-	          <li><a href="/contact-us"><%= t('contact_page.title') %></a></li>
-	          <li class="muted">|</li>
-	          <li><a href="/terms"><%= t('terms_page.title') %></a></li>
+<footer>
+  <div class="first_row">
+      <ul class="footer-links">
+          <% if user_signed_in? %>
+            <li><a href="/contracts"><%= t('contracts_page.title') %></a></li>
             <li class="muted">|</li>
-            <li><a href="/privacy"><%= t('privacy_page.title') %></a></li>
-       	</ul>
-      </div>
-
-      <div class="second_row">
-    	<p id="dcc_link">Based on work by <%= link_to 'Digital Curation Centre (DCC)', 'http://www.dcc.ac.uk'%>
-       	</p>
+          <% end %>
+	        <li><a href="/contact-us"><%= t('contact_page.title') %></a></li>
+	        <li class="muted">|</li>
+	        <li><a href="/terms"><%= t('terms_page.title') %></a></li>
+          <li class="muted">|</li>
+          <li><a href="/privacy"><%= t('privacy_page.title') %></a></li>
+      </ul>
     </div>
-
+    <div class="second_row">
+    <p id="dcc_link">Based on work by <%= link_to 'Digital Curation Centre (DCC)', 'http://www.dcc.ac.uk'%>
+      </p>
   </div>
 </footer>
 
