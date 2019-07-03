@@ -3,42 +3,38 @@ class AnswersController < ApplicationController
 	# POST /answers
 	# POST /answers.json
 	def create
-		@answer = Answer.new(params.require(:answer))
+
+    p = params.require(:answer)
+    plan = Plan.find( p["plan_id"] )
+    @answer = plan.answer( p["question_id"], false ) || Answer.new(p)
+
     authorize! :create,@answer
 
-		old_answer = @answer.plan.answer(@answer.question_id, false)
-		proceed = false
+    @answer.user_id = p["user_id"]
+    @answer.option_ids = p["option_ids"]
 		@answer.text = params["answer-text-#{@answer.question_id}".to_sym]
-		if (old_answer.nil? && @answer.text != "") || ((!old_answer.nil?) && (old_answer.text != @answer.text)) then
-			proceed = true
-		end
 
-		if (@answer.question.question_format.title == I18n.t("helpers.checkbox") ||
-        @answer.question.question_format.title == I18n.t("helpers.multi_select_box") ||
-        @answer.question.question_format.title == I18n.t("helpers.radio_buttons") ||
-        @answer.question.question_format.title == I18n.t("helpers.dropdown")
-    ) then
+    respond_to do |format|
+      if @answer.save
+        format.html {
+          if request.xhr?
+            render :text => 'Answer was successfully recorded.'
+          else
+            redirect_to :back, status: :found, notice: 'Answer was successfully recorded.'
+          end
+        }
+        format.json { render json: @answer, status: :created, location: @answer }
+      else
+        format.html {
+          if request.xhr?
+            render :text => 'There was an error saving the answer.'
+          else
+            redirect_to :back, notice: 'There was an error saving the answer.'
+          end
+        }
+        format.json { render json: @answer.errors, status: :unprocessable_entity }
+      end
+    end
 
-      if (old_answer.nil? && @answer.option_ids.count > 0) || ((!old_answer.nil?) && (old_answer.option_ids - @answer.option_ids).count != 0 && (@answer.option_ids - old_answer.option_ids).count != 0) then
-				proceed = true
-			end
-
-		end
-		if proceed
-			respond_to do |format|
-				if @answer.save
-					format.html { redirect_to :back, status: :found, notice: 'Answer was successfully recorded.' }
-					format.json { render json: @answer, status: :created, location: @answer }
-				else
-					format.html { redirect_to :back, notice: 'There was an error saving the answer.' }
-					format.json { render json: @answer.errors, status: :unprocessable_entity }
-				end
-			end
-		else
-			respond_to do |format|
-				format.html { redirect_to :back, notice: 'No change in answer content - not saved.' }
-				format.json { render json: @answer.errors, status: :unprocessable_entity }
-			end
-		end
 	end
 end
