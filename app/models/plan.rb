@@ -191,6 +191,7 @@ class Plan < ActiveRecord::Base
 					status["questions"][q.id] = {
 						"answer_id" => answer.id,
 						"answer_created_at" => answer.created_at.to_i,
+            "answer_updated_at" => answer.updated_at.to_i,
 						"answer_text" => answer.text,
 						"answer_option_ids" => answer.option_ids,
 						"answered_by" => answer.user.name
