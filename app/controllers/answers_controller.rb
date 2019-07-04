@@ -13,6 +13,8 @@ class AnswersController < ApplicationController
     @answer.user_id = p["user_id"]
     @answer.option_ids = p["option_ids"]
 		@answer.text = params["answer-text-#{@answer.question_id}".to_sym]
+    #if only assocation "option_ids" are updated, updated_at remains..
+    @answer.touch
 
     respond_to do |format|
       if @answer.save
