@@ -177,7 +177,7 @@ class Project < ActiveRecord::Base
 
 	def editable_by(user_id)
     return false if user_id.nil?
-    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_data_contact = ?)", user_id, true, true, true, true, true ).count > 0
+    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_data_contact = ? OR project_gdpr = ?)", user_id, true, true, true, true, true, true ).count > 0
 	end
 
 	def readable_by(user_id)
