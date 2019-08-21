@@ -112,7 +112,10 @@ class Ability
       unless user.is_guest?
         can [:new,:create], Project
       end
-      can [:edit,:update,:share,:destroy], Project do |p|
+      can [:edit,:update], Project do |p|
+        p.editable_by(user.id)
+      end
+      can [:destroy,:share], Project do |p|
         p.administerable_by(user.id)
       end
 
