@@ -30,6 +30,7 @@ en:
         subject: "Unlock Instructions"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      failure_email: "Although you authenticated successfully from ORCID, we could not retrieve your email address. We need this information in order a user record. Either set the visibility of your email address to 'Trusted parties' (recommended) or 'Everyone'"
       success: "Successfully authenticated from %{kind} account."
       orcid:
         linked: "Your account is now linked to ORCID"

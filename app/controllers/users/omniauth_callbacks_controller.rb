@@ -222,7 +222,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     else
 
-      flash[:alert] = I18n.t('devise.omniauth_callbacks.failure', :kind => 'ORCID', :reason => 'could not retrieve email address. Please check the visibility settings in ORCID')
+      flash[:alert] = I18n.t('devise.omniauth_callbacks.failure_email')
       redirect_to root_path
       return
 
