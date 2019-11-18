@@ -519,6 +519,28 @@ namespace :dmponline do
 
     namespace :csv do
 
+      task :log,[:item_type,:event] => :environment do |t,args|
+
+        csv = CSV.new(
+          $stdout,{
+            :write_headers => true,
+            :col_sep => ";",
+            :headers => %w(id date)
+        })
+
+        Log.where("item_type = ? AND event = ?",args[:item_type],args[:event]).each do |log|
+
+          csv << [
+            log.item_id,
+            log.created_at.utc.strftime("%FT%TZ")
+          ]
+
+        end
+
+        csv.close()
+
+      end
+
       desc "export themes to csv"
       task :themes => :environment do |t,args|
 
