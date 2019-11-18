@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
 
     authorize! :create,@answer
 
-    @answer.user_id = p["user_id"]
+    @answer.user_id = current_user.id
     @answer.option_ids = p["option_ids"]
 		@answer.text = params["answer-text-#{@answer.question_id}".to_sym]
     #if only assocation "option_ids" are updated, updated_at remains..
