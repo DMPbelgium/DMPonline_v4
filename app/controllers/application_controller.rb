@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :set_user
 
   #Override build_footer method in ActiveAdmin::Views::Pages
   require 'active_admin_views_pages_base.rb'
@@ -52,4 +53,9 @@ class ApplicationController < ActionController::Base
 			@all_columns = Settings::PlanList::ALL_COLUMNS
 		end
 	end
+
+  def set_user
+    User.current_user = current_user
+  end
+
 end

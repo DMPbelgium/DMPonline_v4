@@ -177,4 +177,13 @@ class User < ActiveRecord::Base
     user.surname = User.nemo if user.surname.blank?
 
   end
+
+  def self.current_user
+    Thread.current[:user]
+  end
+
+  def self.current_user=(user)
+    Thread.current[:user] = user
+  end
+
 end

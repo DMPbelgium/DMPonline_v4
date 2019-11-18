@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20190311143446) do
+ActiveRecord::Schema.define(:version => 20191118111852) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -123,6 +123,21 @@ ActiveRecord::Schema.define(:version => 20190311143446) do
     t.datetime "updated_at",                            :null => false
     t.integer  "question_id"
   end
+
+  create_table "logs", :force => true do |t|
+    t.integer  "item_id"
+    t.string   "item_type"
+    t.string   "event"
+    t.text     "whodunnit"
+    t.integer  "whodunnit_id"
+    t.text     "object"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "logs", ["event"], :name => "index_logs_on_event"
+  add_index "logs", ["item_type"], :name => "index_logs_on_item_type"
+  add_index "logs", ["whodunnit_id"], :name => "index_logs_on_whodunnit_id"
 
   create_table "option_warnings", :force => true do |t|
     t.integer  "organisation_id"
