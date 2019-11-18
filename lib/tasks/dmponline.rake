@@ -519,6 +519,32 @@ namespace :dmponline do
 
     namespace :csv do
 
+      desc "export themes to csv"
+      task :themes => :environment do |t,args|
+
+        csv = CSV.new(
+          $stdout,{
+            :write_headers => true,
+            :col_sep => ";",
+            :headers => %w(id title description created_at updated_at)
+        })
+
+        Theme.find_each do |theme|
+
+          csv << [
+            theme.id,
+            theme.title,
+            theme.description,
+            theme.created_at.utc.strftime("%FT%TZ"),
+            theme.updated_at.utc.strftime("%FT%TZ")
+          ]
+
+        end
+
+        csv.close()
+
+      end
+
       desc "export questions to csv"
       task :questions => :environment do |t,args|
 
