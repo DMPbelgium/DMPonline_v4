@@ -1,0 +1,14 @@
+#!/bin/bash
+readonly appdir=$(cd `dirname $0`/.. && pwd)
+
+dir=$1
+
+if [ ! -d "$dir" ];then
+    echo "$dir is not a directory" >&2
+    exit 1
+fi
+
+current_date=$(date -u "+%F")
+
+cd $appdir &&
+bundle exec rake dmponline:export:json:projects > $dir/projects_${current_date}.json

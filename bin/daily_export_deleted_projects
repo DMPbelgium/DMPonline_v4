@@ -1,0 +1,14 @@
+#!/bin/bash
+readonly appdir=$(cd `dirname $0`/.. && pwd)
+
+dir=$1
+
+if [ ! -d "$dir" ];then
+    echo "$dir is not a directory" >&2
+    exit 1
+fi
+
+current_date=$(date -u "+%F")
+
+cd $appdir &&
+bundle exec rake --quiet dmponline:export:csv:log[Project,destroy] > $dir/deleted_projects.csv

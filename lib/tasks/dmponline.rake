@@ -525,7 +525,7 @@ namespace :dmponline do
           $stdout,{
             :write_headers => true,
             :col_sep => ";",
-            :headers => %w(id date)
+            :headers => %w(id datetime)
         })
 
         Log.where("item_type = ? AND event = ?",args[:item_type],args[:event]).each do |log|

@@ -1,8 +1,3 @@
-RAILS_ENV=production
-MY_APP="DMPonline_v4"
-MY_HOME=/opt/${MY_APP}
-GIT_LOG=/var/log/${MY_APP}/git.log
-GIT_ERROR=/var/log/${MY_APP}/git.error
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/rvm/bin
 
-0 0 * * * dmponline cd $MY_HOME && bundle exec rake dmponline:git_backup 1> $GIT_LOG 2> $GIT_ERROR
+0 0 * * * dmponline RAILS_ENV=production /opt/DMPonline_v4/bin/daily_export /opt/dmponline_internal 2> /var/log/dmponline/daily_export.error
