@@ -188,4 +188,273 @@ namespace :dmponline do
 
   end
 
+  namespace :export do
+
+    namespace :csv do
+
+      desc "export questions to csv"
+      task :questions => :environment do |t,args|
+
+        csv = CSV.new(
+          $stdout,{
+            :write_headers => true,
+            :col_sep => ";",
+            :headers => %w(id text format created_at updated_at theme_ids section phase template)
+        })
+
+        Question.find_each do |q|
+
+          row = []
+          row << q.id
+          row << q.text
+          row << q.question_format.title
+          row << q.created_at.utc.strftime("%FT%TZ")
+          row << q.updated_at.utc.strftime("%FT%TZ")
+          row << q.theme_ids.join(" ")
+          row << q.section.title
+          row << q.section.version.phase.title
+          row << q.section.version.phase.dmptemplate.title
+
+          csv << row
+
+        end
+
+        csv.close()
+
+      end
+
+    end
+
+    namespace :json do
+
+      desc "export projects"
+      task :projects => :environment do |t,args|
+
+        Project.find_each do |project|
+
+          project_url = Rails.application.routes.url_helpers.project_url(project, :host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
+
+          pr = {
+            :id => project.id,
+            :type => "Project",
+            :url => project_url,
+            :created_at => project.created_at.utc.strftime("%FT%TZ"),
+            :updated_at => project.updated_at.utc.strftime("%FT%TZ"),
+            :title => project.title,
+            :description => project.description,
+            :identifier => project.identifier,
+            :grant_number => project.grant_number,
+            :collaborators => project.project_groups.map { |pg|
+              u = pg.user
+              pg_r = {
+                :type => "ProjectGroup",
+                :user => nil,
+                :access_level => pg.code_access_level
+              }
+              unless u.nil?
+
+                pg_r[:user] = {
+                  :id => u.id,
+                  :created_at => u.created_at.utc.strftime("%FT%TZ"),
+                  :updated_at => u.updated_at.utc.strftime("%FT%TZ"),
+                  :email => u.email,
+                  :orcid => u.orcid_id,
+                }
+
+              end
+              pg_r
+            },
+            :organisation => nil,
+            :plans => []
+          }
+
+          if project.organisation.present?
+
+            pr[:organisation] = {
+              :type => "Organisation",
+              :id => project.organisation.id,
+              :name => project.organisation.name
+            }
+
+          end
+
+          dmptemplate = project.dmptemplate
+
+          pr[:template] = dmptemplate.attributes
+          pr[:template][:type] = "Template"
+
+          funder = project.funder
+          funder_name = project.read_attribute(:funder_name)
+
+          if funder
+
+            pr[:funder] = {
+              :type => "Organisation",
+              :id => funder.id,
+              :name => funder.name
+            }
+
+          elsif funder_name.present?
+
+            pr[:funder] = {
+              :type => nil,
+              :id => nil,
+              :name => funder_name
+            }
+
+          else
+
+            pr[:funder] = nil
+
+          end
+
+          i = 0
+
+          project.plans.each do |plan|
+
+            pl = {
+              :version => {
+                :type => "Version",
+                :id => plan.version.id,
+                :title => plan.version.phase.title
+              },
+              :id => plan.id,
+              :type => "Plan",
+              :url => project_url + "/plans/" + plan.id.to_s + "/edit",
+              :sections => []
+            }
+
+            plan.sections.sort_by(&:number).each do |section|
+
+              sc = {
+                :id => section.id,
+                :type => "Section",
+                :number => section.number,
+                :title => section.title,
+                :questions => []
+              }
+
+              section.questions.sort_by(&:number).each do |question|
+
+                qf = question.question_format
+
+                q = {
+                  :id => question.id,
+                  :type => "Question",
+                  :text => question.text,
+                  :default_value => question.default_value,
+                  :number => question.number,
+                  #:guidance => question.guidance,
+                  :question_format => {
+                    :id => qf.id,
+                    :type => "QuestionFormat",
+                    :title => qf.title,
+                    :description => qf.description,
+                    :created_at => qf.created_at.utc.strftime("%FT%TZ"),
+                    :updated_at => qf.updated_at.utc.strftime("%FT%TZ")
+                  },
+                  :suggested_answers => question.suggested_answers.map { |sa|
+                    {
+                      :id => sa.id,
+                      :type => "SuggestedAnswer",
+                      :text => sa.text,
+                      :is_example => sa.is_example,
+                      :created_at => sa.created_at.utc.strftime("%FT%TZ"),
+                      :updated_at => sa.created_at.utc.strftime("%FT%TZ")
+                    }
+                  }.select { |sa| sa[:text].present? },
+                  :answer => nil,
+                  :themes => question.themes.map { |theme|
+                    {
+                      :id => theme.id,
+                      :type => "Theme",
+                      :title => theme.title,
+                      :created_at => theme.created_at.utc.strftime("%FT%TZ"),
+                      :updated_at => theme.updated_at.utc.strftime("%FT%TZ")
+                    }
+                  }
+                }
+
+                answer    = plan.answer(question.id, false)
+                q_format  = question.question_format
+
+                has_options = q_format.title == "Check box" || q_format.title == "Multi select box" ||
+                    q_format.title == "Radio buttons" || q_format.title == "Dropdown"
+
+                if has_options
+
+                  q[:options] = question.options.sort_by(&:number).map do |op|
+                    {
+                      :id => op.id,
+                      :type => "Option",
+                      :text => op.text,
+                      :number => op.number,
+                      :is_default => op.is_default,
+                      :created_at => op.created_at.utc.strftime("%FT%TZ"),
+                      :updated_at => op.created_at.utc.strftime("%FT%TZ")
+                    }
+                  end
+
+                end
+
+
+                if answer.present? && has_options
+
+                  q[:selected] = {}
+
+                  answer.options.each do |o|
+
+                    q[:selected][o.number] = o.text
+
+                  end
+
+                end
+
+                if answer.present?
+
+                  au = answer.user
+                  q[:answer] = {
+                    :id => answer.id,
+                    :text => answer.text,
+                    :user => nil,
+                    :created_at => answer.created_at.utc.strftime("%FT%TZ"),
+                    :updated_at => answer.updated_at.utc.strftime("%FT%TZ")
+                  }
+                  unless au.nil?
+
+                    q[:answer][:user] = {
+                      :id => au.id,
+                      :type => "User",
+                      :email => au.email,
+                      :orcid => au.orcid_id
+                    }
+
+                  end
+
+                end
+
+                sc[:questions] << q
+
+              end
+
+              pl[:sections] << sc
+
+            end
+
+            pr[:plans] << pl
+
+            i += 1
+
+          end
+
+          puts pr.to_json
+
+        end
+
+      end
+
+    end
+
+  end
+
 end

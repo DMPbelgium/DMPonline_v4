@@ -77,6 +77,23 @@ class ProjectGroup < ActiveRecord::Base
     I18n.t("helpers.project.share.read_only")
   end
 
+  def code_access_level
+    if project_creator
+      return :owner
+    elsif project_administrator
+      return :co_owner
+    elsif project_pi
+      return :principal_investigator
+    elsif project_editor
+      return :editor
+    elsif project_data_contact
+      return :data_contact
+    elsif project_gdpr
+      return :dpo
+    end
+    :read_only
+  end
+
   def self.t_access_level(access_level)
 
     I18n.t( @@t_access_levels[ access_level ] )
