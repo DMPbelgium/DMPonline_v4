@@ -1,3 +1,5 @@
-PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/rvm/bin
+SHELL=/bin/bash
+BASH_ENV=/usr/local/rvm/scripts/rvm
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/rvm/bin
 
-0 0 * * * dmponline RAILS_ENV=production /opt/DMPonline_v4/bin/daily_export /opt/dmponline_internal 2> /var/log/dmponline/daily_export.error
+0 20 * * * apache RAILS_ENV=production /opt/DMPonline_v4/bin/daily_export /opt/dmponline_internal 2> /var/log/dmponline/daily_export.error
