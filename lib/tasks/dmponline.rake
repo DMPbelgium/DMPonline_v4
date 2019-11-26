@@ -605,9 +605,16 @@ namespace :dmponline do
       desc "export projects"
       task :projects => :environment do |t,args|
 
+        i = 0
+        prev_i = nil
+        print "["
         projects_ld do |pr|
-          puts pr.to_json
+          print "," unless prev_i.nil?
+          print pr.to_json
+          prev_i = i
+          i = i + 1
         end
+        print "]"
 
       end
 
@@ -627,19 +634,24 @@ namespace :dmponline do
 
         end
 
+        i = 0
+        prev_i = nil
+        print "["
         projects_ld do |pr|
 
-          if old_timestamp.nil?
+          do_print = old_timestamp.nil? || project_ld_updated?( pr, old_timestamp )
 
-            puts pr.to_json
+          if do_print
 
-          elsif project_ld_updated?( pr, old_timestamp )
-
-            puts pr.to_json
+            print "," unless prev_i.nil?
+            print pr.to_json
+            prev_i = i
+            i = i + 1
 
           end
 
         end
+        print "]"
 
         fh = File.open(file,"w")
         fh.puts(new_timestamp)
