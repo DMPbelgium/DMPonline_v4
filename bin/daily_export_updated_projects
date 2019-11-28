@@ -8,7 +8,5 @@ if [ ! -d "$dir" ];then
     exit 1
 fi
 
-current_date=$(date -u "+%F")
-
 cd $appdir &&
-bundle exec rake dmponline:export:json:updated_projects > $dir/updated_projects_${current_date}.json
+bundle exec rake dmponline:export:json:updated_projects[$dir]

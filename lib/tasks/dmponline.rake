@@ -619,43 +619,87 @@ namespace :dmponline do
       end
 
       desc "export updated projects"
-      task :updated_projects => :environment do |t,args|
+      task :updated_projects,[:dir] => :environment do |t,args|
 
-        file = "tmp/projects_last_exported.txt"
+        uri_base = Rails.application
+          .routes
+          .url_helpers
+          .root_url(:host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
+        uri_base.chomp!("/")
+        uri_base += "/internal"
 
-        new_timestamp = DateTime.now.utc.strftime("%FT%TZ")
+        file_t = "tmp/projects_last_exported.txt"
+        now = Time.now
+        new_timestamp = now.utc.strftime("%FT%TZ")
         old_timestamp = nil
 
-        if File.exists?(file)
+        cur_fn = "updated_projects_" + new_timestamp + ".json"
+        cur_file = File.join( args[:dir], cur_fn )
+        prev_fn = Dir.entries( args[:dir] )
+          .select { |n| n.start_with?("updated_projects_") }
+          .sort
+          .last
 
-          fh = File.open(file,"r")
+        if File.exists?(file_t)
+
+          fh = File.open(file_t,"r")
           old_timestamp = fh.readline.chomp
           fh.close()
 
         end
 
+        fh_json = File.open(cur_file,"w:UTF-8")
+
+        fh_json.print "{"
+
+        links = {
+          :self => uri_base + "/" + cur_fn
+        }
+        if prev_fn.present?
+
+          links[:prev] = uri_base + "/" + prev_fn
+
+        end
+
+        fh_json.print "\"links\": " + links.to_json
+
+        fh_json.print ",\"data\": ["
+
         i = 0
         prev_i = nil
-        print "["
         projects_ld do |pr|
 
           do_print = old_timestamp.nil? || project_ld_updated?( pr, old_timestamp )
 
           if do_print
 
-            print "," unless prev_i.nil?
-            print pr.to_json
+            fh_json.print "," unless prev_i.nil?
+
+            fh_json.print pr.to_json
+
             prev_i = i
             i = i + 1
 
           end
 
         end
-        print "]"
 
-        fh = File.open(file,"w")
+        fh_json.print "]"
+
+        fh_json.print "}"
+        fh_json.close()
+
+        #write new timestamp
+        fh = File.open(file_t,"w")
         fh.puts(new_timestamp)
         fh.close()
+
+        #symlinks and touch
+        ref_file = File.join( args[:dir], "updated_projects.json" )
+        File.delete( ref_file ) if File.exists?( ref_file )
+        File.symlink( cur_file, ref_file )
+        File.utime(now,now,cur_file)
+        File.utime(now,now,ref_file)
 
       end
 
