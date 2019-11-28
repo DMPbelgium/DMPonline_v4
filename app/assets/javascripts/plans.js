@@ -3,33 +3,64 @@
 
 var dirty = {};
 
+window.tinymce_config = {
+  selector: "textarea.tinymce",
+  statusbar: false,
+  menubar: false,
+  toolbar: "bold italic | bullist numlist indent | link | table",
+  plugins: "table,autoresize,link,paste",
+  target_list: false,
+  autoresize_min_height: 130,
+  extended_valid_elements: "a[href|target=_blank]",
+  paste_auto_cleanup_on_paste: true,
+  paste_remove_styles: true,
+  paste_retain_style_properties: "none",
+  paste_convert_middot_lists: true,
+  paste_remove_styles_if_webkit: true,
+  paste_remove_spans: true,
+  paste_strip_class_attributes: "all",
+  entity_encoding: "raw"
+};
 
+delete tinymce_config["selector"];
+tinymce_config["setup"] = function(editor){
+
+  editor.on("change",function(editor){
+    $.fn.check_textarea(editor)
+  });
+
+};
+
+function section_load_tinycme(){
+
+  $(this).find("textarea.tinymce").each(function(){
+
+    var $this = $(this);
+    if( $this.attr("data-tinymce-initialized") == "true" ){
+      return;
+    }
+    tinymce_config["target"] = this;
+    tinyMCE.init(tinymce_config);
+    $this.attr("data-tinymce-initialized","true");
+
+  });
+
+}
+
+function section_unload_tinycme(){
+
+  $(this).find("textarea.tinymce").each(function(){
+
+    var t = $(this);
+    t.removeAttr("data-tinymce-initialized");
+    var editor = tinymce.get( t.attr("id") );
+    if( editor ) editor.remove();
+
+  });
+
+}
 
 $( document ).ready(function() {
-   
-   //reload page back to where it was before committing comment
-       
-    if($('#comment_section_id').length) {
-        var section_id = $('#comment_section_id').val();
-        
-        $("#collapse-" + section_id).addClass("in");
-        $("#collapse-" + section_id).children(".accordion-inner").find(".loading").show();
-        $("#collapse-" + section_id).children(".accordion-inner").find(".loaded").hide();
-        
-        setTimeout(function(){
-            $("loaded").find(".section-lock-notice").html("");
-            $("loaded").find(".section-lock-notice").hide();
-            $(".question-form").find("select").removeAttr('disabled');
-            $(".question-div").find(".question-readonly").hide();
-            $(".question-div").find(".question-form").show();
-                    
-            $("#collapse-" + section_id).children(".accordion-inner").find(".loading").hide();
-            $("#collapse-" + section_id).children(".accordion-inner").find(".loaded").show();
-            $('html, body').animate({
-                    'scrollTop': $("#current_question").offset().top
-                    },1000);
-        },8000);
-    }
 
 	window.onbeforeunload = function(){
 		var message = null;
@@ -99,46 +130,61 @@ $( document ).ready(function() {
 	}, 50000);
 
 	// Handle section actions on accordion expansion/collapse
-	$('.section-collapse').on('show', function() {
-		var section = $(this);
-        section.find(".loaded").hide();
-		section.find(".loading").show();
-		// Only lock if there are forms on the page (not read-only)
-		if ($('.question-form').length > 0) {
-			section.check_section_lock();
-    }
-    // check for updated answers
-    $.getJSON("status.json", function(data) {
-    	$.fn.update_plan_progress(data);
-    	$(".section-status").each(function(){
-    		$(this).update_section_progress(data);
-    	});
-    	//For each question in section, check answer timestamp against currently displayed
+	$('.section-collapse')
+    .on('show', function() {
+
+      section_load_tinycme.call(this);
+
+		  var section = $(this);
+
+      section.find(".loaded").hide();
+		  section.find(".loading").show();
+
+		  // Only lock if there are forms on the page (not read-only)
+		  if ($('.question-form').length > 0) {
+			  section.check_section_lock();
+      }
+
+      // check for updated answers
+      $.getJSON("status.json", function(data) {
+
+    	  $.fn.update_plan_progress(data);
+    	  $(".section-status").each(function(){
+    		  $(this).update_section_progress(data);
+    	  });
+
+    	  //For each question in section, check answer timestamp against currently displayed
         var section_id = section.attr("id").split('-')[1];
-    	var num_questions = data.sections[section_id]["questions"].length;
-    	for (var i = 0; i < num_questions; i++) {
-    		question_id = data.sections[section_id]["questions"][i];
-    		//If timestamp newer than displayed, update answers
-    		if ($.fn.update_timestamp(question_id, data)) {
-    			$.fn.update_answer(question_id);
-    		}
-    	}
-    	section.find(".loading").hide();
-		section.find(".loaded").show();
-    });
-   }).on('hide', function(){
-  	var section = $(this);
-  	// Only attempt unlock if there are forms on the page (not read-only)
-  	if ($('.question-form').length > 0) {
-			var section_id = section.attr("id").split('-')[1];
-			$.post('unlock_section', {section_id: section_id});
-			if ($.fn.is_dirty(section_id)) {
-				$('#unsaved-answers-'+section_id).text("");
-				$.each($.fn.get_unsaved_questions(section_id), function(index, question_text){
-					$('#unsaved-answers-'+section_id).append("<li>"+question_text+"</li>");
-				});
-				$('#section-' + section_id + '-collapse-alert').modal();
-			}
+    	  var num_questions = data.sections[section_id]["questions"].length;
+        for (var i = 0; i < num_questions; i++) {
+          question_id = data.sections[section_id]["questions"][i];
+          //If timestamp newer than displayed, update answers
+          if ($.fn.update_timestamp(question_id, data)) {
+            $.fn.update_answer(question_id);
+          }
+        }
+    	  section.find(".loading").hide();
+		    section.find(".loaded").show();
+
+      });
+
+    })
+    .on('hide', function(){
+
+      section_unload_tinycme.call(this);
+
+  	  var section = $(this);
+  	  // Only attempt unlock if there are forms on the page (not read-only)
+  	  if ($('.question-form').length > 0) {
+			  var section_id = section.attr("id").split('-')[1];
+			  $.post('unlock_section', {section_id: section_id});
+			    if ($.fn.is_dirty(section_id)) {
+				    $('#unsaved-answers-'+section_id).text("");
+				    $.each($.fn.get_unsaved_questions(section_id), function(index, question_text){
+					    $('#unsaved-answers-'+section_id).append("<li>"+question_text+"</li>");
+				    });
+				    $('#section-' + section_id + '-collapse-alert').modal();
+			    }
         }
     });
 
@@ -162,7 +208,7 @@ $( document ).ready(function() {
     $("select, :radio, :checkbox, input").change(function() {
         $(this).closest(".accordion-group").find(".section-status:first").toggle_dirty($(this).closest("form.answer").find(".question_id").val(), true);
     });
-  
+
     // COMMENTS Javascript
 
     //action for show comment block on the right side of a question
@@ -174,7 +220,7 @@ $( document ).ready(function() {
         $('#comment-question-area-'+ q_id).show();
         e.preventDefault();
     });
-    
+
     //action for show guidance block on the right side of a question
     $('.guidance_accordion_button').click(function(e){
         var q_id = $(this).closest(".question_right_column_nav").find(".question_id").val();
@@ -184,7 +230,7 @@ $( document ).ready(function() {
         $('#guidance-question-area-'+ q_id).show();
         e.preventDefault();
     });
-    
+
     //action for show add comment block
     $('.add_comment_button').click(function(e){
         var q_id = $(this).closest(".comment-area").find(".question_id").val();
@@ -196,18 +242,18 @@ $( document ).ready(function() {
         $('#add_comment_block_div_'+ q_id).show();
         e.preventDefault();
     });
-    
+
     //submit new comment button
     $('.new_comment_submit_button').click(function(e){
         var q_id = $(this).parent().children(".question_id").val();
         var s_id = $(this).parent().children(".section_id").val();
-        
+
         $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        
+
     });
-    
+
      //action to view a comment block
     $('.view_comment_button').click(function(e){
         e.preventDefault();
@@ -224,7 +270,7 @@ $( document ).ready(function() {
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
     });
-  
+
     //action to edit a comment block
     $('.edit_comment_button').click(function(e){
         e.preventDefault();
@@ -241,18 +287,18 @@ $( document ).ready(function() {
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
     });
-    
+
      //submit edit comment button
     $('.edit_comment_submit_button').click(function(e){
         var c_id = $(this).attr("data-comment-id");
         var s_id = $(this).parent().children(".section_id").val();
-        
+
         $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        
+
     });
-    
+
     //action to archive a comment block
     $('.archive_comment_button').click(function(e){
         e.preventDefault();
@@ -269,18 +315,18 @@ $( document ).ready(function() {
         $('#add_comment_button_bottom_div_'+ q_id).show();
         $('#add_comment_button_top_div_'+ q_id).show();
     });
-    
+
      //submit archived comment button
     $('.archive_comment_submit_button').click(function(e){
         var c_id = $(this).attr("data-comment-id");
         var s_id = $(this).parent().children(".section_id").val();
-        
+
         $("#collapse-" + s_id).children(".accordion-inner").find(".removing").show();
         $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
         $(".alert-notice").hide();
-        
+
     });
-    
+
     //action to cancel archive block
     $(".cancel_archive_comment").click(function(e){
         e.preventDefault();
@@ -288,7 +334,36 @@ $( document ).ready(function() {
         $('.archive_comment_class').hide();
         $('#view_comment_div_'+ c_id).show();
 	  });
-    
+
+   //reload page back to where it was before committing comment
+  if($('#comment_section_id').length) {
+
+    var section_id = $('#comment_section_id').val();
+
+    var section = $("#collapse-" + section_id);
+    section.addClass("in");
+    section.children(".accordion-inner").find(".loading").show();
+    section.children(".accordion-inner").find(".loaded").hide();
+
+    setTimeout(function(){
+
+      var section_lock_notices = $(".loaded").find(".section-lock-notice");
+      section_lock_notices.html("");
+      section_lock_notices.hide();
+      $(".question-form").find("select").removeAttr('disabled');
+      $(".question-div").find(".question-readonly").hide();
+      $(".question-div").find(".question-form").show();
+
+      $("#collapse-" + section_id).children(".accordion-inner").find(".loading").hide();
+      $("#collapse-" + section_id).children(".accordion-inner").find(".loaded").show();
+      $('html, body').animate({
+        'scrollTop': $("#current_question").offset().top
+      },1000);
+
+    },8000);
+
+  }
+
 });
 
 $.fn.get_unsaved_questions = function(section_id) {
@@ -314,8 +389,8 @@ $.fn.get_unsaved_questions = function(section_id) {
 		});
 		return questions;
 	}
-        
-   
+
+
 };
 
 $.fn.is_dirty = function(section_id, question_id) {
@@ -416,7 +491,7 @@ $.fn.update_answer = function(question_id) {
 			}
 		}
 	});
-    
+
 };
 
 $.fn.update_section_progress = function(data) {
@@ -510,7 +585,7 @@ $.fn.toggle_dirty = function(question_id, is_dirty) {
 	dirty[section_id][question_id] = is_dirty;
 	if (is_dirty) {
 		$("#"+question_id+"-unsaved").show();
-        
+
 	}
 	else {
 		$("#"+question_id+"-unsaved").hide();
@@ -519,7 +594,7 @@ $.fn.toggle_dirty = function(question_id, is_dirty) {
 
 $.fn.check_textarea = function(editor) {
      $("#"+editor.id).closest(".accordion-group").find(".section-status:first").toggle_dirty(editor.id.split('-')[2], editor.isDirty());
-       
+
 };
 
 
