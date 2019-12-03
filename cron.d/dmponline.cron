@@ -3,4 +3,4 @@ BASH_ENV=/opt/DMPonline_v4/env.sh
 MAILTO=nicolas.franck@ugent.be
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/rvm/bin
 
-0 20 * * * dmponline /opt/DMPonline_v4/bin/daily_export /opt/dmponline_internal 2> /var/log/dmponline/daily_export.error
+0 20 * * * dmponline /opt/DMPonline_v4/bin/daily_export_projects
