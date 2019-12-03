@@ -73,3 +73,5 @@ gem "ruby_dig"
 gem 'strong_parameters'
 
 gem 'validates_hostname'
+
+gem 'file_utils'

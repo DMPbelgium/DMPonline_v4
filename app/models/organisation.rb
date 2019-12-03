@@ -20,6 +20,12 @@ class Organisation < ActiveRecord::Base
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
+  validates :abbreviation,
+    :length => { :minimum => 1 },
+    :uniqueness => true,
+    :format => {
+      :with => /\A[a-zA-Z0-9\-]+\z/
+    }
 
   def is_parent?
     self.parent_id.nil?
@@ -141,6 +147,75 @@ class Organisation < ActiveRecord::Base
         :roles => { :name => "org_gdpr" },
         :organisation_id => self.id }
     )
+
+  end
+
+  def internal_export_dir
+
+    File.join(
+      (ENV["INTERNAL_EXPORTS"].present? ?
+        ENV["INTERNAL_EXPORTS"] : "/opt/dmponline_internal"),
+      self.abbreviation
+    )
+
+  end
+
+  def internal_export_url
+
+    u = Rails.application
+      .routes
+      .url_helpers
+      .root_url(:host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
+    u.chomp!("/")
+    u += "/internal/exports/organisations/" + self.abbreviation
+    u
+
+  end
+
+  def internal_export_files
+
+    base_dir = self.internal_export_dir
+    base_url = self.internal_export_url
+
+    files = Dir
+      .glob( File.join( base_dir, "*", "*", "*.json" ) )
+      .map { |f|
+
+        rel_name = f.gsub( base_dir + "/" , "" )
+        full_url = base_url + "/" + rel_name
+        self_url = base_url + "/" + rel_name
+
+        {
+          :id => full_url,
+          :type => "file",
+          :links => { :self => self_url },
+          :attributes => {
+            :updated_at => File.mtime(f).utc.strftime("%FT%TZ")
+          }
+        }
+
+      }
+
+    files += Dir
+      .glob( File.join(base_dir,"*.json") )
+      .select { |f| File.symlink?(f) }
+      .map { |f|
+
+        rel_name = f.gsub( base_dir + "/" , "" )
+        full_url = base_url + "/" + rel_name
+        self_rel_name = File.readlink(f).gsub( base_dir + "/" , "" )
+        self_url = base_url + "/" + self_rel_name
+
+        {
+          :id => full_url,
+          :type => "link",
+          :links => { :self => self_url },
+          :attributes => {
+            :updated_at => File.mtime(f).utc.strftime("%FT%TZ")
+          }
+        }
+
+      }
 
   end
 

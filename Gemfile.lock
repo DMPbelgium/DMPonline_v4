@@ -106,6 +106,7 @@ GEM
       sax-machine (~> 0.2.1)
     figaro (1.1.1)
       thor (~> 0.14)
+    file_utils (1.1.2)
     formtastic (2.3.1)
       actionpack (>= 3.0)
     friendly_id (4.0.10.1)
@@ -281,6 +282,7 @@ DEPENDENCIES
   exception_notification
   feedzirra (= 0.5.0)
   figaro
+  file_utils
   friendly_id
   htmltoword (= 0.1.8)
   jbuilder
@@ -308,3 +310,6 @@ DEPENDENCIES
   validates_hostname
   wicked_pdf
   wkhtmltopdf-binary
+
+BUNDLED WITH
+   1.17.3

@@ -1,5 +1,224 @@
 require 'fileutils'
 require 'csv'
+require 'file_utils'
+
+def export_org_projects(organisation)
+
+  org_dir = organisation.internal_export_dir
+
+  #base url
+  uri_base = organisation.internal_export_url
+
+  #timestamp - start
+  file_t = File.join( org_dir, "mdate.txt" )
+  now = Time.now
+  new_timestamp = now.utc.strftime("%FT%TZ")
+  sub_dir = File.join(
+    now.utc.strftime("%Y"),
+    now.utc.strftime("%m")
+  )
+  cur_dir = File.join( org_dir, sub_dir )
+  old_timestamp = nil
+
+  unless File.directory?(cur_dir)
+
+    FileUtils.mkdir_p(cur_dir)
+
+  end
+
+  if File.exists?(file_t)
+    fh = File.open(file_t,"r")
+    old_timestamp = fh.readline.chomp
+    fh.close()
+  end
+  #timestamp - end
+
+  #export all projects - start
+  begin
+
+    cur_fn = File.join(
+      sub_dir,
+      "projects_" + new_timestamp + ".json"
+    )
+    cur_file = File.join(org_dir,cur_fn)
+    prev_fn = Dir
+      .glob( File.join(org_dir,"*","*","projects_*.json") )
+      .map { |f| f.sub(org_dir,"") }
+      .sort
+      .last
+    links = {
+      :self => uri_base + "/" + cur_fn
+    }
+    if prev_fn.present?
+
+      links[:prev] = uri_base + "/" + prev_fn
+
+    end
+
+    fh_json = File.open(cur_file,"w:UTF-8")
+
+    fh_json.print "{"
+
+    fh_json.print "\"links\": " + links.to_json
+
+    fh_json.print ",\"data\": ["
+
+    i = 0
+    prev_i = nil
+
+    projects_ld({ :organisation_id => organisation.id }) do |pr|
+
+      fh_json.print "," unless prev_i.nil?
+      fh_json.print pr.to_json
+      prev_i = i
+      i = i + 1
+
+    end
+
+    fh_json.print "]"
+    fh_json.print "}"
+
+    fh_json.close()
+
+    ref_file = File.join( org_dir, "projects.json" )
+    File.delete( ref_file ) if File.exists?( ref_file )
+    File.symlink( cur_file, ref_file )
+    File.utime(now,now,cur_file)
+    File.utime(now,now,ref_file)
+
+  end
+  #export all projects - end
+
+  #export updated projects - start
+  begin
+
+    cur_fn = File.join(
+      sub_dir,
+      "updated_projects_" + new_timestamp + ".json"
+    )
+    cur_file = File.join(org_dir,cur_fn)
+    prev_fn = Dir
+      .glob( File.join(org_dir,"*","*","updated_projects_*.json") )
+      .map { |f| f.sub(org_dir,"") }
+      .sort
+      .last
+    links = {
+      :self => uri_base + "/" + cur_fn
+    }
+    if prev_fn.present?
+
+      links[:prev] = uri_base + "/" + prev_fn
+
+    end
+
+    fh_json = File.open(cur_file,"w:UTF-8")
+
+    fh_json.print "{"
+
+    fh_json.print "\"links\": " + links.to_json
+
+    fh_json.print ",\"data\": ["
+
+    i = 0
+    prev_i = nil
+
+    projects_ld({ :organisation_id => organisation.id }) do |pr|
+
+      do_print = old_timestamp.nil? || project_ld_updated?( pr, old_timestamp )
+
+      if do_print
+
+        fh_json.print "," unless prev_i.nil?
+        fh_json.print pr.to_json
+        prev_i = i
+        i = i + 1
+
+      end
+
+    end
+
+    fh_json.print "]"
+    fh_json.print "}"
+
+    fh_json.close()
+
+    ref_file = File.join( org_dir, "updated_projects.json" )
+    File.delete( ref_file ) if File.exists?( ref_file )
+    File.symlink( cur_file, ref_file )
+    File.utime(now,now,cur_file)
+    File.utime(now,now,ref_file)
+
+  end
+  #export updated projects - end
+
+  #export deleted projects - start
+  begin
+
+    cur_fn = File.join(
+      sub_dir,
+      "deleted_projects_" + new_timestamp + ".json"
+    )
+    cur_file = File.join(org_dir,cur_fn)
+    prev_fn = Dir
+      .glob( File.join(org_dir,"*","*","deleted_projects_*.json") )
+      .map { |f| f.sub(org_dir,"") }
+      .sort
+      .last
+
+    links = {
+      :self => uri_base + "/" + cur_fn
+    }
+    if prev_fn.present?
+
+      links[:prev] = uri_base + "/" + prev_fn
+
+    end
+
+    fh_json = File.open(cur_file,"w:UTF_8")
+
+    fh_json.print "{"
+
+    fh_json.print "\"links\": " + links.to_json
+
+    fh_json.print ",\"data\": ["
+
+    i = 0
+    prev_i = nil
+    Log.where("item_type = ? AND event = ?","Project","destroy").each do |log|
+
+      fh_json.print "," unless prev_i.nil?
+
+      fh_json.print({ :id => log.item_id, :type => "Project", :datetime => log.created_at.utc.strftime("%FT%TZ") }.to_json)
+
+      prev_i = i
+      i = i + 1
+
+    end
+
+    fh_json.print "]}"
+
+    fh_json.close()
+
+    ref_file = File.join( org_dir, "deleted_projects.json" )
+    File.delete( ref_file ) if File.exists?( ref_file )
+    File.symlink( cur_file, ref_file )
+    File.utime(now,now,cur_file)
+    File.utime(now,now,ref_file)
+
+  end
+  #export deleted projects - end
+
+  #timestamp - start
+  begin
+
+    fh = File.open(file_t,"w")
+    fh.puts(new_timestamp)
+    fh.close()
+
+  end
+  #timestamp - end
+
+end
 
 def exec_cmd(cmd)
   r = system(cmd)
@@ -60,9 +279,9 @@ def project_ld_updated?(project,date_s)
 
 end
 
-def projects_ld
+def projects_ld(conditions = {})
 
-  Project.find_each do |project|
+  Project.find_each(:conditions => conditions) do |project|
 
     project_url = Rails.application.routes.url_helpers.project_url(project, :host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
 
@@ -519,28 +738,6 @@ namespace :dmponline do
 
     namespace :csv do
 
-      task :log,[:item_type,:event] => :environment do |t,args|
-
-        csv = CSV.new(
-          $stdout,{
-            :write_headers => true,
-            :col_sep => ";",
-            :headers => %w(id datetime)
-        })
-
-        Log.where("item_type = ? AND event = ?",args[:item_type],args[:event]).each do |log|
-
-          csv << [
-            log.item_id,
-            log.created_at.utc.strftime("%FT%TZ")
-          ]
-
-        end
-
-        csv.close()
-
-      end
-
       desc "export themes to csv"
       task :themes => :environment do |t,args|
 
@@ -602,104 +799,26 @@ namespace :dmponline do
 
     namespace :json do
 
-      desc "export projects"
-      task :projects => :environment do |t,args|
+      desc "export projects for organisations"
+      task :projects,[:id] => :environment do |t,args|
 
-        i = 0
-        prev_i = nil
-        print "["
-        projects_ld do |pr|
-          print "," unless prev_i.nil?
-          print pr.to_json
-          prev_i = i
-          i = i + 1
-        end
-        print "]"
+        orgs = []
 
-      end
+        if args[:id].present?
 
-      desc "export updated projects"
-      task :updated_projects,[:dir] => :environment do |t,args|
+          orgs = Organisation.where( :id => args[:id] )
 
-        uri_base = Rails.application
-          .routes
-          .url_helpers
-          .root_url(:host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
-        uri_base.chomp!("/")
-        uri_base += "/internal"
+        else
 
-        file_t = "tmp/projects_last_exported.txt"
-        now = Time.now
-        new_timestamp = now.utc.strftime("%FT%TZ")
-        old_timestamp = nil
-
-        cur_fn = "updated_projects_" + new_timestamp + ".json"
-        cur_file = File.join( args[:dir], cur_fn )
-        prev_fn = Dir.entries( args[:dir] )
-          .select { |n| n.start_with?("updated_projects_") }
-          .sort
-          .last
-
-        if File.exists?(file_t)
-
-          fh = File.open(file_t,"r")
-          old_timestamp = fh.readline.chomp
-          fh.close()
+          orgs = Organisation.all
 
         end
 
-        fh_json = File.open(cur_file,"w:UTF-8")
+        orgs.each do |org|
 
-        fh_json.print "{"
-
-        links = {
-          :self => uri_base + "/" + cur_fn
-        }
-        if prev_fn.present?
-
-          links[:prev] = uri_base + "/" + prev_fn
+          export_org_projects(org)
 
         end
-
-        fh_json.print "\"links\": " + links.to_json
-
-        fh_json.print ",\"data\": ["
-
-        i = 0
-        prev_i = nil
-        projects_ld do |pr|
-
-          do_print = old_timestamp.nil? || project_ld_updated?( pr, old_timestamp )
-
-          if do_print
-
-            fh_json.print "," unless prev_i.nil?
-
-            fh_json.print pr.to_json
-
-            prev_i = i
-            i = i + 1
-
-          end
-
-        end
-
-        fh_json.print "]"
-
-        fh_json.print "}"
-        fh_json.close()
-
-        #write new timestamp
-        fh = File.open(file_t,"w")
-        fh.puts(new_timestamp)
-        fh.close()
-
-        #symlinks and touch
-        ref_file = File.join( args[:dir], "updated_projects.json" )
-        File.delete( ref_file ) if File.exists?( ref_file )
-        File.symlink( cur_file, ref_file )
-        File.utime(now,now,cur_file)
-        File.utime(now,now,ref_file)
 
       end
 
