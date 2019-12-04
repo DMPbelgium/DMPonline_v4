@@ -1,11 +1,11 @@
-Project.after_create do
+Project.after_create do |project|
   cu = User.current_user
   cu_attrs = cu.present? ?
     cu.attributes.slice("id","firstname","surname","email") : {}
-  object = self.attributes
-  object[:organisation] = self.organisation.attributes
+  object = project.attributes
+  object[:organisation] = project.organisation.attributes
   Log.create(
-    :item_id        => self.id,
+    :item_id        => project.id,
     :item_type      => "Project",
     :event          => "create",
     :whodunnit      => cu_attrs,
