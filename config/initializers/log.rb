@@ -13,14 +13,14 @@ Project.after_create do
     :object         => object
   )
 end
-Project.after_destroy do
+Project.after_destroy do |project|
   cu = User.current_user
   cu_attrs = cu.present? ?
     cu.attributes.slice("id","firstname","surname","email") : {}
-  object = self.attributes
-  object[:organisation] = self.organisation.attributes
+  object = project.attributes
+  object[:organisation] = project.organisation.attributes
   Log.create(
-    :item_id        => self.id,
+    :item_id        => project.id,
     :item_type      => "Project",
     :event          => "destroy",
     :whodunnit      => cu_attrs,
