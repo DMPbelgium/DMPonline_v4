@@ -1,0 +1,5 @@
+#!/bin/bash
+readonly appdir=$(cd `dirname $0`/.. && pwd)
+
+cd $appdir &&
+bundle exec rake dmponline:cleanup_locks

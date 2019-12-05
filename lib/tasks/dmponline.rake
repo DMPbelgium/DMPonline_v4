@@ -826,4 +826,12 @@ namespace :dmponline do
 
   end
 
+  desc "cleanup lock in table plan_sections"
+  task :cleanup_locks => :environment do |t,args|
+
+    count = PlanSection.where("release_time <= ? ",Time.now).delete_all
+    puts "removed #{count} records from table plan_sections"
+
+  end
+
 end
