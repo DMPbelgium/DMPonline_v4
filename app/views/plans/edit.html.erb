@@ -44,11 +44,13 @@
 				<% if readonly == nil && locked["locked"] then %>
 					<% readonly = "conditional" %>
 				<% end %>
+
+        <% section_questions = section.questions.order("number").all %>
                 
                 <!-- verify if the session[:question_id_comments] has been created. -->
                 <% if session[:question_id_comments].to_i != 0 then %>
-                    <% question_from_comment = Question.find(session[:question_id_comments])%>
-                    <% if section.id == question_from_comment.section_id then %>    
+                    <% question_from_comment = section_questions.select { |q| q.id == session[:question_id_comments].to_i }.first %>
+                    <% if question_from_comment.present? %>    
                         <%= hidden_field_tag :comment_section_id, question_from_comment.section_id, :class => "comment_section_id" %>
                    <%end%>    
                 <% end%>     
@@ -56,8 +58,8 @@
                 
                 
     		<div class="accordion-group">
-    			<% num_section_questions = @plan.status["sections"][section.id]["num_questions"] %>
-    			<% num_section_answers = @plan.status["sections"][section.id]["num_answers"] %>
+    			<% num_section_questions = status["sections"][section.id]["num_questions"] %>
+    			<% num_section_answers = status["sections"][section.id]["num_answers"] %>
     			<% question_word = "questions" %>
     			<% if num_section_questions == 1 then %>
     				<% question_word = "question" %>
@@ -98,10 +100,10 @@
 										<p><%= t("helpers.project.share.locked_section_text")%><%= locked["locked_by"] %></p>
 									<% end %>
 								</div>
-								<% section.questions.order("number").each do |question| %>
+								<% section_questions.each do |question| %>
                                     <% if question.id == session[:question_id_comments].to_i then id_css = "current_question" end %>
                                     <div id="<%= id_css%>">
-                                        <%= render partial: "answer_form", locals: {question: question, readonly: readonly, last_question_id: section.questions.order("number DESC").first.id} %>
+                                        <%= render partial: "answer_form", locals: {question: question, readonly: readonly, last_question_id: section_questions.last.id} %>
                                     </div>    
 								<% end %>
 							</div>
