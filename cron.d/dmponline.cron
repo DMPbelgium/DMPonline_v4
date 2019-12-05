@@ -4,3 +4,4 @@ MAILTO=nicolas.franck@ugent.be
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/rvm/bin
 
 0 20 * * * dmponline /opt/DMPonline_v4/bin/daily_export_projects
+0 0 * * * dmponline /opt/DMPonline_v4/bin/cleanup_locks
