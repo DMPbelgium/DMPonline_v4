@@ -40,10 +40,6 @@
     <div class="accordion" id="sections-accordion">
     	<% sections = @plan.sections %>
     	<% sections.each do |section| %>
-            <% locked = @plan.locked(section.id, current_user.id) %>
-				<% if readonly == nil && locked["locked"] then %>
-					<% readonly = "conditional" %>
-				<% end %>
 
         <% section_questions = section.questions.order("number").all %>
                 
@@ -95,10 +91,7 @@
 								<p><%= t ("helpers.removing")%></p>
 							</div>
 							<div class="loaded">
-								<div id="section-lock-message-<%= section.id %>" class="alert section-lock-notice"<% if !locked["locked"] then %> style="display:none"<% end %>>
-									<% if locked["locked"] then %>
-										<p><%= t("helpers.project.share.locked_section_text")%><%= locked["locked_by"] %></p>
-									<% end %>
+								<div id="section-lock-message-<%= section.id %>" class="alert section-lock-notice" style="display:none">
 								</div>
 								<% section_questions.each do |question| %>
                                     <% if question.id == session[:question_id_comments].to_i then id_css = "current_question" end %>
