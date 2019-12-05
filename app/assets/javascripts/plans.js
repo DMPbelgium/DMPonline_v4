@@ -25,8 +25,8 @@ window.tinymce_config = {
 delete tinymce_config["selector"];
 tinymce_config["setup"] = function(editor){
 
-  editor.on("change",function(editor){
-    $.fn.check_textarea(editor)
+  editor.on("change",function(evt){
+    $.fn.check_textarea(evt.target)
   });
 
 };
