@@ -68,6 +68,24 @@ class Plan < ActiveRecord::Base
 		return answer
 	end
 
+  def default_answer(question)
+
+    a = Answer.new
+    a.plan_id = self.id
+    a.question_id = question.id
+    a.text = question.default_value
+    default_options = Array.new
+    question.options.each do |option|
+      if option.is_default
+        default_options << option
+      end
+    end
+    a.options = default_options
+
+    return a
+
+  end
+
 	def sections
 		unless project.organisation.nil? then
 			sections = version.global_sections + project.organisation.all_sections(version_id)
@@ -275,15 +293,11 @@ class Plan < ActiveRecord::Base
 	end
 
 	def unlock_all_sections(user_id)
-		plan_sections.where(:user_id => user_id).order("created_at DESC").each do |lock|
-			lock.delete
-		end
+		plan_sections.where(:user_id => user_id).delete_all
 	end
 
 	def delete_recent_locks(user_id)
-		plan_sections.where(:user_id => user_id).each do |lock|
-			lock.delete
-		end
+		plan_sections.where(:user_id => user_id).delete_all
 	end
 
 	def lock_section(section_id, user_id, release_time = 60)
@@ -305,9 +319,7 @@ class Plan < ActiveRecord::Base
 	end
 
 	def unlock_section(section_id, user_id)
-		plan_sections.where(:section_id => section_id, :user_id => user_id).order("created_at DESC").each do |lock|
-			lock.delete
-		end
+		plan_sections.where(:section_id => section_id, :user_id => user_id).delete_all
 	end
 
 	def latest_update

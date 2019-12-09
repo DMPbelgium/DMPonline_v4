@@ -237,138 +237,104 @@ $( document ).ready(function() {
         e.preventDefault();
     });
 
-    //action for show add comment block
-    $('.add_comment_button').click(function(e){
-        var q_id = $(this).closest(".comment-area").find(".question_id").val();
-        $('.view_comment_class').hide();
-        $('.edit_comment_class').hide();
-        $('.archive_comment_class').hide();
-        $('#add_comment_button_bottom_div_'+ q_id).hide();
-        $('#add_comment_button_top_div_'+ q_id).hide();
-        $('#add_comment_block_div_'+ q_id).show();
-        e.preventDefault();
+    var cb_on_remove_comment = function(evt){
+
+      evt.preventDefault();
+
+      if( !confirm("Are you sure you want to delete this comment?") )
+        return false;
+
+      var $this = $(this);
+
+      $.ajax({
+        url: "/comments/"+$this.attr("data-comment-id")+"/archive",
+        type: "put",
+        dataType: "json"
+      })
+      .done(function(comment,textStatus,jqXHR){
+
+        $this.parent().html(
+          "<del>Comment removed by you</del>" +
+          "<small>posted by " + comment["h"]["created_by"] + " at " + comment["h"]["created_at"] + "</small>"
+        );
+
+        //remove close button
+        $this.remove();
+
+      })
+      .fail(function(jqXHR, textStatus, errorThrown){
+
+        console.error("failed to remove comment",textStatus);
+
+      });
+
+    };
+
+    $("form.add_comment_form").on("submit",function(evt){
+
+      //stop regular form submission ..
+      evt.preventDefault();
+
+      var $this = $(this);
+      var f = $this[0];
+
+      //.. and send data by ajax
+      $.ajax({
+        url: $this.attr("action"),
+        type: $this.attr("method"),
+        data: $this.serialize(),
+        dataType: "json"
+      })
+      .done(function(comment,textStatus,jqXHR){
+
+        //add new comment to the list
+        var block = document.createElement("blockquote");
+        block.appendChild( document.createTextNode( comment.text ) );
+
+        var button = document.createElement("button");
+        button.type ="button";
+        button.className = "close";
+        button.setAttribute("data-comment-id",comment["id"]);
+        button.innerHTML = "&times;";
+        $(button).on("click",cb_on_remove_comment);
+        block.appendChild(button);
+
+        var small = document.createElement("small");
+        small.appendChild(
+          document.createTextNode(
+            "posted by " + comment["h"]["created_by"] + " at " + comment["h"]["created_at"]
+          )
+        );
+        block.appendChild(small);
+
+        document.getElementById(
+          $this.attr("data-list-id")
+        ).prepend( block );
+
+      })
+      .fail(function(jqXHR, textStatus, errorThrown){
+
+        console.error("failed to add new comment",textStatus);
+
+      })
+      .always(function(){
+
+        //reset form
+        f.reset();
+
+        //update label
+        var $label = $("#" + $this.attr("data-list-label-id") );
+        var $list  = $("#" + $this.attr("data-list-id") );
+
+        $label.html(
+          "Comments (" + $list.children("blockquote").size() + ")"
+        );
+
+      });
+
     });
 
-    //submit new comment button
-    $('.new_comment_submit_button').click(function(e){
-        var q_id = $(this).parent().children(".question_id").val();
-        var s_id = $(this).parent().children(".section_id").val();
-
-        $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
-        $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
-        $(".alert-notice").hide();
-
-    });
-
-     //action to view a comment block
-    $('.view_comment_button').click(function(e){
-        e.preventDefault();
-        var c_id = $(this).attr("data-comment-id");
-        var q_id = $(this).closest(".comment-area").find(".question_id").val();
-        $('.view_comment_class').hide();
-        $('.edit_comment_class').hide();
-        $('.archive_comment_class').hide();
-        $('#lastet_comment_div_'+ q_id).hide();
-        $('#edit_comment_div_'+ c_id).hide();
-        $('#archive_comment_div_'+ c_id).hide();
-        $('#add_comment_block_div_'+ q_id).hide();
-        $('#view_comment_div_'+ c_id).show();
-        $('#add_comment_button_bottom_div_'+ q_id).show();
-        $('#add_comment_button_top_div_'+ q_id).show();
-    });
-
-    //action to edit a comment block
-    $('.edit_comment_button').click(function(e){
-        e.preventDefault();
-        var c_id = $(this).attr("data-comment-id");
-        var q_id = $(this).closest(".comment-area").find(".question_id").val();
-        $('.edit_comment_class').hide();
-        $('.view_comment_class').hide();
-        $('.archive_comment_class').hide();
-        $('#lastet_comment_div_'+ q_id).hide();
-        $('#view_comment_div_'+ c_id).hide();
-        $('#archive_comment_div_'+ c_id).hide();
-        $('#add_comment_block_div_'+ q_id).hide();
-        $('#edit_comment_div_'+ c_id).show();
-        $('#add_comment_button_bottom_div_'+ q_id).show();
-        $('#add_comment_button_top_div_'+ q_id).show();
-    });
-
-     //submit edit comment button
-    $('.edit_comment_submit_button').click(function(e){
-        var c_id = $(this).attr("data-comment-id");
-        var s_id = $(this).parent().children(".section_id").val();
-
-        $("#collapse-" + s_id).children(".accordion-inner").find(".saving").show();
-        $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
-        $(".alert-notice").hide();
-
-    });
-
-    //action to archive a comment block
-    $('.archive_comment_button').click(function(e){
-        e.preventDefault();
-        var c_id = $(this).attr("data-comment-id");
-        var q_id = $(this).closest(".comment-area").find(".question_id").val();
-        $('.edit_comment_class').hide();
-        $('.view_comment_class').hide();
-        $('.archive_comment_class').hide();
-        $('#view_comment_div_'+ c_id).hide();
-        $('#lastet_comment_div_'+ q_id).hide();
-        $('#edit_comment_div_'+ c_id).hide();
-        $('#add_comment_block_div_'+ q_id).hide();
-        $('#archive_comment_div_'+ c_id).show()
-        $('#add_comment_button_bottom_div_'+ q_id).show();
-        $('#add_comment_button_top_div_'+ q_id).show();
-    });
-
-     //submit archived comment button
-    $('.archive_comment_submit_button').click(function(e){
-        var c_id = $(this).attr("data-comment-id");
-        var s_id = $(this).parent().children(".section_id").val();
-
-        $("#collapse-" + s_id).children(".accordion-inner").find(".removing").show();
-        $("#collapse-" + s_id).children(".accordion-inner").find(".loaded").hide();
-        $(".alert-notice").hide();
-
-    });
-
-    //action to cancel archive block
-    $(".cancel_archive_comment").click(function(e){
-        e.preventDefault();
-		    var c_id = $(this).attr("data-comment-id");
-        $('.archive_comment_class').hide();
-        $('#view_comment_div_'+ c_id).show();
-	  });
-
-   //reload page back to where it was before committing comment
-  if($('#comment_section_id').length) {
-
-    var section_id = $('#comment_section_id').val();
-
-    var section = $("#collapse-" + section_id);
-    section.addClass("in");
-    section.children(".accordion-inner").find(".loading").show();
-    section.children(".accordion-inner").find(".loaded").hide();
-
-    setTimeout(function(){
-
-      var section_lock_notices = $(".loaded").find(".section-lock-notice");
-      section_lock_notices.html("");
-      section_lock_notices.hide();
-      $(".question-form").find("select").removeAttr('disabled');
-      $(".question-div").find(".question-readonly").hide();
-      $(".question-div").find(".question-form").show();
-
-      $("#collapse-" + section_id).children(".accordion-inner").find(".loading").hide();
-      $("#collapse-" + section_id).children(".accordion-inner").find(".loaded").show();
-      $('html, body').animate({
-        'scrollTop': $("#current_question").offset().top
-      },1000);
-
-    },8000);
-
-  }
+    $(".list-comments button.close").on("click",cb_on_remove_comment);
 
 });
 
@@ -568,6 +534,8 @@ $.fn.check_section_lock = function() {
 			section.find("input").attr('disabled', 'disabled');
 			section.find(".question-form").hide();
 			section.find("select").attr('disabled', 'disabled');
+      section.find("textarea").attr('disabled', 'disabled');
+      section.find("button.close").hide();
 			section.find(".question-readonly").show();
 		}
 		else {
@@ -584,6 +552,8 @@ $.fn.check_section_lock = function() {
 			section.find(".question-form").show();
 			section.find("select").removeAttr('disabled');
 			section.find(".question-readonly").hide();
+      section.find("button.close").show();
+      section.find("textarea").removeAttr("disabled");
 		}
 	});
 	return true;
@@ -608,8 +578,3 @@ $.fn.check_textarea = function(editor) {
      $("#"+editor.id).closest(".accordion-group").find(".section-status:first").toggle_dirty(editor.id.split('-')[2], editor.isDirty());
 
 };
-
-
-
-
-

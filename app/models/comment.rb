@@ -3,6 +3,11 @@ class Comment < ActiveRecord::Base
   #associations between tables
   belongs_to :question, :inverse_of => :comments, :autosave => true
   belongs_to :user, :inverse_of => :comments, :autosave => true
+  belongs_to :plan
+
+  validates :question, :presence => true
+  validates :user, :presence => true
+  validates :text, :length => { :minimum => 1 }
 
   #fields
   attr_accessible :question_id, :text, :user_id, :archived, :plan_id, :archived_by
@@ -60,6 +65,6 @@ class Comment < ActiveRecord::Base
     return false if self.user_id.nil?
     return true if self.editable_by(other_user_id)
     return false if self.plan_id.nil?
-    Plan.find( self.plan_id ).project.administerable_by(other_user_id)
+    self.plan.project.administerable_by(other_user_id)
   end
 end

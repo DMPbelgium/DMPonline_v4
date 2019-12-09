@@ -92,3 +92,16 @@ ul.list-simple {
 .section_desc a, .section_desc a:hover, .section_desc a:visited, .section_desc a:focus {
   color: white !important;
 }
+
+textarea.comment {
+  width: 100%;
+  height: 8em;
+  box-sizing: border-box;
+}
+div.list-comments {
+  height:150px;
+  overflow-y:auto;
+}
+div.list-comments > blockquote {
+  padding-right: 5px;
+}

@@ -1,7 +1,10 @@
 <%- model_class = Plan -%>
 <% javascript "plans.js" %>
 
-
+<!--preload all comments for this plan-->
+<% @comments = Comment.where(:plan_id => @plan.id).order("created_at DESC").all %>
+<!--preload all answers for this plan-->
+<% @answers  = Answer.where(:plan_id => @plan.id).order("created_at DESC").all %>
 
 <!-- render the project title -->
 <%= render :partial => "/projects/project_title", locals: {project: @plan.project} %>
@@ -42,17 +45,6 @@
     	<% sections.each do |section| %>
 
         <% section_questions = section.questions.order("number").all %>
-                
-                <!-- verify if the session[:question_id_comments] has been created. -->
-                <% if session[:question_id_comments].to_i != 0 then %>
-                    <% question_from_comment = section_questions.select { |q| q.id == session[:question_id_comments].to_i }.first %>
-                    <% if question_from_comment.present? %>    
-                        <%= hidden_field_tag :comment_section_id, question_from_comment.section_id, :class => "comment_section_id" %>
-                   <%end%>    
-                <% end%>     
-                
-                
-                
     		<div class="accordion-group">
     			<% num_section_questions = status["sections"][section.id]["num_questions"] %>
     			<% num_section_answers = status["sections"][section.id]["num_answers"] %>
@@ -94,8 +86,7 @@
 								<div id="section-lock-message-<%= section.id %>" class="alert section-lock-notice" style="display:none">
 								</div>
 								<% section_questions.each do |question| %>
-                                    <% if question.id == session[:question_id_comments].to_i then id_css = "current_question" end %>
-                                    <div id="<%= id_css%>">
+                                    <div>
                                         <%= render partial: "answer_form", locals: {question: question, readonly: readonly, last_question_id: section_questions.last.id} %>
                                     </div>    
 								<% end %>
@@ -124,12 +115,8 @@
 				</div>
     	<% end %>
     </div>
-    <%#= tinymce :content_css => asset_path("application.css"), :setup => "function(editor){editor.on('change', function(e){$.fn.check_textarea(editor)});}" %>
 </div>
 <div class="div_right">
 	<a href="#<%= @plan.id %>-export-dialog" data-toggle="modal" class="btn btn-primary"><%= t("helpers.export") %></a>
 </div>
 <%= render :partial => "export", locals: {plan: @plan} %>
-
-<!-- this session is created when a comment is created, edited or deleted. After the view is loaded this session variable can be deleted-->
-<% session.delete(:question_id_comments)%>

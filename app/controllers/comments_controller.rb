@@ -1,15 +1,5 @@
 class CommentsController < ApplicationController
   before_filter :authenticate_user!
-  # GET /comments
-  # GET /comments.json
-#  def index
-#    @comments = Comment.all
-#    authorize! :index, Comment
-#
-#    respond_to do |format|
-#      format.json { render json: @comments }
-#    end
-#  end
 
   # GET /comments/1
   # GET /comments/1.json
@@ -17,10 +7,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     authorize! :show,@comment
 
-    respond_to do |format|
-      #format.html # show.html.erb
-      format.json { render json: @comment }
-    end
+    render json: @comment
   end
 
 
@@ -34,62 +21,73 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
 
-    @comment = Comment.new(params[:new_comment])
-    @comment.text = params["#{params[:new_comment][:question_id]}new_comment_text"]
-    @comment.question_id = params[:new_comment][:question_id]
-    @comment.user_id = params[:new_comment][:user_id]
-    @comment.plan_id = params[:new_comment][:plan_id]
+    p = params.require(:comment).permit(:text,:question_id,:plan_id)
+
+    @comment = Comment.new(p)
+    @comment.user_id = current_user.id
 
     authorize! :create, @comment
 
-    @plan = Plan.find(@comment.plan_id)
-    @project = Project.find(@plan.project_id)
-
-    respond_to do |format|
-      if @comment.save
-        session[:question_id_comments] = @comment.question_id
-        format.html { redirect_to edit_project_plan_path(@project, @plan), status: :found, notice: 'Comment was successfully created.' }
-        format.json { head :no_content  }
-      end
+    if @comment.save
+      c = @comment.attributes
+      c[:h] = {
+        :created_at => @comment.created_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :updated_at => @comment.updated_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :created_by => current_user.name
+      }
+      render json: c
+    else
+      render json: { :errors => @comment.errors.full_messages }
     end
+
   end
 
   # PUT /comments/1
   # PUT /comments/1.json
   def update
-    @comment = Comment.find(params[:comment][:id])
+
+    p = params.require(:comment).permit(:id,:text)
+
+    @comment = Comment.find(p[:id])
     authorize! :update,@comment
 
-    @comment.text = params["#{params[:comment][:id]}_comment_text"]
+    @comment.text = p[:text]
 
-    @plan = Plan.find(@comment.plan_id)
-    @project = Project.find(@plan.project_id)
-
-    respond_to do |format|
-      if @comment.update_attributes(params[:comment])
-        session[:question_id_comments] = @comment.question_id
-        format.html { redirect_to edit_project_plan_path(@project, @plan), status: :found, notice: 'Comment was successfully updated.' }
-        format.json { head :no_content }
-      end
+    if @comment.save
+      c = @comment.attributes
+      c[:h] = {
+        :created_at => @comment.created_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :updated_at => @comment.updated_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :created_by => @comment.user.name
+      }
+      render json: c
+    else
+      render json: { :errors => @comment.errors.full_messages }
     end
   end
 
   # ARCHIVE /comments/1
   # ARCHIVE /comments/1.json
   def archive
-    @comment = Comment.find(params[:comment][:id])
+
+    p = params.permit(:id)
+
+    @comment = Comment.find(p[:id])
     authorize! :archive,@comment
     @comment.archived = true
     @comment.archived_by = current_user.id
 
-    @plan = Plan.find(@comment.plan_id)
-    @project = Project.find(@plan.project_id)
-
-    respond_to do |format|
-      if @comment.update_attributes(params[:comment])
-        session[:question_id_comments] = @comment.question_id
-        format.html { redirect_to edit_project_plan_path(@project, @plan), status: :found, notice: 'Comment has been removed.' }
-      end
+    if @comment.save
+      c = @comment.attributes
+      c[:h] = {
+        :created_at => @comment.created_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :updated_at => @comment.updated_at.getlocal.strftime("%d/%m/%Y %H:%M"),
+        :created_by => @comment.user.name,
+        :archived_by => current_user.name
+      }
+      render json: c
+    else
+      render json: { :errors => @comment.errors.full_messages }
     end
   end
 end

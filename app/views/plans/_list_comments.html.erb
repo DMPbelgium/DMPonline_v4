@@ -8,7 +8,7 @@
 <div class="div-table-content" style ="<%= style_to_add %>">
     <table class="dmp_table" id="dmp_table">
         <tbody class= "comment_table_body">
-            <% comments.order("updated_at DESC").each do |c|%>
+            <% comments.each do |c|%>
                 <tr >
                     <td class="dmp_border_bottom">
                         <%= c.user.name %> </br>
@@ -87,31 +87,31 @@
 <div class="two-column-clear question-divider"></div>
 
 <!-- view latest comment block -->
-<% comments_not_archived = comments.not_archived %>
-<% latest_comment = comments_not_archived.find(:first, :order => "updated_at DESC") %>
+<% comments_not_archived = comments.select { |c| c.archived_by.nil? } %>
+<% latest_comment = comments_not_archived.first %>
 <% if !latest_comment.nil? then%>
     <div id = "lastet_comment_div_<%= latest_comment.question_id %>" class ="view_comment_class">
-        <%= render :partial => "view_comment", locals: {comment: latest_comment} %>
+        <%= render :partial => "view_comment", locals: {comment: latest_comment,question: question} %>
         <div class="two-column-clear question-divider"></div>
     </div>
 <%end%>
 <!-- load comments to view and edit -->
-<%comments.order("updated_at DESC").each do |com|%>
+<%comments.each do |com|%>
     <!-- view comment -->
     <div id = "view_comment_div_<%= com.id%>" class ="view_comment_class" style="display: none">
-        <%= render :partial => "view_comment", locals: {comment: com} %>
+        <%= render :partial => "view_comment", locals: {comment: com,question: question} %>
         <div class="two-column-clear question-divider"></div>
     </div>
 
     <!-- edit comment block -->
     <div id = "edit_comment_div_<%= com.id %>"  class ="edit_comment_class" style="display: none">
-        <%= render :partial => "edit_comment", locals: {comment: com} %>
+        <%= render :partial => "edit_comment", locals: {comment: com,question: question} %>
         <div class="two-column-clear question-divider"></div>
     </div>
 
     <!-- archive comment block -->
     <div id = "archive_comment_div_<%= com.id %>"  class ="archive_comment_class" style="display: none">
-        <%= render :partial => "archive_comment", locals: {comment: com} %>
+        <%= render :partial => "archive_comment", locals: {comment: com,question: question} %>
         <div class="two-column-clear question-divider"></div>
     </div>
 

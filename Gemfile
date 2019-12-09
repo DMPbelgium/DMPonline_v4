@@ -75,3 +75,7 @@ gem 'strong_parameters'
 gem 'validates_hostname'
 
 gem 'file_utils'
+
+#test - start
+gem 'reverse_markdown'
+#test - end

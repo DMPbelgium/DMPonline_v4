@@ -1,31 +1,48 @@
-<!-- builds the comments box, it receives a question id and a object plan-->
+<%= form_for :comment,
+  :url => { :controller => :comments, :action => :create },
+  :html=> {
+    :method=> :post,
+    :id => "new_comment_form_#{question.id}",
+    :class => "add_comment_form",
+    :'data-list-id' => "list-comments-" + question.id.to_s,
+    :'data-list-label-id' => "list-comments-label-" + question.id.to_s
+  } do |f| %>
+  <%= f.hidden_field :question_id, :value => question.id %>
+  <%= f.hidden_field :plan_id, :value => @plan.id %>
+  <%= f.text_area :text, :required => true, :class => "comment", :rows => 8 %>
+  <%= f.submit t("helpers.submit.save"), :class => "btn btn-primary" %>
+<% end %>
 
-<!-- if there are comments then list of comments and view last comment
-    else display display add comment form -->
- 
-<% @comments = Comment.where("question_id = ? && plan_id = ?", questionId, plan_id) %> 
-<%= hidden_field_tag :question_id, questionId, :class => "question_id" %>
-  
-<% if @comments.count  >  0 then%>
-    <!-- add comment -->
-	<div id="add_comment_button_top_div_<%= questionId%>" class="move_2_right" >
-		<%= link_to t("helpers.comments.add_comment_label"),'#', :class => "btn btn-primary add_comment_button" %> 
-        
-	</div>
-    <div class="div_clear">
-    </div>
-    <!-- list of comments, view and edit a comment -->
-    <%= render :partial => "list_comments", locals: {comments: @comments}%>
-     <div class="div_clear">
-    </div>   
-    <div class="div_clear">
-    </div>
-    <!-- add a comment block -->
-    <div id="add_comment_block_div_<%= questionId%>" style="display: none"> 
-        <%= render :partial => "add_comment", locals: {questionId: questionId, planId: plan_id}%>
-    </div>
-        
-<% else%>
-    <%= t("helpers.comments.add_comment_text")%>
-    <%= render :partial => "add_comment", locals: {questionId: questionId, planId: plan_id}%>
-<% end%>
+<div class="list-comments" id="list-comments-<%= question.id %>">
+  <% comments.each do |comment| %>
+
+    <blockquote data-comment-id="<%= comment.id %>">
+
+      <% if !comment.archived && can?(:archive,comment) %>
+        <button type="button" class="close" data-comment-id="<%= comment.id %>">&times;</button>
+      <% end %>
+
+      <% if comment.archived %>
+
+        <% if comment.archived_by == current_user.id then%>
+
+          <del><%= t("helpers.comments.retracted")%></del>
+
+        <% else %>
+
+          <del><%= t("helpers.comments.clear_by")%> <%= comment.archiver_name %></del>
+
+        <% end %>
+
+      <% else %>
+
+        <%= comment.text %>
+
+      <% end %>
+
+      <small>posted by <%= comment.user.name %> at <%= comment.created_at.getlocal.strftime("%d/%m/%Y %H:%M") %></small>
+
+    </blockquote>
+
+  <% end %>
+</div>

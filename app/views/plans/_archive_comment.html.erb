@@ -15,13 +15,8 @@
     
 	<!-- submit buttons -->
 	<div class="move_2_right">
-        <% question = Question.find(comment.question_id)%>	
-        <%= hidden_field_tag :plan_id, comment.plan_id, :class => "plan_id" %>
-        <%= hidden_field_tag :comment_id, comment.id, :class => "comment_id" %>
-        <%= hidden_field_tag :section_id, question.section_id, :class => "section_id" %>
 		<%= f.submit button_label, :class => "btn btn-primary archive_comment_submit_button" %>
-        <%= hidden_field_tag :comment_id, comment.id, :class => "comment_id" %>
-        <%= link_to t("helpers.submit.cancel"), "#", :class => "cancel_archive_comment btn cancel" %>
+    <%= link_to t("helpers.submit.cancel"), "#", :class => "cancel_archive_comment btn cancel" %>
 	</div>
     </br>
 <%end%>
