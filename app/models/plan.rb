@@ -267,24 +267,24 @@ class Plan < ActiveRecord::Base
 		return details
 	end
 
-	def locked(section_id, user_id)
-		plan_section = plan_sections.where("section_id = ? AND user_id != ? AND release_time > ?", section_id, user_id, Time.now).last
-		if plan_section.nil? then
-			status = {
-				"locked" => false,
-				"locked_by" => nil,
-				"timestamp" => nil,
-				"id" => nil
-			}
-		else
-			status = {
-				"locked" => true,
-				"locked_by" => plan_section.user.name,
-				"timestamp" => plan_section.updated_at,
-				"id" => plan_section.id
-			}
-		end
-	end
+#	def locked(section_id, user_id)
+#		plan_section = plan_sections.where("section_id = ? AND user_id != ? AND release_time > ?", section_id, user_id, Time.now).last
+#		if plan_section.nil? then
+#			status = {
+#				"locked" => false,
+#				"locked_by" => nil,
+#				"timestamp" => nil,
+#				"id" => nil
+#			}
+#		else
+#			status = {
+#				"locked" => true,
+#				"locked_by" => plan_section.user.name,
+#				"timestamp" => plan_section.updated_at,
+#				"id" => plan_section.id
+#			}
+#		end
+#	end
 
 	def lock_all_sections(user_id)
 		sections.each do |s|
@@ -301,21 +301,58 @@ class Plan < ActiveRecord::Base
 	end
 
 	def lock_section(section_id, user_id, release_time = 60)
-		status = locked(section_id, user_id)
-		if ! status["locked"] then
-			plan_section = PlanSection.new
-			plan_section.plan_id = id
-			plan_section.section_id = section_id
-			plan_section.release_time = Time.now + release_time.seconds
-			plan_section.user_id = user_id
-			plan_section.save
-		elsif status["current_user"] then
-			plan_section = PlanSection.find(status["id"])
-			plan_section.release_time = Time.now + release_time.seconds
-			plan_section.save
-		else
-			return false
-		end
+
+    #is there a live lock on this section?
+    old_plan_section = plan_sections.where(
+      "section_id = ? AND release_time > ?", section_id, Time.now
+    ).order("updated_at DESC").first
+
+    st = {}
+
+    #found own lock
+    if old_plan_section.present? && old_plan_section.user_id == user_id
+
+      old_plan_section.release_time = Time.now + release_time.seconds
+      old_plan_section.save
+
+      st[:status] = "ok"
+      st[:timestamp] = old_plan_section.updated_at
+      st[:id] = old_plan_section.id
+
+    #found others lock
+    elsif old_plan_section.present?
+
+      st[:status] = "error"
+      st[:locked_by] = old_plan_section.user.name
+      st[:timestamp] = old_plan_section.updated_at
+      st[:id] = old_plan_section.id
+
+    #found no lock
+    else
+
+      new_plan_section = PlanSection.new(
+        :plan_id => id,
+        :section_id => section_id,
+        :release_time => Time.now + release_time.seconds,
+        :user_id => user_id
+      )
+
+      if new_plan_section.save
+
+        st[:status] = "ok"
+        st[:timestamp] = new_plan_section.updated_at
+        st[:id] = new_plan_section.id
+
+      else
+
+        st[:status] = "error"
+
+      end
+
+    end
+
+    return st
+
 	end
 
 	def unlock_section(section_id, user_id)

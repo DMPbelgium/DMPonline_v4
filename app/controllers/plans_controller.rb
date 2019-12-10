@@ -33,11 +33,11 @@ class PlansController < ApplicationController
 		end
 	end
 
-	def locked
-		respond_to do |format|
-			format.json { render json: @plan.locked(params[:section_id],current_user.id) }
-		end
-	end
+#	def locked
+#		respond_to do |format|
+#			format.json { render json: @plan.locked(params[:section_id],current_user.id) }
+#		end
+#	end
 
 	def delete_recent_locks
 		respond_to do |format|
@@ -64,27 +64,16 @@ class PlansController < ApplicationController
 	end
 
 	def lock_section
-		respond_to do |format|
-			if @plan.lock_section(params[:section_id], current_user.id)
-				format.html { render action: "edit" }
-				format.json { head :no_content }
-			else
-				format.html { render action: "edit" }
-				format.json { render json: @plan.errors, status: :unprocessable_entity }
-			end
-		end
+    st = nil
+    Plan.transaction do
+		  st = @plan.lock_section(params[:section_id], current_user.id)
+    end
+    render :json => st
 	end
 
 	def unlock_section
-		respond_to do |format|
-			if @plan.unlock_section(params[:section_id], current_user.id)
-				format.html { render action: "edit" }
-				format.json { head :no_content }
-			else
-				format.html { render action: "edit" }
-				format.json { render json: @plan.errors, status: :unprocessable_entity }
-			end
-		end
+    @plan.unlock_section(params[:section_id], current_user.id)
+    render :json => { :status => "ok" }
 	end
 
 	def answer

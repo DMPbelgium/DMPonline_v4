@@ -132,7 +132,7 @@ DMPonline4::Application.routes.draw do
   	resources :plans do
       member do
         get 'status'
-        get 'locked'
+        #get 'locked'
         get 'answer'
         get 'edit'
         post 'delete_recent_locks'

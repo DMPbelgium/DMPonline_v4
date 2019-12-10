@@ -526,36 +526,44 @@ $.fn.update_timestamp = function(question_id, data) {
 // If locked, display questions as read-only. Otherwise, apply lock and display as editable.
 $.fn.check_section_lock = function() {
 	var section = $(this);
-   	var section_id = section.attr("id").split('-')[1];
-	$.getJSON("locked.json?section_id="+section_id, function(data) {
-		if (data.locked) {
-			section.find(".section-lock-notice").html("<p>This section is locked for editing by " + data.locked_by + ".</p>");
-			section.find(".section-lock-notice").show();
-			section.find("input").attr('disabled', 'disabled');
-			section.find(".question-form").hide();
-			section.find("select").attr('disabled', 'disabled');
-      section.find("textarea").attr('disabled', 'disabled');
-      section.find("button.close").hide();
-			section.find(".question-readonly").show();
-		}
-		else {
-      $.ajax({
-        url: "lock_section",
-        type: "POST",
-        data: JSON.stringify({ section_id: section_id }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json"
-      });
-			section.find(".section-lock-notice").html("");
-			section.find(".section-lock-notice").hide();
-			section.find("input").removeAttr('disabled');
-			section.find(".question-form").show();
-			section.find("select").removeAttr('disabled');
-			section.find(".question-readonly").hide();
+  var section_id = section.attr("id").split('-')[1];
+
+  $.ajax({
+    url: "lock_section",
+    type: "POST",
+    data: JSON.stringify({ section_id: section_id }),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json"
+  })
+  .done(function(stat){
+
+    if(stat["status"] == "ok"){
+
+      section.find(".section-lock-notice").html("");
+      section.find(".section-lock-notice").hide();
+      section.find("input").removeAttr('disabled');
+      section.find(".question-form").show();
+      section.find("select").removeAttr('disabled');
+      section.find(".question-readonly").hide();
       section.find("button.close").show();
       section.find("textarea").removeAttr("disabled");
-		}
-	});
+
+    }
+    else {
+
+      section.find(".section-lock-notice").html("<p>This section is locked for editing by " + stat["locked_by"] + ".</p>");
+      section.find(".section-lock-notice").show();
+      section.find("input").attr('disabled', 'disabled');
+      section.find(".question-form").hide();
+      section.find("select").attr('disabled', 'disabled');
+      section.find("textarea").attr('disabled', 'disabled');
+      section.find("button.close").hide();
+      section.find(".question-readonly").show();
+
+    }
+
+  });
+
 	return true;
 };
 
