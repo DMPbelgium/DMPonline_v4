@@ -3,7 +3,9 @@ Project.after_create do |project|
   cu_attrs = cu.present? ?
     cu.attributes.slice("id","firstname","surname","email") : {}
   object = project.attributes
-  object[:organisation] = project.organisation.attributes
+  if project.organisation.present?
+    object[:organisation] = project.organisation.attributes
+  end
   Log.create(
     :item_id        => project.id,
     :item_type      => "Project",
@@ -18,7 +20,9 @@ Project.after_destroy do |project|
   cu_attrs = cu.present? ?
     cu.attributes.slice("id","firstname","surname","email") : {}
   object = project.attributes
-  object[:organisation] = project.organisation.attributes
+  if project.organisation.present?
+    object[:organisation] = project.organisation.attributes
+  end
   Log.create(
     :item_id        => project.id,
     :item_type      => "Project",
