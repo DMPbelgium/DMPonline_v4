@@ -5,8 +5,6 @@
 # [+Copyright:+] Digital Curation Centre
 class Phase < ActiveRecord::Base
 
-	extend FriendlyId
-
 	#associations between tables
 	belongs_to :dmptemplate, :inverse_of => :phases, :autosave => true
 
@@ -19,8 +17,6 @@ class Phase < ActiveRecord::Base
 	accepts_nested_attributes_for :dmptemplate
 
 	attr_accessible :description, :number, :title, :dmptemplate_id
-
-	friendly_id :title, use: :slugged, :use => :history
 
   #validation - start
   validates :dmptemplate, :presence => true

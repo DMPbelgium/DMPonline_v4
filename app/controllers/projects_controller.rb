@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
 	# GET /projects/1
 	# GET /projects/1.json
 	def show
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :show, @project
 
 		@show_form = false
@@ -53,17 +53,17 @@ class ProjectsController < ApplicationController
 	# GET /projects/1/edit
      # Should this be removed?
 	def edit
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :edit, @project
 	end
 
 	def share
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :share,@project
 	end
 
 	def export
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :export,@project
 		respond_to do |format|
 			format.html { render action: "export" }
@@ -151,7 +151,7 @@ class ProjectsController < ApplicationController
 		respond_to do |format|
 			if project_is_valid
         @project.save({ :validate => false })
-				format.html { redirect_to({:action => "show", :id => @project.slug, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }
+				format.html { redirect_to({:action => "show", :id => @project.id, :show_form => "yes"}, {:notice => I18n.t('helpers.project.success')}) }
 				format.json { render json: @project, status: :created, location: @project }
 			else
 				format.html { redirect_to( {:action => "new"},{ :alert => @project.errors.full_messages } ) }
@@ -163,7 +163,7 @@ class ProjectsController < ApplicationController
 	# PUT /projects/1
 	# PUT /projects/1.json
 	def update
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :update,@project
 		respond_to do |format|
 			if @project.update_attributes(params[:project])
@@ -179,7 +179,7 @@ class ProjectsController < ApplicationController
 	# DELETE /projects/1
 	# DELETE /projects/1.json
 	def destroy
-		@project = Project.find(params[:id])
+		@project = find_project(params[:id])
     authorize! :destroy,@project
 		@project.destroy
 
@@ -301,4 +301,57 @@ class ProjectsController < ApplicationController
 			return all_such_orgs.sort_by {|o| [o.sort_name, o.name] }
 		end
 	end
+
+  #catch slugs and historic slugs also
+  def find_project(params_id)
+
+    id = nil
+
+    begin
+
+      id = Integer(params_id)
+
+    rescue ArgumentError
+
+      id = params_id
+
+    end
+
+    if id.is_a?(Integer)
+
+      p = Project.where(:id => id).first
+
+      if p.present?
+
+        return p
+
+      end
+
+    elsif id.is_a?(String)
+
+      p = Project.where(:slug => id).first
+
+      if p.nil?
+
+        fr = ActiveRecord::Base.connection_pool.with_connection { |con|
+          con.exec_query("SELECT * FROM friendly_id_slugs WHERE slug = #{con.quote(id)} AND sluggable_type = 'Project' ORDER BY created_at DESC LIMIT 1")
+        }.first
+
+        if fr.present?
+
+          p = Project.where(:id => fr["sluggable_id"]).first
+
+        end
+
+      else
+
+        return p
+
+      end
+
+    end
+
+    raise ActiveRecord::RecordNotFound
+
+  end
 end

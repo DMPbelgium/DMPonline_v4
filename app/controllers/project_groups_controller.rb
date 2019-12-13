@@ -57,13 +57,13 @@ class ProjectGroupsController < ApplicationController
           end
 
           flash[:notice] = "User added to project"
-          format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
+          format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project_id }
           format.json { render json: @project_group, status: :created, location: @project_group }
 
         else
 
           flash[:alert] = @project_group.errors.full_messages
-          format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
+          format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project_id }
           format.json { render json: @project_group.errors, status: :unprocessable_entity }
 
         end
@@ -71,7 +71,7 @@ class ProjectGroupsController < ApplicationController
 			else
 
 				flash[:notice] = "Please enter a valid email address"
-				format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
+				format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project_id }
 				format.json { render json: @project_group, status: :created, location: @project_group }
 
 			end
@@ -101,7 +101,7 @@ class ProjectGroupsController < ApplicationController
 
         end
 
-				format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
+				format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project_id }
 				format.json { head :no_content }
 
 			else
@@ -135,7 +135,7 @@ class ProjectGroupsController < ApplicationController
       end
 
 			flash[:notice] = 'Access removed'
-			format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project.slug }
+			format.html { redirect_to :controller => 'projects', :action => 'share', :id => @project_group.project_id }
 			format.json { head :no_content }
 
 		end

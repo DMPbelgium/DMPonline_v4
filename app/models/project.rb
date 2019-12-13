@@ -1,8 +1,6 @@
 class Project < ActiveRecord::Base
 
-	extend FriendlyId
-
-	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :slug, :old_principal_investigator, :old_data_contact
+	attr_accessible :dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id, :grant_number, :identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact, :funder_name, :old_principal_investigator, :old_data_contact
 
 	#associations between tables
 	belongs_to :dmptemplate, :inverse_of => :projects, :autosave => true
@@ -10,8 +8,6 @@ class Project < ActiveRecord::Base
 	has_many :plans, :inverse_of => :project, :dependent => :destroy
 	has_many :project_groups, :dependent => :destroy, :inverse_of => :project
 	has_and_belongs_to_many :guidance_groups, join_table: "project_guidance"
-
-	friendly_id :title, use: :slugged, :use => :history
 
 	after_create :create_plans
   after_create :add_gdprs
