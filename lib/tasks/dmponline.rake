@@ -444,7 +444,16 @@ def projects_ld(conditions = {})
                 :number => op.number,
                 :is_default => op.is_default,
                 :created_at => op.created_at.utc.strftime("%FT%TZ"),
-                :updated_at => op.created_at.utc.strftime("%FT%TZ")
+                :updated_at => op.created_at.utc.strftime("%FT%TZ"),
+                :themes => op.themes.map { |theme|
+                  {
+                    :id => theme.id,
+                    :type => "Theme",
+                    :title => theme.title,
+                    :created_at => theme.created_at.utc.strftime("%FT%TZ"),
+                    :updated_at => theme.updated_at.utc.strftime("%FT%TZ")
+                  }
+                }
               }
             end
 

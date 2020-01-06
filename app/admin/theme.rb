@@ -8,6 +8,7 @@ ActiveAdmin.register Theme do
 
   remove_filter :questions
   remove_filter :guidances
+  remove_filter :options
 
 	menu :priority => 12, :label => "Themes"
 
@@ -32,7 +33,7 @@ ActiveAdmin.register Theme do
       row :updated_at
     end
 
-    table_for( (Theme.find(params[:id]).questions).order('number')) do
+    table_for( (theme.questions).order('number')) do
       column (:number){|question| question.number}
       column (I18n.t("admin.question")){|question| link_to question.text, [:admin, question]}
       column (I18n.t("admin.template")){|question|

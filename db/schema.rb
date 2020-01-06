@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20191202105453) do
+ActiveRecord::Schema.define(:version => 20200106084544) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -155,6 +155,13 @@ ActiveRecord::Schema.define(:version => 20191202105453) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  create_table "options_themes", :id => false, :force => true do |t|
+    t.integer "option_id", :null => false
+    t.integer "theme_id",  :null => false
+  end
+
+  add_index "options_themes", ["option_id", "theme_id"], :name => "index_options_themes_on_option_id_and_theme_id"
 
   create_table "organisation_domains", :force => true do |t|
     t.string   "name",            :null => false

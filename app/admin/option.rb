@@ -51,6 +51,9 @@ ActiveAdmin.register Option do
           link_to ques.question.section.version.phase.dmptemplate.title, [:admin, ques.question.section.version.phase.dmptemplate]
         end
       end
+      row I18n.t('admin.themes') do |op|
+        (op.themes.map{|t| link_to t.title, [:admin, t]}).join(', ').html_safe
+      end
       row :is_default
       row :created_at
       row :updated_at
@@ -67,6 +70,14 @@ ActiveAdmin.register Option do
         :as => :select,
         :collection => Question.find(:all, :order => 'text ASC').map{ |sec| ["#{truncate(sec.section.version.phase.dmptemplate.title, :lengh => 20)} - #{truncate(sec.section.title, :lengh => 50)} - #{truncate(sec.text, :lengh => 20)}", sec.id] }
       f.input :is_default
+    end
+    f.inputs "Themes" do
+      f.input :theme_ids, :label => "Selected themes",
+        :as => :select,
+        :multiple => true,
+        :include_blank => "None",
+        :collection => Theme.order('title').map{|the| [the.title, the.id]}  ,
+        :hint => 'Choose all themes that apply.'
     end
     f.actions
   end

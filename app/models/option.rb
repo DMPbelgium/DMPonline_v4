@@ -5,8 +5,11 @@ class Option < ActiveRecord::Base
 
   has_many :option_warnings, :dependent => :destroy, :inverse_of => :option
 	has_and_belongs_to_many :answers, join_table: "answers_options"
+  has_and_belongs_to_many :themes, join_table: "options_themes"
 
 	attr_accessible :text, :question_id, :is_default, :number
+  accepts_nested_attributes_for :themes
+  attr_accessible :theme_ids
 
 	#validation - start
   validates :question,:presence => true
