@@ -6,10 +6,12 @@
 
 ActiveAdmin.register Project do
 
-	menu :priority => 25, :label => proc{I18n.t('admin.plans')}
-
-  preserve_default_filters!
+  remove_filter :plans
+  remove_filter :project_groups
+  remove_filter :guidance_groups
   remove_filter :slug
+
+	menu :priority => 25, :label => proc{I18n.t('admin.plans')}
 
 	#:dmptemplate_id, :title, :organisation_id, :unit_id, :guidance_group_ids, :project_group_ids, :funder_id, :institution_id,
 	#:grant_number,:identifier, :description, :principal_investigator, :principal_investigator_identifier, :data_contact

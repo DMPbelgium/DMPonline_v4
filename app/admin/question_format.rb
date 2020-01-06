@@ -6,6 +6,8 @@
 
 ActiveAdmin.register QuestionFormat do
 
+  remove_filter :questions
+
 	menu :priority => 1, :label => proc{I18n.t('admin.question_format')}, :parent =>  "Templates management"
 
 	index do   # :description, :title

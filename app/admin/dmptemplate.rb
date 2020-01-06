@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Dmptemplate do
 
+  remove_filter :phases
+  remove_filter :versions
+  remove_filter :sections
+  remove_filter :questions
+  remove_filter :projects
+  remove_filter :setting_objects
+
   menu :priority => 11, :label => proc{ I18n.t('admin.template')}, :parent => "Templates management"
 
   # FIXME: The below member_actions only work on :export settings.

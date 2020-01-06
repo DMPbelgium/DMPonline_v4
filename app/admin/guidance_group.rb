@@ -6,6 +6,9 @@
 
 ActiveAdmin.register GuidanceGroup do
 
+  remove_filter :guidances
+  remove_filter :projects
+
   menu :priority => 2, :label => proc{I18n.t('admin.guidance_group')}, :parent => "Guidance list"
 
 	index do   #:organisation_id, :name, :published, :optional_subset

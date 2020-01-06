@@ -5,6 +5,9 @@
 # [+Copyright:+] Digital Curation Centre
 
 ActiveAdmin.register Role do
+
+  remove_filter :users
+
 	menu :priority => 5, :label => proc{I18n.t('admin.role')}, :parent => "User management"
 
 	index do

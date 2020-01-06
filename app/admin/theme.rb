@@ -6,6 +6,9 @@
 
 ActiveAdmin.register Theme do
 
+  remove_filter :questions
+  remove_filter :guidances
+
 	menu :priority => 12, :label => "Themes"
 
 	index do   # :description, :title, :locale

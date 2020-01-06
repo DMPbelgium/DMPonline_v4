@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Organisation do
 
+  remove_filter :guidance_groups
+  remove_filter :dmptemplates
+  remove_filter :sections
+  remove_filter :users
+  remove_filter :option_warnings
+  remove_filter :suggested_answers
+
   menu :priority => 14, :label => proc{I18n.t('admin.org')}, :parent => "Organisations management"
 
 	index do   # :abbreviation, :banner_file_id, :description, :logo_file_id, :name,

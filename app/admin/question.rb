@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Question do
 
+  remove_filter :answers
+  remove_filter :options
+  remove_filter :suggested_answers
+  remove_filter :guidances
+  remove_filter :comments
+  remove_filter :section
+
 	menu :priority => 1, :label => proc{I18n.t('admin.question')}, :parent =>  "Templates management"
 
 	index do  #:default_value, :dependency_id, :dependency_text, :guidance, :number, :parent_id,

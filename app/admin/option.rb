@@ -5,6 +5,9 @@
 # [+Copyright:+] Digital Curation Centre
 
 ActiveAdmin.register Option do
+
+  remove_filter :answers
+
 	menu :priority => 1, :label => proc{I18n.t('admin.multi_options')}, :parent =>  "Templates management"
 
 	index do   # :question_id, :text, :number, :is_default

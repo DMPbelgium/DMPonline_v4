@@ -6,6 +6,8 @@
 
 ActiveAdmin.register UserType do
 
+  remove_filter :users
+
   menu :priority => 5, :label => proc{I18n.t('admin.user_type')}, :parent => "User management"
 
 	index do   # :description, :name
