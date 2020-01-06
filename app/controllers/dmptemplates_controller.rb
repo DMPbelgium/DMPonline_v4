@@ -305,7 +305,15 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_phase_dmptemplate_path(:id => @section.version.phase_id, :version_id => @section.version_id, :section_id => @section.id, :edit => 'true'), notice: I18n.t('org_admin.templates.created_message') }
         format.json { head :no_content }
 	    else
-	      format.html { render action: "admin_phase" }
+	      format.html {
+          redirect_to admin_phase_dmptemplate_path(
+            :id => @section.version.phase_id,
+            :version_id => @section.version_id,
+            :section_id => @section.id,
+            :edit => 'true'
+          ),
+          alert: @section.errors.full_messages
+        }
 	      format.json { render json: @section.errors, status: :unprocessable_entity }
 	    end
 		end
@@ -326,7 +334,15 @@ class DmptemplatesController < ApplicationController
 		    format.html { redirect_to admin_phase_dmptemplate_path(:id => @phase.id, :version_id => @version.id, :section_id => @section.id , :edit => 'true'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
-		    format.html { render action: "admin_phase" }
+		    format.html {
+          redirect_to admin_phase_dmptemplate_path(
+            :id => @phase.id,
+            :version_id => @section.version_id,
+            :section_id => @section.id,
+            :edit => 'true'
+          ),
+          alert: @section.errors.full_messages
+        }
 		    format.json { render json: @section.errors, status: :unprocessable_entity }
 		  end
 		end
