@@ -59,7 +59,9 @@ def export_org_projects(organisation)
 
     fh_json.print "{"
 
-    fh_json.print "\"links\": " + links.to_json
+    fh_json.print "\"meta\": { \"version\": \"0.1\",\"created_at\": \"#{new_timestamp}\" }"
+
+    fh_json.print ",\"links\": " + links.to_json
 
     fh_json.print ",\"data\": ["
 
@@ -115,7 +117,9 @@ def export_org_projects(organisation)
 
     fh_json.print "{"
 
-    fh_json.print "\"links\": " + links.to_json
+    fh_json.print "\"meta\": { \"version\": \"0.1\",\"created_at\": \"#{new_timestamp}\" }"
+
+    fh_json.print ",\"links\": " + links.to_json
 
     fh_json.print ",\"data\": ["
 
@@ -178,7 +182,9 @@ def export_org_projects(organisation)
 
     fh_json.print "{"
 
-    fh_json.print "\"links\": " + links.to_json
+    fh_json.print "\"meta\": { \"version\": \"0.1\",\"created_at\": \"#{new_timestamp}\" }"
+
+    fh_json.print ",\"links\": " + links.to_json
 
     fh_json.print ",\"data\": ["
 

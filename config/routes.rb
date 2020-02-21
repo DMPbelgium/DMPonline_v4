@@ -193,12 +193,12 @@ DMPonline4::Application.routes.draw do
   get "selectable_user/edit", :controller => :selectable_user, :action => :edit, :as => :edit_selectable_user
   post "selectable_user", :controller => :selectable_user, :action => :update, :as => :update_selectable_user
 
-  get "/internal/exports/organisations/:organisation/:name.json",
+  get "/internal/exports/v01/organisations/:organisation/:name.json",
     :to => "internal/exports#show_link",
     :organisation => /[a-zA-Z0-9_\-]+/,
     :name => /[a-zA-Z0-9_\-\.:]+/
 
-  get "/internal/exports/organisations/:organisation/:year/:month/:name.json",
+  get "/internal/exports/v01/organisations/:organisation/:year/:month/:name.json",
     :to => "internal/exports#show_file",
     :organisation => /[a-zA-Z0-9_\-]+/,
     :year => /\d{4}/,

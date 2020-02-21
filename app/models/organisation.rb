@@ -167,7 +167,7 @@ class Organisation < ActiveRecord::Base
       .url_helpers
       .root_url(:host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
     u.chomp!("/")
-    u += "/internal/exports/organisations/" + self.abbreviation
+    u += "/internal/exports/v01/organisations/" + self.abbreviation
     u
 
   end
