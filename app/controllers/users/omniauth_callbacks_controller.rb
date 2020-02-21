@@ -198,15 +198,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user.firstname = auth['info']['first_name'] if @user.firstname.blank?
       @user.surname = auth['info']['last_name'] if @user.surname.blank?
 
-    #user found with email
-    elsif email.present? && User.where( :email => email ).first
+    #user found with email: this user's orcid must be empty or different
+    #attribute 'email' is unique (enforced by devise?)
+    elsif email.present? && @user = User.where( :email => email ).first
 
-      #don't match this: multiple orcid records with same email available. This would make it possible
-      #to log in to the same user using different orcid records..
-
-      #unable to trust this user
-      redirect_to root_path, :alert => I18n.t("devise.omniauth_callbacks.orcid.link")
-      return
+      #don't change orcid if it is already there
+      unless @user.orcid_id.present?
+        @user.orcid_id = auth.uid
+      end
 
     #NEW USER. We trust "email" because ORCID marks it as confirmed
     elsif email.present?
