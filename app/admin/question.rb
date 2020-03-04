@@ -6,12 +6,19 @@
 
 ActiveAdmin.register Question do
 
-  remove_filter :answers
-  remove_filter :options
-  remove_filter :suggested_answers
-  remove_filter :guidances
-  remove_filter :comments
-  remove_filter :section
+  filter :themes, :collection => proc {
+    Theme.order("title asc")
+  }
+  filter :question_format, :collection => proc {
+    QuestionFormat.order("title asc")
+  }
+  filter :text
+  filter :default_value
+  filter :guidance
+  filter :number
+  filter :dependency_text
+  filter :created_at
+  filter :updated_at
 
 	menu :priority => 1, :label => proc{I18n.t('admin.question')}, :parent =>  "Templates management"
 

@@ -3,7 +3,9 @@ ActiveAdmin.register RestUser do
   menu :priority => 1, :label => proc{ I18n.t("admin.rest_user")}, :parent => "User management"
 
 	filter :code
-	filter :organisation
+	filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
 	filter :created_at
 	filter :updated_at
 

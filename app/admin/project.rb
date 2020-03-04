@@ -6,10 +6,19 @@
 
 ActiveAdmin.register Project do
 
-  remove_filter :plans
-  remove_filter :project_groups
-  remove_filter :guidance_groups
-  remove_filter :slug
+  filter :dmptemplate, :collection => proc {
+    Dmptemplate.order("title asc")
+  }
+  filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :title
+  filter :description
+  filter :grant_number
+  filter :identifier
+  filter :funder_name
+  filter :created_at
+  filter :updated_at
 
 	menu :priority => 25, :label => proc{I18n.t('admin.plans')}
 

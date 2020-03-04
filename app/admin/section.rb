@@ -9,8 +9,12 @@ ActiveAdmin.register Section do
 	menu :priority => 1, :label => proc{I18n.t('admin.section')}, :parent =>  "Templates management"
 
 	filter :title
-	filter :organisation
-	filter :version
+	filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
+	filter :version, :collection => proc {
+    Version.order("title asc")
+  }
 	filter :created_at
 	filter :updated_at
 

@@ -5,6 +5,16 @@
 # [+Copyright:+] Digital Curation Centre
 
 ActiveAdmin.register SuggestedAnswer do
+  filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :question, :collection => proc {
+    Question.order("text asc")
+  }
+  filter :text
+  filter :created_at
+  filter :updated_at
+  filter :is_example
 
 	menu :priority => 1, :label => proc{I18n.t('admin.sug_answer')}, :parent => "Templates management"
 

@@ -6,6 +6,16 @@
 
 ActiveAdmin.register Version do
 
+  filter :phase, :collection => proc {
+    Phase.order("title asc")
+  }
+  filter :title
+  filter :description
+  filter :published
+  filter :number
+  filter :created_at
+  filter :updated_at
+
 	menu :priority => 1, :label => proc{I18n.t('admin.version')}, :parent =>  "Templates management"
 
 	index do   # :description, :number, :published, :title, :phase_id

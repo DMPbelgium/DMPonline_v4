@@ -6,7 +6,17 @@
 
 ActiveAdmin.register Option do
 
-  remove_filter :answers
+  filter :question, :collection => proc {
+    Question.order("text asc")
+  }
+  filter :themes, :collection => proc {
+    Theme.order("title asc")
+  }
+  filter :text
+  filter :number
+  filter :is_default
+  filter :created_at
+  filter :updated_at
 
 	menu :priority => 1, :label => proc{I18n.t('admin.multi_options')}, :parent =>  "Templates management"
 

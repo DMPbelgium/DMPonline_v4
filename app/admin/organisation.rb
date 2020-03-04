@@ -6,12 +6,28 @@
 
 ActiveAdmin.register Organisation do
 
-  remove_filter :guidance_groups
-  remove_filter :dmptemplates
-  remove_filter :sections
-  remove_filter :users
-  remove_filter :option_warnings
-  remove_filter :suggested_answers
+  filter :organisation_type, :collection => proc {
+    OrganisationType.order("name asc")
+  }
+  filter :organisation_domains, :collection => proc {
+    OrganisationDomain.order("name asc")
+  }
+  filter :parent, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :children, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :name
+  filter :abbreviation
+  filter :description
+  filter :target_url
+  filter :wayfless_entity
+  filter :created_at
+  filter :updated_at
+  filter :is_other
+  filter :sort_name
+  filter :gdpr
 
   menu :priority => 14, :label => proc{I18n.t('admin.org')}, :parent => "Organisations management"
 

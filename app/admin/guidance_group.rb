@@ -6,8 +6,17 @@
 
 ActiveAdmin.register GuidanceGroup do
 
-  remove_filter :guidances
-  remove_filter :projects
+  filter :dmptemplates, :collection => proc {
+    Dmptemplate.order("title asc")
+  }
+  filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :name
+  filter :created_at
+  filter :updated_at
+  filter :optional_subset
+  filter :published
 
   menu :priority => 2, :label => proc{I18n.t('admin.guidance_group')}, :parent => "Guidance list"
 

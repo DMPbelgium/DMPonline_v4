@@ -6,6 +6,14 @@
 
 ActiveAdmin.register OrganisationType do
 
+  filter :organisations, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :name
+  filter :description
+  filter :created_at
+  filter :updated_at
+
   menu :priority => 4, :label => proc{I18n.t('admin.org_type')}, :parent => "Organisations management"
 
 	index do   #:organisation_id, :name

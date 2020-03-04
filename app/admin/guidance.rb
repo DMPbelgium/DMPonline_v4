@@ -6,6 +6,16 @@
 
 ActiveAdmin.register Guidance do
 
+  filter :guidance_groups, :collection => proc {
+    GuidanceGroup.order("name asc")
+  }
+  filter :themes, :collection => proc {
+    Theme.order("title asc")
+  }
+  filter :text
+  filter :created_at
+  filter :updated_at
+
 	menu :priority => 13, :label => proc{ I18n.t('admin.guidance')}, :parent => "Guidance list"
 
 	index do   # :text, :guidance_group_id,  :question_id

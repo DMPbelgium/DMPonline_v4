@@ -11,7 +11,9 @@ ActiveAdmin.register User do
 	filter :firstname
 	filter :surname
 	filter :email
-	filter :organisation
+	filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
 	filter :dmponline3
 	filter :created_at
 	filter :updated_at
@@ -98,10 +100,6 @@ ActiveAdmin.register User do
   			:multiple => true,
         :include_blank => 'None',
   			:collection => Role.find(:all, :order => 'name ASC').map{|ro| [ro.name, ro.id]}
-      if f.object.new_record?
-        f.input :password
-        f.input :password_confirmation
-      end
     end
     f.actions
   end

@@ -6,6 +6,21 @@
 
 ActiveAdmin.register Phase do
 
+  filter :dmptemplate, :collection => proc {
+    Dmptemplate.order("title asc")
+  }
+  filter :versions, :collection => proc {
+    Version.order("title asc")
+  }
+  filter :sections, :collection => proc {
+    Section.order("title asc")
+  }
+  filter :title
+  filter :description
+  filter :number
+  filter :created_at
+  filter :updated_at
+
 	menu :priority => 1, :label => proc{I18n.t('admin.phase')}, :parent => "Templates management"
 
 	# :description, :number, :title, :dmptemplate_id

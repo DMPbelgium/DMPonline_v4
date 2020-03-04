@@ -6,12 +6,17 @@
 
 ActiveAdmin.register Dmptemplate do
 
-  remove_filter :phases
-  remove_filter :versions
-  remove_filter :sections
-  remove_filter :questions
-  remove_filter :projects
-  remove_filter :setting_objects
+  filter :organisation, :collection => proc {
+    Organisation.order("name asc")
+  }
+  filter :title
+  filter :description
+  filter :published
+  filter :is_default
+  filter :gdpr
+  filter :locale
+  filter :created_at
+  filter :updated_at
 
   menu :priority => 11, :label => proc{ I18n.t('admin.template')}, :parent => "Templates management"
 
