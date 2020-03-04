@@ -60,9 +60,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       :email => email.downcase
     )
 
-    #ensure password
-    @user.ensure_password
-
     #validate
     unless @user.valid?
 
@@ -217,7 +214,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         :surname => auth['info']['last_name']
       )
       @user.skip_confirmation!
-      @user.ensure_password
 
     else
 
@@ -228,6 +224,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     is_new = @user.new_record?
+
+    @user.confirm! unless @user.confirmed?
 
     #just save record and login
     @user.save

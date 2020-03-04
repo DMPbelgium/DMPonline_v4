@@ -39,6 +39,8 @@ User.before_validation do |user|
 
   end
 
+  user.ensure_password
+
   true
 end
 User.after_auth_shibboleth do |user,auth,request|

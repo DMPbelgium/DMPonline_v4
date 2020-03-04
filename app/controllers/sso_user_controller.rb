@@ -21,7 +21,6 @@ class SsoUserController < ApplicationController
       #update user or create new one
       user = User.find_by_email( session[:sso_user]["email"] ) || User.new()
       user.assign_attributes( session[:sso_user] )
-      user.ensure_password
 
       if user.valid?
 

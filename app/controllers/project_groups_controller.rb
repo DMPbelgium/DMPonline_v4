@@ -29,7 +29,6 @@ class ProjectGroupsController < ApplicationController
         if user.nil?
 
           user = User.new( :email => email )
-          user.ensure_password
 
           #trigger validation to ensure organisation
           user.valid?
