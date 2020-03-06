@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
   end
 
   def ensure_password
-    unless self.password.present?
+    unless self.encrypted_password.present?
       self.generate_password
     end
   end
