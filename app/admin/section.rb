@@ -60,15 +60,20 @@ ActiveAdmin.register Section do
       row :created_at
       row :updated_at
     end
+    panel I18n.t("admin.questions") do
+      table_for( Question.where("section_id = ?", params[:id] ).order("number asc")) do
+        column (:number){|question| question.number }
+        column (I18n.t("admin.question")){|question| link_to question.text, [:admin, question]}
+      end
+    end
   end
 
-  #questions sidebar(:default_value, :dependency_id, :dependency_text, :guidance, :number, :parent_id, :suggested_answer, :text, :question_type, :section_id)
- 	sidebar proc{I18n.t("admin.questions")}, :only => :show, :if => proc { (Question.where("section_id = ?", params[:id])).count >= 1}  do
-    table_for( Question.where("section_id = ?", params[:id] ).order("number asc")) do
-		  column (:number){|question| question.number}
-	  	column (I18n.t("admin.question")){|question| link_to question.text, [:admin, question]}
-	  end
- 	end
+  action_item only: %i(show) do
+    link_to(
+      "Add Question to Section",
+      new_admin_question_path( "question[section_id]" => resource.id )
+    )
+  end
 
  	#form
   form do |f|

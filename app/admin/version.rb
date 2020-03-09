@@ -55,20 +55,25 @@ ActiveAdmin.register Version do
      	row :created_at
      	row :updated_at
     end
+    panel I18n.t('admin.sections') do
+      table_for resource.sections.order("number asc") do
+        column :number
+        column :title do |section|
+          link_to section.title, [:admin, section]
+        end
+        column I18n.t('admin.org_title'), :sortable => :organisation_id do |section|
+          link_to section.organisation.name, [:admin,section.organisation]
+        end
+      end
+    end
   end
 
-  #sections sidebar  (:organisation_id, :description, :number, :title, :version_id)
- 	sidebar I18n.t('admin.sections'), :only => :show, :if => proc { version.sections.count >= 1}  do
- 		table_for version.sections.order("number asc") do |temp_phases|
- 		 	column :number
- 		 	column :title do |row|
-        link_to row.title, [:admin, row]
-      end
-      column I18n.t('admin.org_title'), :sortable => :organisation_id do |org_title|
-       	link_to org_title.organisation.name, [:admin, org_title.organisation]
-    	end
- 		end
- 	end
+  action_item only: %i(show) do
+    link_to(
+      "Add Section to Version",
+      new_admin_section_path( "section[version_id]" => resource.id )
+    )
+  end
 
  	#form
  	form do |f|

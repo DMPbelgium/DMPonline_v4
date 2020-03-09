@@ -6,9 +6,6 @@
 
 ActiveAdmin.register Option do
 
-  filter :question, :collection => proc {
-    Question.order("text asc")
-  }
   filter :themes, :collection => proc {
     Theme.order("title asc")
   }

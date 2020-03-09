@@ -16,13 +16,14 @@ ActiveAdmin.register Question do
   filter :default_value
   filter :guidance
   filter :number
-  filter :dependency_text
+  #not used
+  #filter :dependency_text
   filter :created_at
   filter :updated_at
 
 	menu :priority => 1, :label => proc{I18n.t('admin.question')}, :parent =>  "Templates management"
 
-	index do  #:default_value, :dependency_id, :dependency_text, :guidance, :number, :parent_id,
+	index do  #:default_value, :dependency_id, :dependency_text, :guidance, :number,
 		#:suggested_answer, :text, :question_type, :section_id
     column I18n.t('admin.question'), :sortable => :text do |descr|
       if !descr.text.nil? then
@@ -92,8 +93,21 @@ ActiveAdmin.register Question do
       row :created_at
       row :updated_at
 	 	end
+
+    panel I18n.t("admin.multi_options") do
+      table_for resource.options.order("number asc") do
+        column :number
+        column(:text) { |option| link_to option.text, [:admin,option]}
+      end
+    end
 	end
 
+  action_item only: %i(show) do
+    link_to(
+      "Add Option to Question",
+      new_admin_option_path( "option[question_id]" => resource.id )
+    )
+  end
 
 	#form
   form do |f|
@@ -105,13 +119,15 @@ ActiveAdmin.register Question do
   		:collection => Section.find(:all, :order => 'title ASC').map{ |sec| ["#{sec.version.phase.dmptemplate.title} - #{sec.title}", sec.id] }
       f.input :default_value
       f.input :guidance
-      f.input :parent_id, :label => "Parent",
-  		:as => :select,
-  		:collection => Question.find(:all, :order => 'text ASC').map{|que|[que.text, que.id]}
-      f.input :dependency_id, :label => "Dependency question",
-  		:as => :select,
-  		:collection => Question.find(:all, :order => 'text ASC').map{|que|[que.text, que.id]}
-      f.input :dependency_text
+#not used anywhere
+#      f.input :parent_id, :label => "Parent",
+#  		:as => :select,
+#  		:collection => Question.find(:all, :order => 'text ASC').map{|que|[que.text, que.id]}
+#not used anywhere
+#      f.input :dependency_id, :label => "Dependency question",
+#  		:as => :select,
+#  		:collection => Question.find(:all, :order => 'text ASC').map{|que|[que.text, que.id]}
+#      f.input :dependency_text
     end
     f.inputs "Question Format" do
   	  f.input :question_format_id, :label => "Select question format",

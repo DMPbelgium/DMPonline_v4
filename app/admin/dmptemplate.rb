@@ -54,6 +54,13 @@ ActiveAdmin.register Dmptemplate do
     link_to(I18n.t('helpers.settings.title'), settings_admin_dmptemplate_path(resource.id))
   end
 
+  action_item only: %i(show) do
+    link_to(
+      "Add Phase to Dmptemplate",
+      new_admin_phase_path( "phase[dmptemplate_id]" => resource.id )
+    )
+  end
+
   index do
     column :title do |dmptemp|
       link_to dmptemp.title, [:admin, dmptemp]
@@ -94,17 +101,15 @@ ActiveAdmin.register Dmptemplate do
       row :created_at
       row :updated_at
     end
-	end
-
-  #phases sidebar
-  sidebar I18n.t('admin.phases'), :only => :show, :if => proc { dmptemplate.phases.count >= 1} do
-    table_for dmptemplate.phases.order("number asc") do |temp_phases|
-      column :number
-      column :title do |row|
-        link_to row.title, [:admin, row]
+    panel I18n.t('admin.phases') do
+      table_for resource.phases.order("number asc") do
+        column :number
+        column :title do |row|
+          link_to row.title, [:admin, row]
+        end
       end
     end
-  end
+	end
 
  	#form
  	form do |f|

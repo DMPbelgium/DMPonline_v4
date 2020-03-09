@@ -95,16 +95,14 @@ ActiveAdmin.register Organisation do
       row :created_at
       row :updated_at
 		end
-	end
-
-	#templates sidebar
- 	sidebar I18n.t('admin.templates'), :only => :show, :if => proc { organisation.dmptemplates.count >= 1} do
-	  table_for organisation.dmptemplates.order("title asc") do |temp|
-	 	  column :title do |dmptemp|
-        link_to dmptemp.title, [:admin, dmptemp]
+    panel I18n.t('admin.templates') do
+      table_for organisation.dmptemplates.order("title asc") do |temp|
+        column :title do |dmptemp|
+          link_to dmptemp.title, [:admin, dmptemp]
+        end
+        column :published
       end
-      column :published
-	 	end
+    end
 	end
 
 	#form

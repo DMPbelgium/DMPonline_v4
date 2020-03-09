@@ -41,15 +41,20 @@ ActiveAdmin.register OrganisationType do
       row :created_at
       row :updated_at
 	  end
-	end
-
-	#organisations sidebar
- 	sidebar I18n.t('admin.orgs'), :only => :show, :if => proc { organisation_type.organisations.count >= 1} do
-	  table_for organisation_type.organisations.order("name asc") do |org_list|
-	    column I18n.t('admin.org_title'), :sortable => :name do |ggn|
-        link_to ggn.name, [:admin, ggn]
+    panel I18n.t('admin.orgs') do
+      table_for organisation_type.organisations.order("name asc") do |org_list|
+        column I18n.t('admin.org_title'), :sortable => :name do |ggn|
+          link_to ggn.name, [:admin, ggn]
+        end
       end
     end
+	end
+
+  action_item only: %i(show) do
+    link_to(
+      "Add Organisation with this Organisation Type",
+      new_admin_organisation_path( "organisation[organisation_type_id]" => resource.id )
+    )
   end
 
 end

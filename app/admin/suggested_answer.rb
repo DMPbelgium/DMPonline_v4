@@ -8,9 +8,6 @@ ActiveAdmin.register SuggestedAnswer do
   filter :organisation, :collection => proc {
     Organisation.order("name asc")
   }
-  filter :question, :collection => proc {
-    Question.order("text asc")
-  }
   filter :text
   filter :created_at
   filter :updated_at

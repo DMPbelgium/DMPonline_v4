@@ -56,17 +56,22 @@ ActiveAdmin.register Phase do
       row :created_at
       row :updated_at
     end
+    panel I18n.t('admin.versions') do
+      table_for phase.versions.order("number asc") do
+        column :number
+        column :title do |row|
+          link_to row.title, [:admin, row]
+        end
+        column :published
+      end
+    end
 	end
 
-  #versions sidebar
- 	sidebar I18n.t('admin.version'), :only => :show, :if => proc { phase.versions.count >= 1}  do
- 	  table_for phase.versions.order("number asc") do |temp_phases|
-      column :number
-      column :title do |row|
-        link_to row.title, [:admin, row]
-      end
-      column :published
-	  end
+  action_item only: %i(show) do
+    link_to(
+      "Add Version to Phase",
+      new_admin_version_path( "version[phase_id]" => resource.id )
+    )
   end
 
  	#form

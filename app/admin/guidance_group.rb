@@ -46,20 +46,27 @@ ActiveAdmin.register GuidanceGroup do
       row :created_at
       row :updated_at
 		end
+    panel I18n.t('admin.guidance') do
+      table_for resource.guidances.order("text asc") do |guis|
+        column :text do |gtext|
+          link_to gtext.text.html_safe, [:admin, gtext]
+        end
+      end
+    end
 	end
 
 	#guidance list
-	sidebar I18n.t('admin.guidance'), :only => :show, :if => proc { guidance_group.guidances.count >= 1}  do
-    table_for guidance_group.guidances.order("text asc") do |guis|
-      column :text do |gtext|
-        link_to gtext.text.html_safe, [:admin, gtext]
-      end
+#	sidebar I18n.t('admin.guidance'), :only => :show, :if => proc { guidance_group.guidances.count >= 1}  do
+#    table_for guidance_group.guidances.order("text asc") do |guis|
+#      column :text do |gtext|
+#        link_to gtext.text.html_safe, [:admin, gtext]
+#      end
 #column theme_id from model Guidance since migration 20150416101954_remove_field_from_guidances.rb
 #      column I18n.t('admin.theme'), :theme_id do |themelist|
 #        themelist.theme
 #      end
-    end
-  end
+#    end
+#  end
 
 	#form
  	form do |f|

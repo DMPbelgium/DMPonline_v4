@@ -13,6 +13,8 @@ class GuidanceGroup < ActiveRecord::Base
   attr_accessible :organisation_id, :name, :optional_subset, :published
   attr_accessible :dmptemplate_ids
 
+  validates :organisation,:presence => true
+
 	def to_s
 		"#{display_name}"
 	end
