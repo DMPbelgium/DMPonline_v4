@@ -9,6 +9,7 @@ class Organisation < ActiveRecord::Base
 	has_many :option_warnings, :inverse_of => :organisation, :dependent => :destroy
 	has_many :suggested_answers, :inverse_of => :organisation, :dependent => :destroy
   has_many :organisation_domains, :inverse_of => :organisation, :dependent => :destroy
+  has_many :wayfless_entities, :inverse_of => :organisation, :dependent => :destroy
 
   belongs_to :parent, :class_name => 'Organisation', :autosave => true
 	has_many :children, :class_name => 'Organisation', :foreign_key => 'parent_id'
@@ -16,7 +17,7 @@ class Organisation < ActiveRecord::Base
 	accepts_nested_attributes_for :organisation_type
 	accepts_nested_attributes_for :dmptemplates
 
-	attr_accessible :abbreviation, :banner_file_id, :description, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id, :sort_name, :gdpr
+	attr_accessible :abbreviation, :banner_file_id, :description, :logo_file_id, :name, :stylesheet_file_id, :target_url, :organisation_type_id, :parent_id, :sort_name, :gdpr
   #validation - start
   validates :organisation_type,:presence => true
   validates :name, :length => { :minimum => 1 }
@@ -26,18 +27,6 @@ class Organisation < ActiveRecord::Base
     :format => {
       :with => /\A[a-zA-Z0-9\-]+\z/
     }
-
-  def is_parent?
-    self.parent_id.nil?
-  end
-  #with_options if: :is_parent? do |parent|
-  #  parent.validates :wayfless_entity, :uniqueness => true, :allow_nil => true, :allow_blank => true
-  #end
-  with_options unless: :is_parent? do |child|
-    child.validates_each :wayfless_entity do |record,attr,value|
-      record.errors.add(:wayfless_entity, :absence) if value.present?
-    end
-  end
   #validation - end
 
 	def to_s

@@ -33,15 +33,7 @@ class ProjectGroupsController < ApplicationController
           #trigger validation to ensure organisation
           user.valid?
 
-          if user.organisation.wayfless_entity.present?
-
-            user.skip_confirmation!
-
-          else
-
-            user.skip_confirmation_notification!
-
-          end
+          user.skip_confirmation!
 
         end
 

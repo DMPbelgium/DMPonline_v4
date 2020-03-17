@@ -22,7 +22,6 @@ ActiveAdmin.register Organisation do
   filter :abbreviation
   filter :description
   filter :target_url
-  filter :wayfless_entity
   filter :created_at
   filter :updated_at
   filter :is_other
@@ -32,7 +31,7 @@ ActiveAdmin.register Organisation do
   menu :priority => 14, :label => proc{I18n.t('admin.org')}, :parent => "Organisations management"
 
 	index do   # :abbreviation, :banner_file_id, :description, :logo_file_id, :name,
-	  #:stylesheet_file_id, :target_url, :organisation_type_id, :wayfless_entity, :parent_id
+	  #:stylesheet_file_id, :target_url, :organisation_type_id, :parent_id
     column I18n.t('admin.org_title'), :sortable => :name do |ggn|
       link_to ggn.name, [:admin, ggn]
     end
@@ -81,7 +80,9 @@ ActiveAdmin.register Organisation do
       row :organisation_domains do |org|
         ( org.organisation_domains.map { |od| link_to(od.name, [:admin, od]) } ).join(', ').html_safe
       end
-      row :wayfless_entity
+      row :wayfless_entities do |org|
+        ( org.wayfless_entities.map { |we| link_to(we.name, [:admin, we]) } ).join(', ').html_safe
+      end
       row I18n.t('admin.org_parent'), :parent_id do |org_parent|
         if !org_parent.parent_id.nil? then
           parent_org = Organisation.find(org_parent.parent_id)
@@ -114,7 +115,6 @@ ActiveAdmin.register Organisation do
       f.input :description
       f.input :organisation_type_id, :label => I18n.t('admin.org_type'), :as => :select, :collection => OrganisationType.find(:all, :order => 'name ASC').map{|orgt|[orgt.name, orgt.id]}
       f.input :target_url
-      f.input :wayfless_entity
       f.input :parent_id, :label => I18n.t('admin.org_parent'), :as => :select, :collection => Organisation.find(:all, :order => 'name ASC').map{|orgp|[orgp.name, orgp.id]}
       f.input :logo_file_id
       f.input :banner_file_id

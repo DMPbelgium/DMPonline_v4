@@ -37,6 +37,7 @@ en:
   screencast_error_text: "Your browser does not support the video tag."
 
   admin:
+    wayfless_entity: "Wayfless entity"
     rest_user: "REST user"
     org_title: "Organisation name"
     org: "Organisation"

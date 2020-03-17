@@ -3,7 +3,7 @@ class Users::OmniauthShibbolethRequestController < ApplicationController
 
   def redirect
   	if !current_user.nil? && !current_user.organisation.nil?
-    	idp = params[:idp] || current_user.organisation.wayfless_entity
+    	idp = params[:idp] || current_user.organisation.wayfless_entities.first
     else
     	idp = params[:idp]
     end

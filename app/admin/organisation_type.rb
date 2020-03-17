@@ -14,7 +14,7 @@ ActiveAdmin.register OrganisationType do
   filter :created_at
   filter :updated_at
 
-  menu :priority => 4, :label => proc{I18n.t('admin.org_type')}, :parent => "Organisations management"
+  menu :priority => 15, :label => proc{I18n.t('admin.org_type')}, :parent => "Organisations management"
 
 	index do   #:organisation_id, :name
     column I18n.t('admin.title'), :sortable => :name do |ggn|

@@ -18,19 +18,4 @@
     <%= link_to 'Sign in', confirmation_url( @project_group.user, :confirmation_token => @project_group.user.confirmation_token) %>
   </p>
 
-<% elsif @project_group.user.organisation.wayfless_entity.present? %>
-
-  <%
-    uri = URI(user_omniauth_shibboleth_url)
-    form = URI.decode_www_form(uri.query || '') + [ [:idp, @project_group.user.organisation.wayfless_entity] ]
-    uri.query = URI.encode_www_form(form)
-    u = uri.to_s
-  %>
-  <%= link_to( "Sign in with #{@project_group.user.organisation.abbreviation}", u ) %> ( <%= u %> )
-
-<% else %>
-
-  <% u = user_omniauth_authorize_url(:orcid) %>
-  <%= link_to( "Sign in with ORCID", u ) %> ( <%= u %> )
-
 <% end %>

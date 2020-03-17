@@ -7,6 +7,6 @@ ActiveAdmin.register OrganisationDomain do
   filter :created_at
   filter :updated_at
 
-  menu :priority => 4, :label => proc{I18n.t('admin.org_domain')}, :parent => "Organisations management"
+  menu :priority => 16, :label => proc{I18n.t('admin.org_domain')}, :parent => "Organisations management"
 
 end

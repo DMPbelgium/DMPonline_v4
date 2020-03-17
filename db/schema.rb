@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200106084544) do
+ActiveRecord::Schema.define(:version => 20200317075221) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -187,7 +187,6 @@ ActiveRecord::Schema.define(:version => 20200106084544) do
     t.integer  "logo_file_id"
     t.integer  "banner_file_id"
     t.integer  "organisation_type_id"
-    t.text     "wayfless_entity"
     t.integer  "stylesheet_file_id"
     t.datetime "created_at",                                                  :null => false
     t.datetime "updated_at",                                                  :null => false
@@ -443,5 +442,16 @@ ActiveRecord::Schema.define(:version => 20200106084544) do
   end
 
   add_index "versions", ["phase_id"], :name => "index_versions_on_phase_id"
+
+  create_table "wayfless_entities", :force => true do |t|
+    t.string   "name",            :null => false
+    t.text     "url",             :null => false
+    t.integer  "organisation_id", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "wayfless_entities", ["name"], :name => "index_wayfless_entities_on_name", :unique => true
+  add_index "wayfless_entities", ["url"], :name => "index_wayfless_entities_on_url", :unique => true, :length => {"url"=>255}
 
 end
