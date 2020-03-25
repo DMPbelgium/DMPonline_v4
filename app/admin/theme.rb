@@ -58,6 +58,14 @@ ActiveAdmin.register Theme do
         }
       end
     end
+
+    panel "Options" do
+      table_for( (theme.options).order("number") ) do
+        column (:number){|option| option.number}
+        column (:text){|option| link_to option.text, [:admin,option] }
+      end
+    end
+
   end
 
 
