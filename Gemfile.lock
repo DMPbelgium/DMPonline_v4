@@ -148,7 +148,7 @@ GEM
     libv8 (3.11.8.17)
     loofah (1.2.1)
       nokogiri (>= 1.4.4)
-    mail (2.5.4)
+    mail (2.5.5)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     meta_search (1.1.3)
