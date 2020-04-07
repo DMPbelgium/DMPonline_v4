@@ -170,7 +170,12 @@ class ProjectsController < ApplicationController
 				format.html { redirect_to @project, notice: 'Project was successfully updated.' }
 				format.json { head :no_content }
 			else
-				format.html { render action: "edit" }
+				format.html {
+          redirect_to(
+            { :action => "show", :id => @project.id, :show_form => "yes" },
+            { :alert => @project.errors.full_messages }
+          )
+        }
 				format.json { render json: @project.errors, status: :unprocessable_entity }
 			end
 		end
