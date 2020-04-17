@@ -12,6 +12,7 @@
     <!-- Plans (phases)-->
     <% project.plans.each do |plan| %>
     <% next unless can? :edit, plan %>
+    <% next if plan.sections.count <= 0 %>
 		<% if active == plan.id then %>
 			<li class="active">
 		<% else %>

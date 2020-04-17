@@ -11,15 +11,15 @@
 	<!--Text describing page content-->
 	<%= raw t('helpers.project.export_text_html')%>
 
-	<!-- If project has plans-->
-	<% if @project.plans.any? %>
-		<% if @project.plans.count == 1 then %>
-			<% @project.plans.each do |plan| %>
-				<%= render :partial => "/shared/export_links", locals: {plan: plan} %>
-			<% end %>
-		<%else%>
-			<% @project.plans.each do |plan| %>
-				<div class="accordion" id="project-accordion">
+	<!-- If project has plans, and they have sections-->
+  <% plans = @project.plans.select { |plan| plan.sections.count > 0 } %>
+
+	<% if plans.any? %>
+    <% plans.each do |plan| %>
+
+      <% if plans.size > 1 %>
+
+        <div class="accordion" id="project-accordion">
 					<div class="accordion-group">
 						<div class="accordion-heading">
 							<a class="accordion-toggle" data-toggle="collapse" data-parent="#project-accordion" href="#<%= plan.version.phase.id %>">
@@ -34,10 +34,16 @@
 						</div>
 					</div>
 				</div>
-			<%end%>
-		<%end%>
+
+      <% else %>
+
+        <%= render :partial => "/shared/export_links", locals: {plan: plan} %>
+
+      <% end %>
+
+    <% end %>
   <% else %>
-   There are no plans to export attached to this project
-	<%end%>
+    There are no plans to export attached to this project
+  <% end %>
 
 </div>
