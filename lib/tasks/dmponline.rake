@@ -613,7 +613,7 @@ namespace :dmponline do
 
         $stderr.puts "    version #{version2.id.to_s} added to phase #{version2.phase_id.to_s}"
 
-        version.sections.all.each do |section|
+        version.global_sections.all.each do |section|
 
           section2 = section.dup
           version2.sections << section2
