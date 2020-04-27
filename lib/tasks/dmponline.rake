@@ -586,6 +586,8 @@ namespace :dmponline do
   desc "template duplicate"
   task :template_dup,[:id,:title] => :environment do |t,args|
 
+  Dmptemplate.transaction do
+
     t   = Dmptemplate.find(args[:id])
     t2  = t.dup
     t2.title = args[:title]
@@ -605,7 +607,7 @@ namespace :dmponline do
 
       p2.reload
 
-      phase.versions.all.each do |version|
+      phase.versions.each do |version|
 
         version2 = version.dup
         version2.published = false
@@ -613,7 +615,7 @@ namespace :dmponline do
 
         $stderr.puts "    version #{version2.id.to_s} added to phase #{version2.phase_id.to_s}"
 
-        version.global_sections.all.each do |section|
+        version.global_sections.each do |section|
 
           section2 = section.dup
           version2.sections << section2
@@ -667,6 +669,8 @@ namespace :dmponline do
 
     end
 
+
+  end
   end
 
   desc "backup data to git repo"
