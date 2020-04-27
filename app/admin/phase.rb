@@ -6,15 +6,22 @@
 
 ActiveAdmin.register Phase do
 
+  #current version of active_admin does not support method "includes"
+  controller do
+    def scoped_collection
+      super.includes( :dmptemplate )
+    end
+  end
+
   filter :dmptemplate, :collection => proc {
     Dmptemplate.order("title asc")
   }
-  filter :versions, :collection => proc {
-    Version.order("title asc")
-  }
-  filter :sections, :collection => proc {
-    Section.order("title asc")
-  }
+#  filter :versions, :collection => proc {
+#    Version.order("title asc")
+#  }
+#  filter :sections, :collection => proc {
+#    Section.order("title asc")
+#  }
   filter :title
   filter :description
   filter :number

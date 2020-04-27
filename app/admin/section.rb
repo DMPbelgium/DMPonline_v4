@@ -6,6 +6,20 @@
 
 ActiveAdmin.register Section do
 
+  #current version of active_admin does not support method "includes"
+  controller do
+    def scoped_collection
+      super.includes(
+        {
+          :version => {
+            :phase => :dmptemplate
+          }
+        },
+        :organisation
+      )
+    end
+  end
+
 	menu :priority => 1, :label => proc{I18n.t('admin.section')}, :parent =>  "Templates management"
 
 	filter :title

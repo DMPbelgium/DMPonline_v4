@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Guidance do
 
+  #current version of active_admin does not support method "includes"
+  controller do
+    def scoped_collection
+      super.includes :guidance_groups,:question,:themes
+    end
+  end
+
   filter :guidance_groups, :collection => proc {
     GuidanceGroup.order("name asc")
   }

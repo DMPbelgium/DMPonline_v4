@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Dmptemplate do
 
+  #current version of active_admin does not support method "includes"
+  controller do
+    def scoped_collection
+      super.includes :organisation
+    end
+  end
+
   filter :organisation, :collection => proc {
     Organisation.order("name asc")
   }

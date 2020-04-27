@@ -6,6 +6,13 @@
 
 ActiveAdmin.register Organisation do
 
+  #current version of active_admin does not support method "includes"
+  controller do
+    def scoped_collection
+      super.includes :organisation_type
+    end
+  end
+
   filter :organisation_type, :collection => proc {
     OrganisationType.order("name asc")
   }
