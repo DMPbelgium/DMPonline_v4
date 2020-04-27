@@ -12,11 +12,14 @@
 				<% if user_signed_in? %>
 	            	<li class="dropdown sign_in">
 	                	<a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= t("helpers.signed_in")%>
-	                	  	<%= current_user.name %> <b class="caret"></b>
+	                	  	<%= current_user.email %> <b class="caret"></b>
 	                	</a>
 						<ul class="dropdown-menu" id="signIn_dropdown">
               <% if devise_mapping.registerable? %>
 	  						<li><%= link_to t("helpers.edit_profile"), edit_user_registration_path, :class => "signIn_dropdown_link" %></li>
+              <% end %>
+              <% if current_user.alternative_accounts.size > 0 %>
+                <li><%= link_to t("helpers.edit_switch_user"), edit_switch_user_path, :class => "signIn_dropdown_link" %></li>
               <% end %>
 							<% if current_user.is_admin? %>
 								<li><%= link_to t("helpers.admin_area"), "/admin", :class => "signIn_dropdown_link" %></li>

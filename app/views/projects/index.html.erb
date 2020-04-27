@@ -1,7 +1,7 @@
 <%- model_class = Project -%>
 <% javascript 'toolbar.js' %>
 <h1>
-	<%= t('helpers.project.projects_title') %>
+	<%= t('helpers.project.projects_title', :email => current_user.email) %>
 </h1>
 
 <!-- if the user has projects -->

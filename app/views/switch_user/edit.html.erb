@@ -1,18 +1,18 @@
-<h1>Multiple accounts match for your login</h1>
+<h1>Switch to another user that has the same ORCID</h1>
 
 <div class="white_background">
 
-  <%= form_tag( :controller => :selectable_user, :action => "update", :method => :post ) do %>
+  <%= form_tag( :controller => :switch_user, :action => "update", :method => :post ) do %>
     <div class="dmp_details">
       <table class="dmp_details_table">
         <tr>
           <td class="first"><%= t('helpers.email') + ' *' %></td>
           <td>
-          <% @selectable_users.each_with_index do |user,i| %>
+          <% @users.each_with_index do |user,i| %>
 
             <label class="radio">
               <%= radio_button_tag(
-                    "selectable_user[id]",
+                    "user[id]",
                     user.id,
                     i == 0
                 )

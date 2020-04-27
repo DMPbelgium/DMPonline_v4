@@ -186,4 +186,20 @@ class User < ActiveRecord::Base
     Thread.current[:user] = user
   end
 
+  def alternative_accounts
+
+    if self.orcid_id.present?
+
+      return User.where(
+        "orcid_id = ? AND NOT id = ?",
+        self.orcid_id,
+        self.id
+      )
+
+    end
+
+    User.where(false)
+
+  end
+
 end
