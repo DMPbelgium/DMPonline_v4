@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200317075221) do
+ActiveRecord::Schema.define(:version => 20200427090318) do
 
   create_table "answers", :force => true do |t|
     t.text     "text",        :limit => 16777215
@@ -205,11 +205,9 @@ ActiveRecord::Schema.define(:version => 20200317075221) do
     t.integer  "dmptemplate_id"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
-    t.string   "slug"
   end
 
   add_index "phases", ["dmptemplate_id"], :name => "index_phases_on_dmptemplate_id"
-  add_index "phases", ["slug"], :name => "index_phases_on_slug", :unique => true
 
   create_table "plan_sections", :force => true do |t|
     t.integer  "user_id"
@@ -261,7 +259,6 @@ ActiveRecord::Schema.define(:version => 20200317075221) do
     t.integer  "dmptemplate_id"
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
-    t.string   "slug"
     t.integer  "organisation_id"
     t.string   "grant_number"
     t.string   "identifier"
@@ -270,6 +267,7 @@ ActiveRecord::Schema.define(:version => 20200317075221) do
     t.string   "principal_investigator_identifier"
     t.string   "data_contact"
     t.string   "funder_name"
+    t.string   "slug"
   end
 
   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
