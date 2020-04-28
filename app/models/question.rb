@@ -36,12 +36,6 @@ class Question < ActiveRecord::Base
         "#{text}"
     end
 
-    amoeba do
-        include_association :options
-        include_association :suggested_answers
-        clone [:themes]
-    end
-
 	#def question_type?
 	#	type_label = {}
 	#	if self.is_text_field?
@@ -103,5 +97,35 @@ class Question < ActiveRecord::Base
  		suggested_answer = suggested_answers.find_by_organisation_id(org_id)
  		return suggested_answer
  	end
+
+  def clone_to(s)
+
+    question2 = self.dup
+
+    s.questions << question2
+
+    self.options.all.each do |option|
+
+      question2.options << option.dup
+
+    end
+
+    self.suggested_answers.all.each do |suggested_answer|
+
+      question2.suggested_answers << suggested_answer.dup
+
+    end
+
+    question2.theme_ids = self.theme_ids
+
+    self.guidances.all.each do |guidance|
+
+      question2.guidances << guidance.dup
+
+    end
+
+    question2
+
+  end
 
 end

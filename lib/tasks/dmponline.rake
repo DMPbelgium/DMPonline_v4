@@ -630,93 +630,30 @@ namespace :dmponline do
   end
 
   desc "template duplicate"
-  task :template_dup,[:id,:title] => :environment do |t,args|
+  task :template_dup,[:id] => :environment do |t,args|
 
-  Dmptemplate.transaction do
+    Dmptemplate.transaction do
 
-    t   = Dmptemplate.find(args[:id])
-    t2  = t.dup
-    t2.title = args[:title]
-    t2.published = false
-    unless t2.save
-      $stderr.puts t2.errors.full_messages.inspect
-      exit(1)
-    end
+      t   = Dmptemplate.find(args[:id])
+      t2  = t.dup
+      t2.title = "Copy of "+t2.title
+      t2.published = false
 
-    $stdout.puts "new template with id: " + t2.id.to_s + ", title: " + t2.title
+      unless t2.save
+        $stderr.puts t2.errors.full_messages.inspect
+        exit(1)
+      end
 
-    t.phases.all.each do |phase|
+      $stdout.puts "new template with id: " + t2.id.to_s + ", title: " + t2.title
 
-      p2 = phase.dup
-      t2.phases << p2
-      $stderr.puts "  phase #{p2.id.to_s} added to template #{p2.dmptemplate_id.to_s}"
+      t.phases.all.each do |phase|
 
-      p2.reload
-
-      phase.versions.each do |version|
-
-        version2 = version.dup
-        version2.published = false
-        p2.versions << version2
-
-        $stderr.puts "    version #{version2.id.to_s} added to phase #{version2.phase_id.to_s}"
-
-        version.global_sections.each do |section|
-
-          section2 = section.dup
-          version2.sections << section2
-
-          $stderr.puts "      section #{section2.id.to_s} added to version #{section2.version_id.to_s}"
-
-          section.questions.all.each do |question|
-
-            question2 = question.dup
-            section2.questions << question2
-
-            $stderr.puts "        question #{question2.id.to_s} added to section #{question2.section_id.to_s}"
-
-            question.options.all.each do |option|
-
-              option2 = option.dup
-              question2.options << option2
-
-              $stderr.puts "          option #{option2.id.to_s} added to question #{option2.question_id.to_s}"
-
-            end
-
-            question.suggested_answers.all.each do |suggested_answer|
-
-              suggested_answer2 = suggested_answer.dup
-              question2.suggested_answers << suggested_answer2
-
-              $stderr.puts "          suggested_answer #{suggested_answer2.id.to_s} added to question #{suggested_answer2.question_id.to_s}"
-
-            end
-
-            question2.theme_ids = question.theme_ids
-
-            question2.theme_ids.each do |theme_id|
-              $stderr.puts "          assigned existing theme_id #{theme_id.to_s} to question #{question2.id.to_s}"
-            end
-
-            question.guidances.all.each do |guidance|
-
-              guidance2 = guidance.dup
-              question2.guidances << guidance2
-              $stderr.puts "          guidance #{guidance2.id.to_s} added to question #{guidance2.question.id}"
-
-            end
-
-          end
-
-        end
+        phase.clone_to(t2)
 
       end
 
     end
 
-
-  end
   end
 
   desc "backup data to git repo"

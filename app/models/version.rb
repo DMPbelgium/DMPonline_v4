@@ -27,57 +27,17 @@ class Version < ActiveRecord::Base
   	sections.find_all_by_organisation_id(phase.dmptemplate.organisation_id)
   end
 
-  amoeba do
-    include_association :sections
-    include_association :questions
-    set :published => 'false'
-    prepend :title => "Copy of "
-  end
-
-  def custom_clone
+  def clone_to(p)
 
     version2 = self.dup
     version2.published = false
     version2.title = "Copy of " + version2.title
 
-    unless version2.save
-      return nil
-    end
+    p.versions << version2
 
-    self.sections.all.each do |section|
+    self.global_sections.each do |section|
 
-      section2 = section.dup
-      version2.sections << section2
-
-      section.questions.all.each do |question|
-
-        question2 = question.dup
-        section2.questions << question2
-
-        question.options.all.each do |option|
-
-          option2 = option.dup
-          question2.options << option2
-
-        end
-
-        question.suggested_answers.all.each do |suggested_answer|
-
-          suggested_answer2 = suggested_answer.dup
-          question2.suggested_answers << suggested_answer2
-
-        end
-
-        question2.theme_ids = question.theme_ids
-
-        question.guidances.all.each do |guidance|
-
-          guidance2 = guidance.dup
-          question2.guidances << guidance2
-
-        end
-
-      end
+      section.clone_to(version2)
 
     end
 

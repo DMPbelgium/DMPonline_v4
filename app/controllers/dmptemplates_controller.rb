@@ -261,10 +261,16 @@ class DmptemplatesController < ApplicationController
 	def admin_cloneversion
     authorize! :admin_cloneversion, Dmptemplate
 
-    @old_version = Version.find(params[:version_id])
-    @version = @old_version.custom_clone
-		@phase = @version.phase
-    @sections = @version.sections
+    @version  = Version.find(params[:version_id])
+    @phase    = @version.phase
+    @sections = nil
+
+    Version.transaction do
+
+      @version = @version.clone_to(@phase)
+      @sections = @version.sections
+
+    end
 
 		respond_to do |format|
 		  if @version

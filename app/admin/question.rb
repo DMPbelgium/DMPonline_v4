@@ -115,6 +115,14 @@ ActiveAdmin.register Question do
         column(:text) { |option| link_to option.text, [:admin,option]}
       end
     end
+    panel "suggested_answers" do
+      table_for resource.suggested_answers.order("created_at ASC") do
+        column(:text) {|sa| link_to(sa.text.present? ? sa.text : "-", [:admin,sa]) }
+        column :organisation
+        column :created_at
+        column :updated_at
+      end
+    end
 	end
 
   action_item only: %i(show) do

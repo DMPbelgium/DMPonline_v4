@@ -23,8 +23,20 @@ class Section < ActiveRecord::Base
     "#{title}"
   end
 
-  amoeba do
-    include_association :questions
+  def clone_to(v)
+
+    section2 = self.dup
+
+    v.sections << section2
+
+    self.questions.all.each do |question|
+
+      question.clone_to(section2)
+
+    end
+
+    section2
+
   end
 
 end

@@ -63,4 +63,19 @@ class Phase < ActiveRecord::Base
 		return has_section
 	end
 
+  def clone_to(t)
+
+    p2 = self.dup
+    t.phases << p2
+
+    self.versions.each do |version|
+
+      version.clone_to(p2)
+
+    end
+
+    p2
+
+  end
+
 end
