@@ -50,9 +50,9 @@ class Plan < ActiveRecord::Base
 	end
 
 	def answer(qid, create_if_missing = true)
-  		answer = answers.where(:question_id => qid).order("created_at DESC").first
-  		question = Question.find(qid)
+  	answer = answers.where(:question_id => qid).order("created_at DESC").first
 		if answer.nil? && create_if_missing then
+  		question = Question.find(qid)
 			answer = Answer.new
 			answer.plan_id = id
 			answer.question_id = qid

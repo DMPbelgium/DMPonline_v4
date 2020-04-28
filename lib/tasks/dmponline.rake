@@ -287,7 +287,37 @@ end
 
 def projects_ld(conditions = {})
 
-  Project.find_each(:conditions => conditions) do |project|
+  #prevent n+1 queries
+  model_project = Project.includes(
+    :organisation,
+    { :project_groups => :user },
+    { :dmptemplate => :organisation },
+    {
+      :plans => {
+        :version => [
+          :phase,
+          {
+            :sections => [
+              :organisation
+            ]
+          }
+        ]
+      }
+    }
+  )
+
+  #we have to specify this again as plan.sections returns an array!
+  model_question = Question.includes(
+    :suggested_answers,
+    :options,
+    :guidances,
+    :themes
+  )
+
+  #not so many question_formats
+  question_formats = QuestionFormat.all
+
+  model_project.find_each(:conditions => conditions,:batch_size => 100) do |project|
 
     project_url = Rails.application.routes.url_helpers.project_url(project, :host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
 
@@ -314,6 +344,7 @@ def projects_ld(conditions = {})
 
           pg_r[:user] = {
             :id => u.id,
+            :type => "User",
             :created_at => u.created_at.utc.strftime("%FT%TZ"),
             :updated_at => u.updated_at.utc.strftime("%FT%TZ"),
             :email => u.email,
@@ -383,7 +414,21 @@ def projects_ld(conditions = {})
         :sections => []
       }
 
-      plan.sections.sort_by(&:number).each do |section|
+      #preload plan related records - start
+      plan_answers = plan.answers.order("created_at DESC").all
+      plan_comments = Comment.where("plan_id = ?",plan.id).order("created_at ASC").all
+
+      plan_user_ids = []
+      plan_user_ids += plan_comments.map { |c| c.archived_by }.select { |i| !i.nil? }
+      plan_user_ids += plan_comments.map { |c| c.user_id }.select { |i| !i.nil? }
+      plan_user_ids += plan_answers.map {|a| a.user_id }.select { |i| !i.nil? }
+      plan_user_ids.uniq!
+
+      plan_users = plan_user_ids.size > 0 ?
+        User.where( :id => plan_user_ids ).all : []
+      #preload plan related records - end
+
+      plan.sections.each do |section|
 
         sc = {
           :id => section.id,
@@ -393,9 +438,12 @@ def projects_ld(conditions = {})
           :questions => []
         }
 
-        section.questions.sort_by(&:number).each do |question|
+        model_question
+          .where( :section_id => section.id )
+          .order("number ASC")
+          .each do |question|
 
-          qf = question.question_format
+          question_format = question_formats.find { |qf| question.question_format_id == qf.id }
 
           q = {
             :id => question.id,
@@ -403,14 +451,13 @@ def projects_ld(conditions = {})
             :text => question.text,
             :default_value => question.default_value,
             :number => question.number,
-            #:guidance => question.guidance,
             :question_format => {
-              :id => qf.id,
+              :id => question_format.id,
               :type => "QuestionFormat",
-              :title => qf.title,
-              :description => qf.description,
-              :created_at => qf.created_at.utc.strftime("%FT%TZ"),
-              :updated_at => qf.updated_at.utc.strftime("%FT%TZ")
+              :title => question_format.title,
+              :description => question_format.description,
+              :created_at => question_format.created_at.utc.strftime("%FT%TZ"),
+              :updated_at => question_format.updated_at.utc.strftime("%FT%TZ")
             },
             :suggested_answers => question.suggested_answers.map { |sa|
               {
@@ -434,11 +481,10 @@ def projects_ld(conditions = {})
             }
           }
 
-          answer    = plan.answer(question.id, false)
-          q_format  = question.question_format
+          answer = plan_answers.find { |a| a.question_id == question.id }
 
-          has_options = q_format.title == "Check box" || q_format.title == "Multi select box" ||
-              q_format.title == "Radio buttons" || q_format.title == "Dropdown"
+          has_options = question_format.title == "Check box" || question_format.title == "Multi select box" ||
+              question_format.title == "Radio buttons" || question_format.title == "Dropdown"
 
           if has_options
 
@@ -480,9 +526,10 @@ def projects_ld(conditions = {})
 
           if answer.present?
 
-            au = answer.user
+            au = plan_users.find {|u| u.id == answer.user_id }
             q[:answer] = {
               :id => answer.id,
+              :type => "Answer",
               :text => answer.text,
               :user => nil,
               :created_at => answer.created_at.utc.strftime("%FT%TZ"),
@@ -503,7 +550,7 @@ def projects_ld(conditions = {})
 
           q[:comments] = []
 
-          Comment.where("question_id = ? AND plan_id = ?",question.id,plan.id).order(:created_at => :asc).each do |comment|
+          plan_comments.select { |comment| comment.question_id == question.id }.each do |comment|
 
             c = {
               :id => comment.id,
@@ -516,7 +563,7 @@ def projects_ld(conditions = {})
               :archived => comment.archived ? true : false
             }
 
-            created_by = comment.user
+            created_by = plan_users.find {|u| u.id == comment.user_id }
 
             if created_by.present?
 
@@ -529,8 +576,7 @@ def projects_ld(conditions = {})
 
             end
 
-            archived_by = comment.archived_by.present? ?
-              User.where( :id => comment.archived_by ).first : nil
+            archived_by = plan_users.find { |u| u.id == comment.archived_by }
 
             if archived_by.present?
 

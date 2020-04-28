@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(:version => 20200427090318) do
     t.integer  "dmptemplate_id"
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
+    t.string   "slug"
     t.integer  "organisation_id"
     t.string   "grant_number"
     t.string   "identifier"
@@ -267,7 +268,6 @@ ActiveRecord::Schema.define(:version => 20200427090318) do
     t.string   "principal_investigator_identifier"
     t.string   "data_contact"
     t.string   "funder_name"
-    t.string   "slug"
   end
 
   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
