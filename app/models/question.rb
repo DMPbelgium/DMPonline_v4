@@ -100,27 +100,48 @@ class Question < ActiveRecord::Base
 
   def clone_to(s)
 
+    raise ArgumentError.new( "should be instance of Section" ) unless s.is_a?(::Section)
+
+    raise ArgumentError.new( "Section instance should be persisted" ) unless s.persisted?
+
     question2 = self.dup
 
     s.questions << question2
 
+    Rails.logger.info("[CLONE] COPIED Question[#{self.id}] to Question[#{question2.id}]")
+    Rails.logger.info("[CLONE] ADDED Question[#{question2.id}] to Section[#{s.id}].questions")
+
     self.options.all.each do |option|
 
-      question2.options << option.dup
+      option2 = option.dup
+      question2.options << option2
+
+      Rails.logger.info("[CLONE] COPIED Option[#{option.id}] to Option[#{option2.id}]")
+      Rails.logger.info("[CLONE] ADDED Option[#{option2.id}] to Question[#{question2.id}].questions")
 
     end
 
     self.suggested_answers.all.each do |suggested_answer|
 
-      question2.suggested_answers << suggested_answer.dup
+      suggested_answer2 = suggested_answer.dup
+      question2.suggested_answers << suggested_answer2
+
+      Rails.logger.info("[CLONE] COPIED SuggestedAnswer[#{suggested_answer.id}] to SuggestedAnswer[#{suggested_answer2.id}]")
+      Rails.logger.info("[CLONE] ADDED SuggestedAnswer[#{suggested_answer2.id}] to Question[#{question2.id}].suggested_answers")
 
     end
 
     question2.theme_ids = self.theme_ids
 
+    Rails.logger.info("[CLONE] ADDED #{self.theme_ids} to Question[#{question2.id}].theme_ids")
+
     self.guidances.all.each do |guidance|
 
-      question2.guidances << guidance.dup
+      guidance2 = guidance.dup
+      question2.guidances << guidance2
+
+      Rails.logger.info("[CLONE] COPIED Guidance[#{guidance.id}] to Guidance[#{guidance2.id}]")
+      Rails.logger.info("[CLONE] ADDED Guidance[#{guidance2.id}] to Question[#{question2.id}].guidances")
 
     end
 

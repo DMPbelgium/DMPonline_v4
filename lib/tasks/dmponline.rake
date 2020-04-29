@@ -624,7 +624,7 @@ namespace :dmponline do
       users.each do |u|
         $stderr.puts "setting shibboleth_id to #{u.email.downcase}"
         u.shibboleth_id = u.email.downcase
-        u.save
+        u.save!
       end
     end
   end
@@ -639,12 +639,9 @@ namespace :dmponline do
       t2.title = "Copy of "+t2.title
       t2.published = false
 
-      unless t2.save
-        $stderr.puts t2.errors.full_messages.inspect
-        exit(1)
-      end
+      t2.save!
 
-      $stdout.puts "new template with id: " + t2.id.to_s + ", title: " + t2.title
+      Rails.logger.info("[CLONE] COPIED Dmptemplate[#{t.id}] to Dmptemplate[#{t2.id}]")
 
       t.phases.all.each do |phase|
 

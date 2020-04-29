@@ -313,7 +313,7 @@ class Plan < ActiveRecord::Base
     if old_plan_section.present? && old_plan_section.user_id == user_id
 
       old_plan_section.release_time = Time.now + release_time.seconds
-      old_plan_section.save
+      old_plan_section.save!
 
       st[:status] = "ok"
       st[:timestamp] = old_plan_section.updated_at
@@ -337,7 +337,7 @@ class Plan < ActiveRecord::Base
         :user_id => user_id
       )
 
-      if new_plan_section.save
+      if new_plan_section.save!
 
         st[:status] = "ok"
         st[:timestamp] = new_plan_section.updated_at

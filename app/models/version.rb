@@ -29,11 +29,18 @@ class Version < ActiveRecord::Base
 
   def clone_to(p)
 
+    raise ArgumentError.new( "should be instance of Phase" ) unless p.is_a?(::Phase)
+
+    raise ArgumentError.new( "Phase instance should be persisted" ) unless p.persisted?
+
     version2 = self.dup
     version2.published = false
     version2.title = "Copy of " + version2.title
 
     p.versions << version2
+
+    Rails.logger.info("[CLONE] COPIED Version[#{self.id}] to Version[#{version2.id}]")
+    Rails.logger.info("[CLONE] ADDED Version[#{version2.id}] to Phase[#{p.id}].versions")
 
     self.global_sections.each do |section|
 

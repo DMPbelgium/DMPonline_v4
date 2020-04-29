@@ -25,9 +25,16 @@ class Section < ActiveRecord::Base
 
   def clone_to(v)
 
+    raise ArgumentError.new( "should be instance of Version" ) unless v.is_a?(::Version)
+
+    raise ArgumentError.new( "Version instance should be persisted" ) unless v.persisted?
+
     section2 = self.dup
 
     v.sections << section2
+
+    Rails.logger.info("[CLONE] COPIED Section[#{self.id}] to Section[#{section2.id}]")
+    Rails.logger.info("[CLONE] ADDED Section[#{section2.id}] to Version[#{v.id}].sections")
 
     self.questions.all.each do |question|
 

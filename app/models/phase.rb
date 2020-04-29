@@ -65,8 +65,15 @@ class Phase < ActiveRecord::Base
 
   def clone_to(t)
 
+    raise ArgumentError.new( "should be instance of Dmptemplate" ) unless t.is_a?(::Dmptemplate)
+
+    raise ArgumentError.new( "Dmptemplate instance should be persisted" ) unless t.persisted?
+
     p2 = self.dup
     t.phases << p2
+
+    Rails.logger.info("[CLONE] COPIED Phase[#{self.id}] to Phase[#{p2.id}]")
+    Rails.logger.info("[CLONE] ADDED Phase[#{p2.id}] to Dmptemplate[#{t.id}].phases")
 
     self.versions.each do |version|
 
