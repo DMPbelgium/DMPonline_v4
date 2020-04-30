@@ -629,23 +629,76 @@ namespace :dmponline do
     end
   end
 
-  desc "template duplicate"
-  task :template_dup,[:id] => :environment do |t,args|
+=begin task dmponline:copy_phase
 
-    Dmptemplate.transaction do
+Purpose: copy phases to other dmptemplates
 
-      t   = Dmptemplate.find(args[:id])
-      t2  = t.dup
-      t2.title = "Copy of "+t2.title
-      t2.published = false
+Input: CSV on STDIN, having fields phase_id and dmptemplate_id
+       phase_id is the source phase, dmptemplate_id is the destination dmptemplate
 
-      t2.save!
+=end
 
-      Rails.logger.info("[CLONE] COPIED Dmptemplate[#{t.id}] to Dmptemplate[#{t2.id}]")
+  desc "copy phase"
+  task :copy_phase => :environment do |t,args|
 
-      t.phases.all.each do |phase|
+    ActiveRecord::Base.transaction do
 
-        phase.clone_to(t2)
+      csv = CSV.new( $stdin, {
+          :headers => true,
+          :col_sep => ","
+        }
+      )
+
+      csv.each do |r|
+
+        row = r.to_hash.slice("phase_id","dmptemplate_id")
+
+        phase = Phase.find( Integer( row["phase_id"] ) )
+        dmptemplate = Dmptemplate.find( Integer( row["dmptemplate_id"] ) )
+
+        phase.clone_to( dmptemplate )
+
+      end
+
+      csv.close()
+
+    end
+
+  end
+
+=begin task dmponline:copy_dmptemplate
+
+Reads from STDIN
+
+Each line must be an id of a dmptemplate
+
+Each dmptemplate is duplicated with all of its decendants
+
+=end
+
+  desc "copy dmptemplate"
+  task :copy_dmptemplate => :environment do |t,args|
+
+    ActiveRecord::Base.transaction do
+
+      while id = $stdin.gets
+
+        id.chomp!
+
+        t   = Dmptemplate.find(id)
+        t2  = t.dup
+        t2.title = "Copy of "+t2.title
+        t2.published = false
+
+        t2.save!
+
+        Rails.logger.info("[CLONE] COPIED Dmptemplate[#{t.id}] to Dmptemplate[#{t2.id}]")
+
+        t.phases.all.each do |phase|
+
+          phase.clone_to(t2)
+
+        end
 
       end
 
