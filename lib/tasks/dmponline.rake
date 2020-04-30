@@ -43,7 +43,7 @@ def export_org_projects(organisation)
     cur_file = File.join(org_dir,cur_fn)
     prev_fn = Dir
       .glob( File.join(org_dir,"*","*","projects_*.json") )
-      .map { |f| f.sub(org_dir,"") }
+      .map { |f| f.sub(org_dir,"").sub(/^\//,"") }
       .sort
       .last
     links = {
@@ -101,7 +101,7 @@ def export_org_projects(organisation)
     cur_file = File.join(org_dir,cur_fn)
     prev_fn = Dir
       .glob( File.join(org_dir,"*","*","updated_projects_*.json") )
-      .map { |f| f.sub(org_dir,"") }
+      .map { |f| f.sub(org_dir,"").sub(/^\//,"") }
       .sort
       .last
     links = {
@@ -165,7 +165,7 @@ def export_org_projects(organisation)
     cur_file = File.join(org_dir,cur_fn)
     prev_fn = Dir
       .glob( File.join(org_dir,"*","*","deleted_projects_*.json") )
-      .map { |f| f.sub(org_dir,"") }
+      .map { |f| f.sub(org_dir,"").sub(/^\//,"") }
       .sort
       .last
 
