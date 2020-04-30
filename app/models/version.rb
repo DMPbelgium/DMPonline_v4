@@ -29,7 +29,7 @@ class Version < ActiveRecord::Base
 
   def clone_to(p)
 
-    raise ArgumentError.new( "should be instance of Phase" ) unless p.is_a?(::Phase)
+    raise ArgumentError.new( "should be instance of Phase" ) unless p.instance_of?(::Phase)
 
     raise ArgumentError.new( "Phase instance should be persisted" ) unless p.persisted?
 

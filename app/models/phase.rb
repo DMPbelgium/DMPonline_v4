@@ -65,7 +65,7 @@ class Phase < ActiveRecord::Base
 
   def clone_to(t)
 
-    raise ArgumentError.new( "should be instance of Dmptemplate" ) unless t.is_a?(::Dmptemplate)
+    raise ArgumentError.new( "should be instance of Dmptemplate" ) unless t.instance_of?(::Dmptemplate)
 
     raise ArgumentError.new( "Dmptemplate instance should be persisted" ) unless t.persisted?
 

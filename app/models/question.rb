@@ -100,7 +100,7 @@ class Question < ActiveRecord::Base
 
   def clone_to(s)
 
-    raise ArgumentError.new( "should be instance of Section" ) unless s.is_a?(::Section)
+    raise ArgumentError.new( "should be instance of Section" ) unless s.instance_of?(::Section)
 
     raise ArgumentError.new( "Section instance should be persisted" ) unless s.persisted?
 

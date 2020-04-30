@@ -25,7 +25,7 @@ class Section < ActiveRecord::Base
 
   def clone_to(v)
 
-    raise ArgumentError.new( "should be instance of Version" ) unless v.is_a?(::Version)
+    raise ArgumentError.new( "should be instance of Version" ) unless v.instance_of?(::Version)
 
     raise ArgumentError.new( "Version instance should be persisted" ) unless v.persisted?
 
