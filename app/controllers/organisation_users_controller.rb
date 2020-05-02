@@ -5,7 +5,14 @@ class OrganisationUsersController < ApplicationController
 	def admin_index
     raise CanCan::AccessDenied.new unless user_signed_in? && current_user.is_org_admin?
 
-    @users = current_user.organisation.users.all
+    @users = User
+      .includes(
+        :project_groups
+      )
+      .where(
+        :organisation_id => current_user.organisation_id
+      )
+
 		respond_to do |format|
 			format.html
       format.csv {
@@ -31,7 +38,7 @@ private
               u.orcid_id,
               u.shibboleth_id,
               u.last_sign_in_at,
-              u.project_groups.count
+              u.project_groups.size
             ]
       }
     }

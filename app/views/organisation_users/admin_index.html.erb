@@ -31,9 +31,7 @@
         <%end%>
           </td>
           <td class="dmp_td_small">
-            <% if !user.project_groups.nil? then%>
-            <%= user.project_groups.count %>
-            <%end%>
+            <%= user.project_groups.map(&:project_id).uniq.size %>
           </td>
         </tr>
     <% end %>
