@@ -4,7 +4,7 @@ class SwitchUserController < ApplicationController
 
   def edit
 
-    @users = current_user.alternative_accounts().all
+    @users = current_user.alternative_accounts()
 
     render :edit
 
@@ -16,7 +16,7 @@ class SwitchUserController < ApplicationController
 
     user_id = user_params[:id].to_i
 
-    @users = current_user.alternative_accounts().all()
+    @users = current_user.alternative_accounts()
 
     user_index = @users.index { |u| u.id == user_id }
 
