@@ -198,7 +198,7 @@ class User < ActiveRecord::Base
 
     end
 
-    User.where(false)
+    []
 
   end
 
