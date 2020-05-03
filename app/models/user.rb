@@ -194,7 +194,7 @@ class User < ActiveRecord::Base
         "orcid_id = ? AND NOT id = ?",
         self.orcid_id,
         self.id
-      )
+      ).all
 
     end
 
