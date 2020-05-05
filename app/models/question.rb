@@ -66,36 +66,49 @@ class Question < ActiveRecord::Base
 	end
 
 	#guidance for question in the org admin
-	def guidance_for_question(question, org_admin)
-    #pulls together guidance from various sources for question
-    guidances = {}
-    theme_ids = question.theme_ids
+	def guidance_for_question(org)
 
-    GuidanceGroup.where("organisation_id = ?", org_admin.id).each do |group|
+    #TODO: only ruby 1.9 preserves inserted key order!
+    #pulls together guidance from various sources for question
+    guidances_h = {}
+
+    #ugly fix to prevent redundant queries for every damn question
+    guidance_groups = Rails.cache.fetch("guidance_groups_for_organisation_#{org.id}", expires_in: 1.second) do
+
+      GuidanceGroup.includes(
+        { :guidances => :themes }
+      )
+      .where(
+        :organisation_id => org.id
+      )
+      .all()
+
+    end
+
+    guidance_groups.each do |group|
       group.guidances.each do |g|
-        g.themes.where("id IN (?)", theme_ids).each do |gg|
-          guidances["#{group.name} guidance on #{gg.title}"] = g
+        g.themes.select {|t| self.theme_ids.include?(t.id) }.each do |gg|
+          guidances_h["#{group.name} guidance on #{gg.title}"] = g
         end
       end
     end
 
 	  #Guidance link to directly to a question
-    question.guidances.each do |g_by_q|
+    self.guidances.each do |g_by_q|
       g_by_q.guidance_groups.each do |group|
-        if group.organisation == org_admin
-          guidances["#{group.name} guidance for this question"] = g_by_q
+        if group.organisation_id == org.id
+          guidances_h["#{group.name} guidance for this question"] = g_by_q
         end
       end
 	  end
 
-		return guidances
+		guidances_h
  	end
 
 
  	#get suggested answer belonging to the currents user for this question
  	def get_suggested_answer(org_id)
- 		suggested_answer = suggested_answers.find_by_organisation_id(org_id)
- 		return suggested_answer
+    suggested_answers.select {|sa| sa.organisation_id == org_id }.first
  	end
 
   def clone_to(s)

@@ -55,18 +55,17 @@ class User < ActiveRecord::Base
   end
 
 	def is_admin?
-		admin = roles.find_by_name("admin")
-		return !admin.nil?
+		admin = roles.select {|r| r.name == "admin" }.first
+		!admin.nil?
 	end
 
 	def is_org_admin?
-		org_admin = roles.find_by_name("org_admin")
-		return !org_admin.nil?
+		org_admin = roles.select {|r| r.name == "org_admin" }.first
+		!org_admin.nil?
 	end
 
   def org_type
-    org_type = organisation.organisation_type.name
-	  return org_type
+    organisation.organisation_type.name
   end
 
   @@after_auth_shibboleth_callbacks = []

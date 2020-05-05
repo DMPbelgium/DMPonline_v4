@@ -24,30 +24,17 @@
 			</tr>
 			<tr>
 				<td class="first">
-					<% if @guidance_group.dmptemplates.count == 1 then %>
+					<% if @guidance_group.dmptemplates.size == 1 then %>
 						<%= t('org_admin.guidance.template') %>
 					<%else%>
 						<%= t('org_admin.guidance.templates') %>
 					<%end%>		
 				</td>
-				<td><% i = 1 %>
-					<% if @guidance_group.dmptemplates.count == 0 then %>
-						<% list = Dmptemplate.funders_and_own_templates(current_user.organisation_id)%>
-						<% list.each do |tem|%>
-							<%= tem.title %>
-							<% if list.count > i then%> 
-								,	
-								<% i +=1 %>		
-							<% end %>
-						<%end%>
+				<td>
+					<% if @guidance_group.dmptemplates.size == 0 then %>
+						<%= Dmptemplate.funders_and_own_templates(current_user.organisation_id).map(&:title).join(", ") %>
 					<%else%>	
-						<% @guidance_group.dmptemplates.each do |tem|%>
-							<%= tem.title %>
-							<% if @guidance_group.dmptemplates.count > i then%> 
-								,	
-								<% i +=1 %>		
-							<% end %>
-						<%end%>
+            <%= @guidance_group.dmptemplates.map(&:title).join(", ") %>
 					<%end%>	
 				</td>
 			</tr>

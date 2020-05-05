@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
   #associations between tables
   belongs_to :question, :inverse_of => :comments, :autosave => true
   belongs_to :user, :inverse_of => :comments, :autosave => true
-  belongs_to :plan
+  belongs_to :plan, :inverse_of => :comments
 
   validates :question, :presence => true
   validates :user, :presence => true
@@ -38,26 +38,21 @@ class Comment < ActiveRecord::Base
   def creatable_by(other_user_id)
     return false if other_user_id.nil?
     return false if self.plan_id.nil?
-    pl = Plan.where( :id => self.plan_id ).first
-    return false if pl.nil?
-    return false if pl.project.nil?
-    pl.project.editable_by(other_user_id)
+    return false if plan.nil?
+    return false if plan.project.nil?
+    plan.project.editable_by(other_user_id)
   end
 
   def readable_by(other_user_id)
     return false if other_user_id.nil?
-
-    self.user_id.nil? ?
-      false :
-      self.user_id == other_user_id || Plan.find( self.plan_id ).project.readable_by(other_user_id)
+    return false if self.user_id.nil?
+    self.user_id == other_user_id || plan.project.readable_by(other_user_id)
   end
 
   def editable_by(other_user_id)
     return false if other_user_id.nil?
-
-    self.user_id.nil? ?
-      false :
-      self.user_id == other_user_id
+    return false if self.user_id.nil?
+    self.user_id == other_user_id
   end
 
   def archivable_by(other_user_id)

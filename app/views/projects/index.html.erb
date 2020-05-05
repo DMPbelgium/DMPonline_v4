@@ -5,7 +5,7 @@
 </h1>
 
 <!-- if the user has projects -->
-<% if @has_projects %>
+<% if @projects.any? %>
 
 	<p>
 		<%= raw t('helpers.project.project_text_when_project')%>
@@ -17,13 +17,12 @@
 	    <%= render(partial: "project_list_head") %>
 	  </thead>
 	  <tbody>
-	    <% if @projects.any? %>
-	      <% @projects.each do |project| %>
-	        <%= render(partial: "project_list_item", locals: { project: project } ) %>
-	      <% end %>
-	    <% else %>
-	      <tr><td colspan="<%= @selected_columns.length -%>"><%= t("helpers.project.filter.no_matches", filter: params[:filter]) %><td></tr>
-	    <% end %>
+      <%= render(
+            :partial => "project_list_item",
+            :collection => @projects,
+            :as => :project
+          )
+      %>
 	  </tbody>
 	</table>
 	<% if current_user.dmponline3 then %>

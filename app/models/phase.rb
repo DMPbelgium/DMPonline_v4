@@ -29,38 +29,31 @@ class Phase < ActiveRecord::Base
 	end
 
 	def latest_version
-		return versions.order("number DESC").last
+    versions.sort { |a,b| a.number <=> b.number }.last
 	end
 
 	#Verify if this phase has any published versions
 	def latest_published_version
-		versions.order("number DESC").each do |version|
-			if version.published then
-				return version
-			end
-		end
-		return nil
+    # b <=> a -> reverse sort
+    versions
+      .sort { |a,b| b.number <=> a.number }
+      .select { |version| version.published }
+      .first()
 	end
 
 	#verify if a phase has a published version or a version with one or more sections
 	def has_sections
-		versions = self.versions.where('published = ?', true).order('updated_at DESC')
-		if versions.any? then
-			version = versions.first
-			if !version.sections.empty? then
-				has_section = true
-			else
-				has_section = false
-			end
-		else
-			version = self.versions.order('updated_at DESC').first
-			if !version.sections.empty? then
-				has_section = true
-			else
-				has_section = false
-			end
-		end
-		return has_section
+
+    #reverse sorted versions
+    s_versions = versions.sort {|a,b| b.updated_at <=> a.updated_at }
+
+    #published version (filter on previous list)
+    p_versions = s_versions.select {|version| version.published }
+
+		p_versions.size > 0 ?
+      p_versions.first.sections.size > 0 :
+      s_versions.first.sections.size > 0
+
 	end
 
   def clone_to(t)

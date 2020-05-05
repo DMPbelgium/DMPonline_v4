@@ -1,7 +1,7 @@
 <!-- add a section and one question. Version is passed as an argument-->
 
 <% @new_section = Section.new %>
-<% @new_section.number = version.sections.count + 1 %>
+<% @new_section.number = version.sections.size + 1 %>
 						
 
 <%= form_for @new_section, :url => {:action => 'admin_createsection'} do |f| %>

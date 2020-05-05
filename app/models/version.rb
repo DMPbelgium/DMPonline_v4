@@ -24,7 +24,7 @@ class Version < ActiveRecord::Base
   #validation - end
 
   def global_sections
-  	sections.find_all_by_organisation_id(phase.dmptemplate.organisation_id)
+  	sections.select { |section| section.organisation_id == phase.dmptemplate.organisation_id }
   end
 
   def clone_to(p)
@@ -36,6 +36,7 @@ class Version < ActiveRecord::Base
     version2 = self.dup
     version2.published = false
     version2.title = "Copy of " + version2.title
+    version2.number = p.versions.size + 1
 
     p.versions << version2
 

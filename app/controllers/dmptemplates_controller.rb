@@ -13,7 +13,18 @@ class DmptemplatesController < ApplicationController
 	  @dmptemplates_own = Dmptemplate.own_institutional_templates(current_user.organisation_id)
 
 	  #funders templates
-	  @dmptemplates_funders = Dmptemplate.funders_templates
+	  @dmptemplates_funders = Dmptemplate
+      .includes(
+        {
+          :organisation => :organisation_type
+        },
+        {
+          :phases => {
+            :versions => :sections
+          }
+        }
+      )
+      .funders_templates
 
    respond_to do |format|
 	    format.html # index.html.erb
@@ -23,7 +34,17 @@ class DmptemplatesController < ApplicationController
   # GET /dmptemplates/1
   # GET /dmptemplates/1.json
   def admin_template
-	  @dmptemplate = Dmptemplate.find(params[:id])
+	  @dmptemplate = Dmptemplate
+      .includes(
+        {
+          :phases => {
+            :versions => {
+              :sections => :questions
+            }
+          }
+        }
+      )
+      .find(params[:id])
     authorize! :admin_template, @dmptemplate
 
 	  respond_to do |format|
@@ -47,7 +68,12 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_template_dmptemplate_path(params[:dmptemplate]), notice: I18n.t('org_admin.templates.updated_message') }
 	      format.json { head :no_content }
 	    else
-	      format.html { render action: "edit" }
+	      format.html {
+          redirect_to(
+            admin_template_dmptemplate_path(:id => params[:id]),
+            :alert => @dmptemplate.errors.full_messages
+          )
+        }
 	      format.json { render json: @dmptemplate.errors, status: :unprocessable_entity }
 	    end
 	  end
@@ -79,7 +105,12 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_template_dmptemplate_path(@dmptemplate), notice: I18n.t('org_admin.templates.created_message') }
 	      format.json { render json: @dmptemplate, status: :created, location: @dmptemplate }
 	    else
-	      format.html { render action: "admin_new" }
+	      format.html {
+          redirect_to(
+            admin_new_dmptemplate_path(),
+            :alert => @dmptemplate.errors.full_messages
+          )
+        }
 	      format.json { render json: @dmptemplate.errors, status: :unprocessable_entity }
 	    end
 	  end
@@ -105,18 +136,38 @@ class DmptemplatesController < ApplicationController
 	def admin_phase
     authorize! :admin_phase, Dmptemplate
 
-		@phase = Phase.find(params[:id])
+		@phase = Phase
+      .includes(
+        {
+          :versions => {
+            :sections => {
+              :questions => [
+                :question_format,
+                :options,
+                :themes,
+                :suggested_answers,
+                {
+                  :guidances => :guidance_groups
+                }
+              ]
+            }
+          }
+        }
+      )
+      .find(params[:id])
 
 		if !params.has_key?(:version_id) then
 			@edit = 'false'
+      s_versions = @phase.versions.sort {|a,b| b.updated_at <=> a.updated_at }
+      p_versions = s_versions.select {|v| v.published }
+
 			#check for the most recent published version, if none is available then return the most recent one
-			versions = @phase.versions.where('published = ?', true).order('updated_at DESC')
-			if versions.any?() then
-				@version = versions.first
+			if p_versions.size > 0 then
+				@version = p_versions.first
 			else
-				@version = @phase.versions.order('updated_at DESC').first
+				@version = s_versions.first
 			end
-			# When the version_id is passed as an argument
+		# When the version_id is passed as an argument
 		else
 			@edit = params[:edit]
 			@version = Version.find(params[:version_id])
@@ -124,15 +175,15 @@ class DmptemplatesController < ApplicationController
 
 		#verify if there are any sections if not create one
 		@sections = @version.sections
-		if !@sections.any?() || @sections.count == 0 then
-			@section = @version.sections.build
-			@section.title = ''
-			@section.version_id = params[:version_id]
-			@section.number = 1
-			@section.organisation_id = current_user.organisation.id
-			@section.published = true
-			@section.save
-		end
+#		if @sections.size == 0 then
+#			@section = @version.sections.build
+#			@section.title = ''
+#			@section.version_id = params[:version_id]
+#			@section.number = 1
+#			@section.organisation_id = current_user.organisation.id
+#			@section.published = true
+#			@section.save
+#		end
 
 		#verify if section_id has been passed, if so then open that section
 		if params.has_key?(:section_id) then
@@ -144,6 +195,9 @@ class DmptemplatesController < ApplicationController
 			@question_id = params[:question_id].to_i
 		end
 
+    @themes = Theme.order("title ASC").all
+    @question_formats = QuestionFormat.order("title ASC").all
+
 		respond_to do |format|
 			format.html
 		end
@@ -153,7 +207,23 @@ class DmptemplatesController < ApplicationController
 	def admin_previewphase
     authorize! :admin_previewphase, Dmptemplate
 
-		@version = Version.find(params[:id])
+		@version = Version
+      .includes(
+        {
+          :sections => {
+            :questions => [
+              :question_format,
+              :options,
+              :themes,
+              :suggested_answers,
+              {
+                :guidances => :guidance_groups
+              }
+            ]
+          }
+        }
+      )
+      .find(params[:id])
 
 		respond_to do |format|
 			format.html
@@ -164,12 +234,12 @@ class DmptemplatesController < ApplicationController
 	def admin_addphase
     authorize! :admin_addphase, Dmptemplate
 
-    @dmptemplate = Dmptemplate.find(params[:id])
+    @dmptemplate = Dmptemplate.includes(:phases).find(params[:id])
 		@phase = Phase.new
-		if @dmptemplate.phases.count == 0 then
+		if @dmptemplate.phases.size == 0 then
 			@phase.number = 1
 		else
-			@phase.number = @dmptemplate.phases.count + 1
+			@phase.number = @dmptemplate.phases.size + 1
 		end
 
 		respond_to do |format|
@@ -194,7 +264,14 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_phase_dmptemplate_path(:id => @phase.id, :version_id => @version.id, :edit => 'true'), notice: I18n.t('org_admin.templates.created_message') }
         format.json { head :no_content }
 	    else
-	      format.html { render action: "admin_phase" }
+	      format.html {
+          redirect_to(
+            admin_addphase_dmptemplate_path(
+              :id => params[:id]
+            ),
+            alert: @phase.errors.full_messages
+          )
+        }
 	      format.json { render json: @phase.errors, status: :unprocessable_entity }
 	    end
 		end
@@ -212,7 +289,12 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_phase_dmptemplate_path(@phase), notice: I18n.t('org_admin.templates.updated_message') }
 	      format.json { head :no_content }
 	    else
-	      format.html { render action: "admin_phase" }
+	      format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(@phase),
+            :alert => @phase.errors.full_messages
+          )
+        }
 	      format.json { render json: @phase.errors, status: :unprocessable_entity }
 	    end
 	  end
@@ -251,7 +333,12 @@ class DmptemplatesController < ApplicationController
 		    format.html { redirect_to admin_phase_dmptemplate_path(@phase, :version_id =>  @version.id, :edit => 'false'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
-		    format.html { render action: "admin_phase" }
+		    format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(@phase, :version_id =>  @version.id, :edit => 'true'),
+            :alert => @version.errors.full_messages
+          )
+        }
 		    format.json { render json: @version.errors, status: :unprocessable_entity }
 		  end
 		end
@@ -277,7 +364,12 @@ class DmptemplatesController < ApplicationController
 		    format.html { redirect_to admin_phase_dmptemplate_path(@phase, :version_id => @version.id, :edit => 'true'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
-		    format.html { render action: "admin_phase" }
+		    format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(@phase),
+            :alert => "clone of version failed"
+          )
+        }
 		    format.json { render json: [], status: :unprocessable_entity }
 		  end
 		end
@@ -387,7 +479,12 @@ class DmptemplatesController < ApplicationController
 	      format.html { redirect_to admin_phase_dmptemplate_path(:id => @question.section.version.phase_id, :version_id => @question.section.version_id, :section_id => @question.section_id, :question_id => @question.id, :edit => 'true'), notice: I18n.t('org_admin.templates.created_message') }
         format.json { head :no_content }
 	    else
-	      format.html { render action: "admin_phase" }
+	      format.html {
+          redirect_to admin_phase_dmptemplate_path(
+            :id => @question.section.version.phase_id
+          ),
+          alert: @question.errors.full_messages
+        }
 	      format.json { render json: @question.errors, status: :unprocessable_entity }
 	    end
 		end
@@ -409,7 +506,18 @@ class DmptemplatesController < ApplicationController
 		    format.html { redirect_to admin_phase_dmptemplate_path(:id => @phase.id, :version_id => @version.id, :section_id => @section.id, :question_id => @question.id, :edit => 'true'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
-		    format.html { render action: "admin_phase" }
+		    format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(
+              :id => @phase.id,
+              :version_id => @version.id,
+              :section_id => @section.id,
+              :question_id => @question.id,
+              :edit => 'true'
+            ),
+            :alert => @question.errors.full_messages
+          )
+        }
 		    format.json { render json: @question.errors, status: :unprocessable_entity }
 		  end
 		end
@@ -444,7 +552,12 @@ class DmptemplatesController < ApplicationController
         format.html { redirect_to admin_phase_dmptemplate_path(:id => @suggested_answer.question.section.version.phase_id, :version_id => @suggested_answer.question.section.version_id, :section_id => @suggested_answer.question.section_id, :question_id => @suggested_answer.question.id, :edit => 'true'), notice: I18n.t('org_admin.templates.created_message') }
         format.json { head :no_content }
       else
-        format.html { render action: "admin_phase" }
+        format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(:id => @suggested_answer.question.section.version.phase_id),
+            :alert => @suggested_answer.errors.full_messages
+          )
+        }
         format.json { render json: @suggested_answer.errors, status: :unprocessable_entity }
       end
     end
@@ -465,7 +578,18 @@ class DmptemplatesController < ApplicationController
 		    format.html { redirect_to admin_phase_dmptemplate_path(:id => @phase.id, :version_id => @version.id, :section_id => @section.id, :question_id => @question.id, :edit => 'true'), notice: I18n.t('org_admin.templates.updated_message') }
 		    format.json { head :no_content }
 		  else
-		    format.html { render action: "admin_phase" }
+		    format.html {
+          redirect_to(
+            admin_phase_dmptemplate_path(
+              :id => @suggested_answer.question.section.version.phase_id,
+              :version_id => @version.id,
+              :section_id => @section.id,
+              :question_id => @question.id,
+              :edit => 'true'
+            ),
+            :alert => @suggested_answer.errors.full_messages
+          )
+        }
 		    format.json { render json: @suggested_answer.errors, status: :unprocessable_entity }
 		  end
 		end

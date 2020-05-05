@@ -82,7 +82,7 @@
 				<td><% i = 1%>
 					<% themes_q.each do |t|%>
 						<%= t.title %>
-						<% if themes_q.count > i then%> 
+						<% if themes_q.size > i then%> 
 							,	
 							<% i +=1 %>		
 						<% end %>

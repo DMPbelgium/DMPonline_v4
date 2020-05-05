@@ -43,12 +43,9 @@ class Organisation < ActiveRecord::Base
 
 	#retrieves info off a child org
 	def self.orgs_with_parent_of_type(org_type)
-		parents = OrganisationType.find_by_name(org_type).organisations
-		children = Array.new
-		parents.each do |parent|
-		  	children += parent.children
-		end
-		return children
+    self.where(
+      :parent_id => OrganisationType.find_by_name(org_type).organisations.map(&:id)
+    )
 	end
 
 
@@ -103,15 +100,15 @@ class Organisation < ActiveRecord::Base
 	end
 
 	def published_templates
-		return dmptemplates.find_all_by_published(1)
+	  dmptemplates.select {|t| t.published }
 	end
 
   def gdpr_templates
-    dmptemplates.where(:gdpr => true)
+    dmptemplates.select {|t| t.gdpr }
   end
 
   def self.guest_org
-    org = Organisation.find_by_name("guests")
+    org = self.find_by_name("guests")
 
     if org.nil?
       org = Organisation.new(

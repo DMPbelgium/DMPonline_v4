@@ -23,15 +23,16 @@
 			<%= raw section.description %>
 		</div>
 		<div class="accordion-inner">
-			<% section.questions.order("number").each do |question| %>
-				<% last_question_id = section.questions.order("number DESC").first.id%>
+      <% section_questions = section.questions.sort {|a,b| a.number <=> b.number } %>
+      <% last_question = section_questions.last %>
+			<% section_questions.each do |question| %>
                 
                 <div class="question_guidance_block">    
                     <!--question block-->
                     <%= render :partial => 'show_question', locals: {question: question}%>
                 </div>    
 
-				<% if last_question_id == question.id then %>
+				<% if last_question.id == question.id then %>
 					<div class="two-column-clear"></div>
 				<% else %>
 					<div class="two-column-clear question-divider"></div>

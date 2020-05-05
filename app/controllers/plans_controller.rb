@@ -1,9 +1,23 @@
 class PlansController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
+  skip_load_and_authorize_resource :only => [:edit,:export,:status]
 
 	# GET /plans/1/edit
 	def edit
+
+    @plan = Plan.includes(
+      {
+        :version => {
+          :sections => {
+            :questions => [:suggested_answers,:question_format,:options,:themes,:guidances]
+          }
+        }
+      }
+    ).find(params[:id])
+
+    authorize! :edit, @plan
+
 	end
 
 	# PUT /plans/1
@@ -22,6 +36,23 @@ class PlansController < ApplicationController
 
   # GET /status/1.json
 	def status
+    @plan = Plan.includes(
+      {
+        :answers => [:options,:user]
+      },
+      {
+        :version => {
+          :sections => {
+            :questions => [
+              :question_format
+            ]
+          }
+        }
+      }
+    ).find(params[:id])
+
+    authorize! :status, @plan
+
 		respond_to do |format|
 			format.json { render json: @plan.status }
 		end
@@ -89,9 +120,22 @@ class PlansController < ApplicationController
 	end
 
 	def export
+    @plan = Plan.includes(
+      {
+        :answers => :options
+      },
+      {
+        :version => {
+          :sections => :questions
+        }
+      }
+    ).find(params[:id])
+
+    authorize! :edit, @plan
+
 		@exported_plan = ExportedPlan.new.tap do |ep|
-			ep.plan = @plan
-			ep.user = current_user
+			ep.plan_id = @plan.id
+			ep.user_id = current_user.id
 			ep.format = request.format.try(:symbol)
 			plan_settings = @plan.settings(:export)
 

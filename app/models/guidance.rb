@@ -41,14 +41,14 @@ class Guidance < ActiveRecord::Base
 
 	#all guidance that belong to an organisation
 	def self.by_organisation(org_id)
-		all_guidance = Guidance.all
-		org_guidance = Array.new
-		all_guidance.each do |guidance|
-		   if guidance.in_group_belonging_to?(org_id) then
-				org_guidance << guidance
-		   end
-		end
-		return org_guidance
+    gids = []
+    GuidanceGroup.where( :organisation_id => org_id ).each do |gg|
+      gids += gg.guidance_ids
+    end
+    gids.uniq!
+    self.where(
+      :id => gids
+    )
 	end
 
 	def get_guidance_group_templates? (guidance_group)

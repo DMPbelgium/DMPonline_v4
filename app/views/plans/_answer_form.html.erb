@@ -26,7 +26,10 @@
                 <%= label_tag("answer-text-#{question.id}".to_sym, question.text) %>
                 
                 <!--Suggested answer area-->
-                <% suggested_answer = question.suggested_answers.find_by_organisation_id(@plan.project.organisation_id) %>
+                <% suggested_answer = nil %>
+                <% if !@plan.project.organisation_id.nil? %>
+                  <% suggested_answer = question.get_suggested_answer(@plan.project.organisation_id) %>
+                <% end %>
                 <% if !suggested_answer.nil? && suggested_answer.text != "" then %>
                     <div class="suggested-answer-div">
                         <span class="suggested-answer-intro">
@@ -46,7 +49,7 @@
                                
                 <!-- verify if the question has multiple choice -->
                 <% if q_format.title == t("helpers.checkbox") || q_format.title == t("helpers.multi_select_box") || q_format.title == t("helpers.radio_buttons") || q_format.title == t("helpers.dropdown") then%>
-					<% options = question.options.order("number") %>
+					<% options = question.options.sort {|a,b| a.number <=> b.number } %>
 					<!--checkbox display-->
 					<% if q_format.title == t("helpers.checkbox") then %>
 						<% if readonly then %>

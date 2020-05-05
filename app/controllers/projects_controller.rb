@@ -11,8 +11,17 @@ class ProjectsController < ApplicationController
 			flash.notice = "Would you like to #{view_context.link_to 'link your DMPonline account to your institutional credentials?', user_omniauth_shibboleth_path}".html_safe
 		end
 
-		@projects = current_user.projects.filter(params[:filter])
-		@has_projects = current_user.projects.any? # unfiltered count
+    @projects = Project
+      .includes(
+        { :project_groups => :user },
+        { :plans => :answers },
+        { :dmptemplate => :organisation }
+      )
+      .where(
+        :id => current_user.project_groups.all.map(&:project_id).uniq
+      )
+      .order("updated_at DESC")
+      .all()
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -23,7 +32,14 @@ class ProjectsController < ApplicationController
 	# GET /projects/1
 	# GET /projects/1.json
 	def show
-		@project = find_project(params[:id])
+		@project = find_project(
+      params[:id],
+      Project.includes(
+        { :project_groups => :user },
+        { :plans => :version },
+        { :dmptemplate => :organisation }
+      )
+    )
     authorize! :show, @project
 
 		@show_form = false
@@ -58,12 +74,28 @@ class ProjectsController < ApplicationController
 	end
 
 	def share
-		@project = find_project(params[:id])
+		@project = find_project(
+      params[:id],
+      Project.includes(
+        { :project_groups => :user }
+      )
+    )
     authorize! :share,@project
 	end
 
 	def export
-		@project = find_project(params[:id])
+		@project = find_project(
+      params[:id],
+      Project.includes(
+        {
+          :plans => {
+            :version => {
+              :sections => :questions
+            }
+          }
+        }
+      )
+    )
     authorize! :export,@project
 		respond_to do |format|
 			format.html { render action: "export" }
@@ -292,6 +324,7 @@ class ProjectsController < ApplicationController
 	private
 
 	def orgs_of_type(org_type_name, published_templates = false)
+
 		org_type = OrganisationType.find_by_name(org_type_name)
 		all_such_orgs = org_type.organisations
 		if published_templates then
@@ -308,7 +341,7 @@ class ProjectsController < ApplicationController
 	end
 
   #catch slugs and historic slugs also
-  def find_project(params_id)
+  def find_project(params_id,relation = Project)
 
     id = nil
 
@@ -324,7 +357,7 @@ class ProjectsController < ApplicationController
 
     if id.is_a?(Integer)
 
-      p = Project.where(:id => id).first
+      p = relation.where(:id => id).first
 
       if p.present?
 
@@ -334,7 +367,7 @@ class ProjectsController < ApplicationController
 
     elsif id.is_a?(String)
 
-      p = Project.where(:slug => id).first
+      p = relation.where(:slug => id).first
 
       if p.nil?
 
@@ -344,7 +377,7 @@ class ProjectsController < ApplicationController
 
         if fr.present?
 
-          p = Project.where(:id => fr["sluggable_id"]).first
+          p = relation.where(:id => fr["sluggable_id"]).first
 
         end
 

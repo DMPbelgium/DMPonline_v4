@@ -107,7 +107,7 @@ class Project < ActiveRecord::Base
   end
 
   def principal_investigators
-    project_groups.where( :project_pi => true ).all.map(&:user)
+    project_groups.select {|pg| pg.project_pi }.map(&:user)
   end
 
   def principal_investigator
@@ -123,7 +123,7 @@ class Project < ActiveRecord::Base
   end
 
   def data_contacts
-    project_groups.where( :project_data_contact => true ).all.map(&:user)
+    project_groups.select {|pg| pg.project_data_contact }.map(&:user)
   end
 
   def data_contact
@@ -131,7 +131,7 @@ class Project < ActiveRecord::Base
   end
 
   def gdprs
-    project_groups.where( :project_gdpr => true ).all.map(&:user)
+    project_groups.select {|pg| project_gdpr }.map(&:user)
   end
 
   def gdpr
@@ -168,17 +168,33 @@ class Project < ActiveRecord::Base
 
 	def administerable_by(user_id)
     return false if user_id.nil?
-		project_groups.where( "user_id = ? AND (project_administrator = ? OR project_creator = ? OR project_pi = ?)", user_id, true, true, true ).count > 0
+    project_groups.any? { |pg|
+      pg.user_id == user_id && (
+        pg.project_administrator ||
+        pg.project_creator ||
+        pg.project_pi
+      )
+    }
 	end
 
 	def editable_by(user_id)
     return false if user_id.nil?
-    project_groups.where( "user_id = ? AND (project_editor = ? OR project_administrator = ? OR project_creator = ? OR project_pi = ? OR project_data_contact = ? OR project_gdpr = ?)", user_id, true, true, true, true, true, true ).count > 0
+    project_groups.any? { |pg|
+      pg.user_id == user_id &&
+      (
+        pg.project_editor ||
+        pg.project_administrator ||
+        pg.project_creator ||
+        pg.project_pi ||
+        pg.project_data_contact ||
+        pg.project_gdpr
+      )
+    }
 	end
 
 	def readable_by(user_id)
     return false if user_id.nil?
-    project_groups.where( "user_id = ?", user_id ).count > 0
+    project_groups.any? { |pg| pg.user_id == user_id }
 	end
 
 	def self.projects_for_user(user_id)
@@ -195,12 +211,7 @@ class Project < ActiveRecord::Base
 	end
 
 	def created_by(user_id)
-		user = project_groups.find_by_user_id(user_id)
-		if (! user.nil?) && user.project_creator then
-			return true
-		else
-			return false
-		end
+    project_groups.any? {|pg| pg.user_id == user_id && pg.project_creator }
 	end
 
 	def latest_update
@@ -219,7 +230,7 @@ class Project < ActiveRecord::Base
 	end
 
 	def owner
-		self.project_groups.find_by_project_creator(true).try(:user)
+    project_groups.select {|pg| pg.project_creator }.first.try(:user)
 	end
 
 	def last_edited
@@ -227,11 +238,11 @@ class Project < ActiveRecord::Base
 	end
 
 	def shared?
-		self.project_groups.all.map(&:user_id).uniq.count > 1
+    shared_with > 0
 	end
 
   def shared_with
-    n = self.project_groups.all.map(&:user_id).uniq.count
+    n = project_groups.map(&:user_id).uniq.size
     n > 0 ? n - 1 : 0
   end
 
@@ -247,9 +258,9 @@ class Project < ActiveRecord::Base
 		dmptemplate.phases.each do |phase|
 			latest_published_version = phase.latest_published_version
 			unless latest_published_version.nil?
-				new_plan = Plan.new
-				new_plan.version = latest_published_version
-				plans << new_plan
+        self.plans << Plan.new(
+          :version_id => latest_published_version.id
+        )
 			end
 		end
 	end

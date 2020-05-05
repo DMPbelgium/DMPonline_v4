@@ -2,9 +2,9 @@
 <% javascript "plans.js" %>
 
 <!--preload all comments for this plan-->
-<% @comments = Comment.where(:plan_id => @plan.id).order("created_at DESC").all %>
+<% @comments = @plan.comments %>
 <!--preload all answers for this plan-->
-<% @answers  = Answer.where(:plan_id => @plan.id).order("created_at DESC").all %>
+<% @answers  = @plan.answers %>
 
 <!-- render the project title -->
 <%= render :partial => "/projects/project_title", locals: {project: @plan.project} %>
@@ -44,7 +44,7 @@
     	<% sections = @plan.sections %>
     	<% sections.each do |section| %>
 
-        <% section_questions = section.questions.order("number").all %>
+        <% section_questions = section.questions.sort {|a,b| a.number <=> b.number } %>
     		<div class="accordion-group">
     			<% num_section_questions = status["sections"][section.id]["num_questions"] %>
     			<% num_section_answers = status["sections"][section.id]["num_answers"] %>

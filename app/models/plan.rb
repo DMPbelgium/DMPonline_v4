@@ -11,7 +11,8 @@ class Plan < ActiveRecord::Base
 	#associations between tables
 	belongs_to :project, :inverse_of => :plans, :autosave => true
 	belongs_to :version, :inverse_of => :plans, :autosave => true
-	has_many :answers, :inverse_of => :plan, :dependent => :destroy
+	has_many :answers, :inverse_of => :plan, :dependent => :destroy, :order => "created_at DESC"
+  has_many :comments, :inverse_of => :plan, :dependent => :destroy, :order => "created_at DESC"
 	has_many :plan_sections, :inverse_of => :plan, :dependent => :destroy
 	accepts_nested_attributes_for :project
 	accepts_nested_attributes_for :answers
@@ -50,7 +51,10 @@ class Plan < ActiveRecord::Base
 	end
 
 	def answer(qid, create_if_missing = true)
-  	answer = answers.where(:question_id => qid).order("created_at DESC").first
+  	answer = answers
+      .select {|a| a.question_id == qid }
+      .sort {|a,b| b.created_at <=> a.created_at }
+      .first()
 		if answer.nil? && create_if_missing then
   		question = Question.find(qid)
 			answer = Answer.new
@@ -92,7 +96,7 @@ class Plan < ActiveRecord::Base
 		else
 			sections = version.global_sections
 		end
-		return sections.uniq.sort_by &:number
+		sections.uniq.sort_by &:number
 	end
 
 	def guidance_for_question(question)
@@ -100,9 +104,9 @@ class Plan < ActiveRecord::Base
 		# If project org isn't nil, get guidance by theme from any "non-subset" groups belonging to project org
 		unless project.organisation.nil? then
 			project.organisation.guidance_groups.each do |group|
-				if !group.optional_subset && (group.dmptemplates.pluck(:id).include?(project.dmptemplate_id) || group.dmptemplates.count == 0) then
+				if !group.optional_subset && (group.dmptemplates.map(&:id).include?(project.dmptemplate_id) || group.dmptemplates.size == 0) then
 					group.guidances.each do |guidance|
-						guidance.themes.where("id IN (?)", question.theme_ids).each do |theme|
+						guidance.themes.select {|t| question.theme_ids.include?(t.id) }.each do |theme|
 							guidances = self.add_guidance_to_array(guidances, group, theme, guidance)
 						end
 					end
@@ -111,9 +115,9 @@ class Plan < ActiveRecord::Base
 		end
 		# Get guidance by theme from any guidance groups selected on creation
 		project.guidance_groups.each do |group|
-			if group.dmptemplates.pluck(:id).include?(project.dmptemplate_id) || group.dmptemplates.count == 0 then
+			if group.dmptemplates.map(&:id).include?(project.dmptemplate_id) || group.dmptemplates.size == 0 then
 				group.guidances.each do |guidance|
-					guidance.themes.where("id IN (?)", question.theme_ids).each do |theme|
+					guidance.themes.select {|t| question.theme_ids.include?(t.id) }.each do |theme|
 						guidances = self.add_guidance_to_array(guidances, group, theme, guidance)
 					end
 				end
@@ -361,7 +365,7 @@ class Plan < ActiveRecord::Base
 
 	def latest_update
 		if answers.any? then
-			last_answered = answers.order("updated_at DESC").first.updated_at
+			last_answered = answers.sort {|a,b| a.updated_at <=> b.updated_at }.last.updated_at
 			if last_answered > updated_at then
 				return last_answered
 			else

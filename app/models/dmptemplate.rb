@@ -35,32 +35,24 @@ class Dmptemplate < ActiveRecord::Base
   end
 
   def self.templates_org_type(ot)
-    new_org_obejcts = OrganisationType.find_by_name(ot).organisations
-
-    org_templates = Array.new
-    new_org_obejcts.each do |neworg|
-       org_templates += neworg.dmptemplates.where("published = ?", true)
-    end
-
-    return org_templates
+    orgs = OrganisationType.find_by_name(ot).organisations
+    self.where(
+      :organisation_id => orgs.map(&:id),
+      :published => true
+    )
   end
 
 	#returns all funders templates
 	def self.funders_templates
-		new_org_obejcts = OrganisationType.find_by_name(I18n.t("helpers.org_type.funder")).organisations
-	  org_templates = Array.new
-
-   	new_org_obejcts.each do |neworg|
-       	org_templates += neworg.dmptemplates
-    end
-
-    return org_templates
+		funder_orgs = OrganisationType.find_by_name(I18n.t("helpers.org_type.funder")).organisations
+    self.where(
+      :organisation_id => funder_orgs.map(&:id)
+    )
 	end
 
 	#returns all institutional templates bellowing to the current user's org
 	def self.own_institutional_templates(org_id)
-		new_templates = self.where("organisation_id = ?", org_id)
-		return new_templates
+		self.where(:organisation_id => org_id)
 	end
 
 	#returns an array with all funders and own institutional templates
@@ -78,8 +70,7 @@ class Dmptemplate < ActiveRecord::Base
 	end
 
 	def org_type
-		org_type = organisation.organisation_type.name
-		return org_type
+		organisation.organisation_type.name
 	end
 
 	#verify if a then has customisation by current user's org

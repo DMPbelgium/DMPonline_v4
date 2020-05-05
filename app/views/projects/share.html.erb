@@ -14,8 +14,6 @@
     <a name="collaborators"></a>
 		<h3><%= t('helpers.project.share.collaborators')%></h3>
 		<div>
-			<% if @project.project_groups.any? then %>
-
 				<table class="dmp_table">
 					<thead>
 						<tr>
@@ -25,8 +23,8 @@
 						</tr>
 					</thead>
 					<tbody>
-					<% project_people = @project.project_groups.all.select {|pu| pu.user_id != nil}%>
-					<%  project_people.each do |group| %>
+					<% project_people = @project.project_groups.select {|pu| pu.user_id != nil} %>
+					<% project_people.each do |group| %>
 						<tr>
 							<th class="dmp_th_border" ><%= group.user.name %></th>
 							<td class="dmp_td_border">
@@ -56,7 +54,6 @@
 					<% end %>
 					</tbody>
 				</table>
-			<% end %>
 		</div>
 
 		<hr class="orange_break_line">

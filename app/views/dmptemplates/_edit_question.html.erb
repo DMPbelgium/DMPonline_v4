@@ -33,7 +33,7 @@ in the admin interface.
 						<div class="div_left_icon">
 							<%= f.hidden_field :id,{ :class => 'quest_id' } %>
 							<%= f.select :question_format_id, 
-								options_from_collection_for_select(QuestionFormat.find(:all, :order => 'title ASC'),:id, :title, question.question_format_id), 
+								options_from_collection_for_select(@question_formats,:id, :title, question.question_format_id), 
 								{},	:id => "#{question.id}-select-format"%>
 						</div>
 						<div class="div_right_icon">
@@ -54,7 +54,7 @@ in the admin interface.
 								</tr>
 							</thead>
 							<tbody class="options_tbody">
-								<% if question.options.count == 0 then %>
+								<% if question.options.size == 0 then %>
 									<% 2.times {question.options.build } %>
 
 								<%end%>
@@ -109,8 +109,8 @@ in the admin interface.
 			<tr>
 				<td class="first_template"><%= t('org_admin.questions.suggested_or_example_answer_label')%></td>
 				<td><div class="div_left_icon">
-					<% suggested_answer = question.suggested_answers.find_by_organisation_id(current_user.organisation.id) %>
-					<% if question.suggested_answers == [] then %>
+					<% suggested_answer = question.get_suggested_answer(current_user.organisation.id) %>
+					<% if suggested_answer.nil? then %>
 						 <% suggested_answer = question.suggested_answers.build %>
 					<%end%>
 					<%= f.fields_for :suggested_answers, suggested_answer do |s|%>
@@ -150,7 +150,7 @@ in the admin interface.
 				<td class="first_template"><%= t('org_admin.questions.themes_label')%></td>
 				<td><div class="div_left_icon">
 						<%= f.collection_select(:theme_ids,
-							Theme.find(:all, :order => 'title ASC'),
+							@themes,
 							:id, :title, {:prompt => false, :include_blank => 'None'}, {:multiple => true})%>
 					</div>
 					<div class="div_right_icon">
