@@ -629,6 +629,46 @@ namespace :dmponline do
     end
   end
 
+=begin task dmponline:copy_sections
+
+Purpose: copy section from one version to another
+
+Input: CSV on STDIN, having fields of the src_version_id and dest_version_id
+
+=end
+
+  desc "copy sections from src version to dest version"
+  task :copy_sections => :environment do |t,args|
+
+    ActiveRecord::Base.transaction do
+
+      csv = CSV.new( $stdin, {
+          :headers => true,
+          :col_sep => ","
+        }
+      )
+
+      csv.each do |r|
+
+        row = r.to_hash.slice("src_version_id","dest_version_id")
+
+        src_version   = ::Version.find( Integer( row["src_version_id"] ) )
+        dest_version  = ::Version.find( Integer( row["dest_version_id"] ) )
+
+        src_version.global_sections.each do |section|
+
+          section.clone_to(dest_version)
+
+        end
+
+      end
+
+      csv.close()
+
+    end
+
+  end
+
 =begin task dmponline:copy_phase
 
 Purpose: copy phases to other dmptemplates
