@@ -30,6 +30,7 @@ class Section < ActiveRecord::Base
     raise ArgumentError.new( "Version instance should be persisted" ) unless v.persisted?
 
     section2 = self.dup
+    section2.number = v.sections.size + 1
 
     v.sections << section2
 
