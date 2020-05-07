@@ -123,38 +123,31 @@ class GuidancesController < ApplicationController
     @guidance = Guidance.find(params[:id])
     authorize! :admin_edit,@guidance
 
-    @dmptemplates = Dmptemplate.funders_and_own_templates(current_user.organisation_id)
-    @phases = nil
+    @dmptemplates = Dmptemplate
+      .includes(
+        { :phases => {
+            :versions => {
+              :sections => :questions
+            }
+          }
+        }
+      )
+      .funders_and_own_templates(current_user.organisation_id)
+    @phases = []
     @dmptemplates.each do |template|
-      if @phases.nil? then
-        @phases = template.phases.find(:all,:order => 'number ASC')
-      else
-        @phases = @phases + template.phases.find(:all,:order => 'number ASC')
-      end
+      @phases += template.phases.sort {|a,b| a.number <=> b.number }
     end
-    @versions = nil
+    @versions = []
     @phases.each do |phase|
-      if @versions.nil? then
-        @versions = phase.versions.find(:all,:order => 'title ASC')
-      else
-        @versions = @versions + phase.versions.find(:all,:order => 'title ASC')
-      end
+      @versions += phase.versions.sort {|a,b| a.title <=> b.title }
     end
-    @sections = nil
+    @sections = []
     @versions.each do |version|
-      if @sections.nil? then
-        @sections = version.sections.find(:all,:order => 'number ASC')
-      else
-        @sections = @sections + version.sections.find(:all,:order => 'number ASC')
-      end
+      @sections += version.sections.sort {|a,b| a.number <=> b.number }
     end
-    @questions = nil
+    @questions = []
     @sections.each do |section|
-      if @questions.nil? then
-        @questions = section.questions.find(:all,:order => 'number ASC')
-      else
-        @questions = @questions + section.questions.find(:all,:order => 'number ASC')
-      end
+      @questions += section.questions.sort {|a,b| a.number <=> b.number }
     end
   end
 
