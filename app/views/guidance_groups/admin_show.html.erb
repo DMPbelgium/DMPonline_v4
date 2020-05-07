@@ -59,7 +59,9 @@
 			
 		</table>
 		<div class="move_2_right">
+      <% if can?(:admin_edit,@guidance_group) %>
 			<%= link_to t('helpers.submit.edit'), admin_edit_guidance_group_path(@guidance_group.id), :class => 'btn btn-primary'%>
+      <% end %>
 			<%= link_to t('helpers.submit.back'), :back, :class => 'btn cancel' %>
 		</div>
 		<br />

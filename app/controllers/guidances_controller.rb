@@ -1,10 +1,17 @@
 class GuidancesController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :authorize_org_admin!
+  before_filter :authorize_org_admin!, :only => [
+    :update_phases,
+    :update_versions,
+    :update_sections,
+    :update_questions
+  ]
 
   # GET /guidances
   # GET /guidances.json
   def admin_index
+    authorize! :admin_index, Guidance
+
     @guidances = Guidance
       .includes(
         :guidance_groups,
@@ -31,6 +38,7 @@ class GuidancesController < ApplicationController
   # GET /guidances/1.json
   def admin_show
     @guidance = Guidance.find(params[:id])
+    authorize! :admin_show, @guidance
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,6 +48,8 @@ class GuidancesController < ApplicationController
 
   def admin_new
     @guidance = Guidance.new
+    authorize! :admin_new, @guidance
+
     @dmptemplates = Dmptemplate
       .includes(
         {
@@ -71,7 +81,7 @@ class GuidancesController < ApplicationController
       format.html
     end
   end
-
+  #TODO: how to limit access to these routes???
   #setup variables for use in the dynamic updating
   def update_phases
     # updates phases, versions, sections and questions based on template selected
@@ -111,6 +121,8 @@ class GuidancesController < ApplicationController
   # GET /guidances/1/edit
   def admin_edit
     @guidance = Guidance.find(params[:id])
+    authorize! :admin_edit,@guidance
+
     @dmptemplates = Dmptemplate.funders_and_own_templates(current_user.organisation_id)
     @phases = nil
     @dmptemplates.each do |template|
@@ -153,6 +165,8 @@ class GuidancesController < ApplicationController
     @guidance.text = params["guidance-text"]
     @guidance.question_id = params["question_id"]
 
+    authorize! :admin_create,@guidance
+
     respond_to do |format|
       if @guidance.save
         format.html { redirect_to admin_show_guidance_path(@guidance), notice: I18n.t('org_admin.guidance.created_message') }
@@ -173,6 +187,8 @@ class GuidancesController < ApplicationController
 
     @guidance.question_id = params["question_id"]
 
+    authorize! :admin_update,@guidance
+
     respond_to do |format|
       if @guidance.update_attributes(params[:guidance])
         format.html { redirect_to admin_show_guidance_path(params[:guidance]), notice: I18n.t('org_admin.guidance.updated_message') }
@@ -189,6 +205,9 @@ class GuidancesController < ApplicationController
   # DELETE /guidances/1.json
   def admin_destroy
     @guidance = Guidance.find(params[:id])
+
+    authorize! :admin_destroy, @guidance
+
     @guidance.destroy
 
     respond_to do |format|

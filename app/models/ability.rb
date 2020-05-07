@@ -132,8 +132,174 @@ class Ability
 
       elsif user.is_org_admin?
 
-        can :manage, Dmptemplate
-        can :manage, GuidanceGroup
+        # :admin_index
+        #   GET /org/admin/templates/:organisation_id/admin_template
+        #     parameter :organisation_id is ignored, and not necessary
+        # :admin_new
+        #   GET /org/admin/templates/:organisation_id/admin_new
+        # :admin_create
+        #   POST /org/admin/templates/:organisation_id/admin_create
+        can [:admin_index,:admin_new,:admin_create], Dmptemplate
+
+        # GET /org/admin/templates/:dmptemplate_id/admin_template
+        #   show own or funder template
+        can [:admin_template], Dmptemplate do |t|
+          t.organisation_id == user.organisation_id ||
+          t.org_type() == "Funder"
+        end
+        # GET /org/admin/templates/:dmptemplate_id/admin_addphase
+        #   add phase to own template
+        can [:admin_addphase], Dmptemplate do |t|
+          t.organisation_id == user.organisation_id
+        end
+
+        # PUT /org/admin/templates/:dmptemplate_id/admin_update
+        #    update attributes of own templates only
+        can [:admin_update,:admin_destroy], Dmptemplate do |t|
+          t.organisation_id == user.organisation_id
+        end
+
+        can [:admin_createphase], Phase do |phase|
+          phase.present? &&
+          phase.new_record? &&
+          phase.dmptemplate.present? &&
+          phase.dmptemplate.organisation_id == user.organisation_id
+        end
+
+        # :admin_phase
+        #   GET /org/admin/templates/:phase_id/admin_phase
+        can [:admin_phase], Phase do |phase|
+          phase.dmptemplate.organisation_id == user.organisation_id ||
+          phase.dmptemplate.org_type() == "Funder"
+        end
+
+        # :admin_updatephase
+        #   PUT /org/admin/templates/:phase_id/admin_updatephase
+        can [:admin_updatephase], Phase do |phase|
+          phase.dmptemplate.organisation_id == user.organisation_id
+        end
+
+        # :admin_destroyphase
+        #   DELETE /org/admin/templates/:phase_id/admin_updatephase
+        can [:admin_destroyphase], Phase do |phase|
+          phase.dmptemplate.organisation_id == user.organisation_id &&
+          phase.latest_published_version == nil
+        end
+
+        # :admin_previewphase
+        can [:admin_previewphase], Version do |version|
+          version.phase.dmptemplate.organisation_id == user.organisation_id ||
+          version.phase.dmptemplate.org_type() == "Funder"
+        end
+
+        # :admin_updateversion
+        #   PUT /org/admin/templates/:version_id/admin_updateversion
+        can [:admin_updateversion,:admin_cloneversion], Version do |version|
+          version.present? && version.phase.present? && version.phase.dmptemplate.present? &&
+          version.phase.dmptemplate.organisation_id == user.organisation_id
+        end
+
+        can [:admin_destroyversion], Version do |version|
+          version.phase.dmptemplate.organisation_id == user.organisation_id &&
+          !(version.published)
+        end
+
+        # :admin_createsection
+        #   POST /org/admin/templates/271/admin_createsection
+        can [:admin_createsection], Section do |section|
+          section.present? && section.new_record? &&
+          section.version.present? && section.version.phase.present? &&
+          section.version.phase.dmptemplate.present? &&
+          #only add section with same org as your own
+          section.organisation_id == user.organisation_id &&
+          #only add section to section to own templates, or customize funder templates
+          (
+            section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+
+        can [:admin_updatesection], Section do |section|
+          #only update section with same org as your own
+          section.organisation_id == user.organisation_id &&
+          #only update section for own templates, or customize funder templates
+          (
+            section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+
+        can [:admin_destroysection], Section do |section|
+          #only destroy your own sections of an unpublished version
+          section.organisation_id == user.organisation_id &&
+          !(section.version.published)
+        end
+
+        can [:admin_createquestion], Question do |question|
+          question.present? && question.new_record? &&
+          question.section.present? &&
+          question.section.organisation_id == user.organisation_id &&
+          !(question.section.version.published) &&
+          (
+            question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+        can [:admin_updatequestion], Question do |question|
+          question.section.organisation_id == user.organisation_id &&
+          !(question.section.version.published) &&
+          (
+            question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+        can [:admin_destroyquestion], Question do |question|
+          question.section.organisation_id == user.organisation_id &&
+          !(question.section.version.published) &&
+          (
+            question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+
+        can :admin_createsuggestedanswer, SuggestedAnswer do |sa|
+          sa.present? && sa.new_record? &&
+          sa.question.section.present? &&
+          sa.organisation_id == user.organisation_id &&
+          !(sa.question.section.version.published) &&
+          (
+            sa.question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            sa.question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+        can :admin_updatesuggestedanswer, SuggestedAnswer do |sa|
+          sa.organisation_id == user.organisation_id &&
+          !(sa.question.section.version.published) &&
+          (
+            sa.question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            sa.question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+        can :admin_destroysuggestedanswer, SuggestedAnswer do |sa|
+          sa.organisation_id == user.organisation_id &&
+          !(sa.question.section.version.published) &&
+          (
+            sa.question.section.version.phase.dmptemplate.organisation_id == user.organisation_id ||
+            sa.question.section.version.phase.dmptemplate.org_type() == "Funder"
+          )
+        end
+
+        #GuidanceGroup - start
+        can [:admin_show,:admin_edit,:admin_update,:admin_destroy], GuidanceGroup do |gg|
+          gg.organisation_id == user.organisation_id
+        end
+        #GuidanceGroup - end
+
+        can [:admin_index,:admin_new], Guidance
+        can [:admin_create,:admin_show,:admin_edit,:admin_update,:admin_destroy], Guidance do |g|
+          g.guidance_groups.any? {|gg| gg.organisation_id == user.organisation_id }
+        end
+
         can [:admin_show,:admin_edit,:admin_update],Organisation
 
       end
