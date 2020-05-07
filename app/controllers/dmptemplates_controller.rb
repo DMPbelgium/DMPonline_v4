@@ -34,6 +34,7 @@ class DmptemplatesController < ApplicationController
   # GET /dmptemplates/1
   # GET /dmptemplates/1.json
   def admin_template
+
 	  @dmptemplate = Dmptemplate
       .includes(
         {
@@ -45,6 +46,7 @@ class DmptemplatesController < ApplicationController
         }
       )
       .find(params[:id])
+
     authorize! :admin_template, @dmptemplate
 
 	  respond_to do |format|
@@ -58,7 +60,9 @@ class DmptemplatesController < ApplicationController
   # PUT /dmptemplates/1
   # PUT /dmptemplates/1.json
   def admin_update
+
    	@dmptemplate = Dmptemplate.find(params[:id])
+
     authorize! :admin_update,@dmptemplate
 
    	@dmptemplate.description = params["template-desc"]
@@ -95,10 +99,12 @@ class DmptemplatesController < ApplicationController
   # POST /dmptemplates
   # POST /dmptemplates.json
   def admin_create
-    authorize! :admin_create, Dmptemplate
+
 	  @dmptemplate = Dmptemplate.new(params[:dmptemplate])
 	  @dmptemplate.organisation_id = current_user.organisation.id
 	  @dmptemplate.description = params['template-desc']
+
+    authorize! :admin_create, @dmptemplate
 
 	  respond_to do |format|
 	    if @dmptemplate.save
@@ -119,7 +125,9 @@ class DmptemplatesController < ApplicationController
   # DELETE /dmptemplates/1
   # DELETE /dmptemplates/1.json
   def admin_destroy
+
 	  @dmptemplate = Dmptemplate.find(params[:id])
+
     authorize! :admin_destroy, @dmptemplate
 
 	  @dmptemplate.destroy
@@ -134,7 +142,6 @@ class DmptemplatesController < ApplicationController
 
 	#show and edit a phase of the template
 	def admin_phase
-    authorize! :admin_phase, Dmptemplate
 
 		@phase = Phase
       .includes(
@@ -155,6 +162,8 @@ class DmptemplatesController < ApplicationController
         }
       )
       .find(params[:id])
+
+    authorize! :admin_phase, @phase
 
 		if !params.has_key?(:version_id) then
 			@edit = 'false'
@@ -205,7 +214,6 @@ class DmptemplatesController < ApplicationController
 
 	#preview a phase
 	def admin_previewphase
-    authorize! :admin_previewphase, Dmptemplate
 
 		@version = Version
       .includes(
@@ -225,6 +233,8 @@ class DmptemplatesController < ApplicationController
       )
       .find(params[:id])
 
+    authorize! :admin_previewphase, @version
+
 		respond_to do |format|
 			format.html
 		end
@@ -232,9 +242,11 @@ class DmptemplatesController < ApplicationController
 
 	#add a new phase to a template
 	def admin_addphase
-    authorize! :admin_addphase, Dmptemplate
 
-    @dmptemplate = Dmptemplate.includes(:phases).find(params[:id])
+    @dmptemplate = Dmptemplate.find(params[:id])
+
+    authorize! :admin_addphase, @dmptemplate
+
 		@phase = Phase.new
 		if @dmptemplate.phases.size == 0 then
 			@phase.number = 1
@@ -249,9 +261,11 @@ class DmptemplatesController < ApplicationController
 
 	#create a phase
 	def admin_createphase
-    authorize! :admin_createphase, Dmptemplate
 
 	 	@phase = Phase.new(params[:phase])
+
+    authorize! :admin_createphase, @phase
+
 	  @phase.description = params["phase-desc"]
 	  @version = @phase.versions.build
 	  @version.title = "#{@phase.title} v.1"
@@ -279,9 +293,11 @@ class DmptemplatesController < ApplicationController
 
 	#update a phase of a template
 	def admin_updatephase
-    authorize! :admin_updatephase, Dmptemplate
 
     @phase = Phase.find(params[:id])
+
+    authorize! :admin_updatephase, @phase
+
 		@phase.description = params["phase-desc"]
 
 	  respond_to do |format|
@@ -302,9 +318,11 @@ class DmptemplatesController < ApplicationController
 
 	#delete a version, sections and questions
 	def admin_destroyphase
-    authorize! :admin_destroyphase, Dmptemplate
 
 	  @phase = Phase.find(params[:phase_id])
+
+    authorize! :admin_destroyphase, @phase
+
 	  @dmptemplate = @phase.dmptemplate
 	  @phase.destroy
 
@@ -318,9 +336,11 @@ class DmptemplatesController < ApplicationController
 
 	#update a version of a template
 	def admin_updateversion
-    authorize! :admin_updateversion, Dmptemplate
 
 	  @version = Version.find(params[:id])
+
+    authorize! :admin_updateversion, @version
+
 		@version.description = params["version-desc"]
 		@phase = @version.phase
 
@@ -346,9 +366,11 @@ class DmptemplatesController < ApplicationController
 
 	#clone a version of a template
 	def admin_cloneversion
-    authorize! :admin_cloneversion, Dmptemplate
 
     @version  = Version.find(params[:version_id])
+
+    authorize! :admin_cloneversion, @version
+
     @phase    = @version.phase
     @sections = nil
 
@@ -377,9 +399,11 @@ class DmptemplatesController < ApplicationController
 
 	#delete a version, sections and questions
 	def admin_destroyversion
-    authorize! :admin_destroyversion, Dmptemplate
 
 	  @version = Version.find(params[:version_id])
+
+    authorize! :admin_destroyversion, @version
+
 	  @phase = @version.phase
 	  @version.destroy
 
@@ -393,10 +417,12 @@ class DmptemplatesController < ApplicationController
 
 	#create a section
 	def admin_createsection
-    authorize! :admin_createsection, Dmptemplate
 
 	 	@section = Section.new(params[:section])
 	  @section.description = params["section-desc"]
+    @section.organisation_id = current_user.organisation_id
+    Rails.logger.info("controller admin_createsection! #{@section}")
+    authorize! :admin_createsection, @section
 
 	  respond_to do |format|
 	    if @section.save
@@ -420,10 +446,12 @@ class DmptemplatesController < ApplicationController
 
 	#update a section of a template
 	def admin_updatesection
-    authorize! :admin_updatesection, Dmptemplate
 
 	  @section = Section.find(params[:id])
 	  @section.description = params["section-desc-#{params[:id]}"]
+
+    authorize! :admin_updatesection, @section
+
 	  @version = @section.version
 		@phase = @version.phase
 
@@ -449,9 +477,11 @@ class DmptemplatesController < ApplicationController
 
 	#delete a section and questions
 	def admin_destroysection
-    authorize! :admin_destroysection, Dmptemplate
 
 	  @section = Section.find(params[:section_id])
+
+    authorize! :admin_destroysection, @section
+
 	  @version = @section.version
 	  @phase = @version.phase
 	  @section.destroy
@@ -467,9 +497,11 @@ class DmptemplatesController < ApplicationController
 
 	#create a question
 	def admin_createquestion
-    authorize! :admin_createquestion, Dmptemplate
 
 	 	@question = Question.new(params[:question])
+
+    authorize! :admin_createquestion, @question
+
 	  @question.guidance = params["new-question-guidance"]
 	  @question.default_value = params["new-question-default-value"]
 
@@ -492,9 +524,11 @@ class DmptemplatesController < ApplicationController
 
 	#update a question of a template
 	def admin_updatequestion
-    authorize! :admin_updatequestion, Dmptemplate
 
 	  @question = Question.find(params[:id])
+
+    authorize! :admin_updatequestion, @question
+
 		@question.guidance = params["question-guidance-#{params[:id]}"]
 		@question.default_value = params["question-default-value-#{params[:id]}"]
 	  @section = @question.section
@@ -525,9 +559,11 @@ class DmptemplatesController < ApplicationController
 
 	#delete a version, sections and questions
 	def admin_destroyquestion
-    authorize! :admin_destroyquestion, Dmptemplate
 
 	  @question = Question.find(params[:question_id])
+
+    authorize! :admin_destroyquestion, @question
+
 	  @section = @question.section
 		@version = @section.version
 	  @phase = @version.phase
@@ -543,9 +579,11 @@ class DmptemplatesController < ApplicationController
 	#SUGGESTED ANSWERS
 	#create suggested answers
 	def admin_createsuggestedanswer
-    authorize! :admin_createsuggestedanswer, Dmptemplate
 
     @suggested_answer = SuggestedAnswer.new(params[:suggested_answer])
+    @suggested_answer.organisation_id = current_user.organisation_id
+
+    authorize! :admin_createsuggestedanswer, @suggested_answer
 
     respond_to do |format|
       if @suggested_answer.save
@@ -565,9 +603,11 @@ class DmptemplatesController < ApplicationController
 
 	#update a suggested answer of a template
 	def admin_updatesuggestedanswer
-    authorize! :admin_updatesuggestedanswer, Dmptemplate
 
 	  @suggested_answer = SuggestedAnswer.find(params[:id])
+
+    authorize! :admin_updatesuggestedanswer, @suggested_answer
+
     @question = @suggested_answer.question
     @section = @question.section
     @version = @section.version
@@ -597,9 +637,11 @@ class DmptemplatesController < ApplicationController
 
 	#delete a suggested answer
 	def admin_destroysuggestedanswer
-    authorize! :admin_destroysuggestedanswer, Dmptemplate
 
 	  @suggested_answer = SuggestedAnswer.find(params[:suggested_answer])
+
+    authorize! :admin_destroysuggestedanswer, @suggested_answer
+
 	  @question = @suggested_answer.question
 	  @section = @question.section
 		@version = @section.version

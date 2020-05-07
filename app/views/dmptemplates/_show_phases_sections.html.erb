@@ -11,16 +11,16 @@
   <% version = phase.versions.sort {|a,b| b.updated_at <=> a.updated_at }.first %>
   <div class="div_right admin_right_bigger">
     <!--delete a phase button. only displays when template not published-->
-    <% if phase.has_sections == true %>
+    <% if can?(:admin_previewphase,version) && phase.has_sections == true %>
       <%= link_to t("helpers.preview"), admin_previewphase_dmptemplate_path(version), :class => 'btn btn-primary'%>
     <% end %>
-    <% if phase.latest_published_version == nil then%>
+    <% if can?(:admin_destroyphase,phase) %>
       <%= link_to t("helpers.submit.delete"), admin_destroyphase_dmptemplate_path(:phase_id => phase.id),
         :confirm => t("org_admin.templates.phase_delete_message", :phase_title => phase.title ), :method => :delete, :class => "btn btn-primary"%>
     <% end %>
-    <% if phase.dmptemplate.org_type == t("helpers.org_type.funder") && current_user.org_type != t("helpers.org_type.funder") %>
+    <% if can?(:admin_phase,phase) %>
       <% b_label = t('org_admin.templates.view_phase_label')%>
-    <% else %>
+    <% elsif can?(:admin_updatephase,phase) %>
       <% b_label = t('org_admin.templates.edit_phase_label')%>
     <% end %>
     <%= link_to b_label, admin_phase_dmptemplate_path(phase), :class => "btn btn-primary" %>

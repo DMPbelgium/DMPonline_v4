@@ -16,8 +16,8 @@ class GuidanceGroupsController < ApplicationController
 
 	# GET add new guidance groups
 	def admin_new
-    authorize! :admin_new, GuidanceGroup
     @guidance_group = GuidanceGroup.new
+    authorize! :admin_new, @guidance_group
 
 	  respond_to do |format|
 	    format.html # new.html.erb
@@ -28,10 +28,10 @@ class GuidanceGroupsController < ApplicationController
 	# POST /guidance_groups
   # POST /guidance_groups.json
   def admin_create
-    authorize! :admin_create, GuidanceGroup
-
 	  @guidance_group = GuidanceGroup.new(params[:guidance_group])
 	  @guidance_group.organisation_id = current_user.organisation_id
+
+    authorize! :admin_create, @guidance_group
 
 	  respond_to do |format|
 	    if @guidance_group.save

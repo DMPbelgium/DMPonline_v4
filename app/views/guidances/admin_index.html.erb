@@ -52,10 +52,16 @@
         <%= l guidance_gr.updated_at.to_date, :formats => :short %>
       </td>
       <td class="dmp_td_medium">
+        <% if can?(:admin_show,guidance_gr) %>
         <%= link_to t("helpers.view"), admin_show_guidance_group_path(guidance_gr), :class => "dmp_table_link"%>
+        <% end %>
+        <% if can?(:admin_edit,guidance_gr) %>
         <%= link_to t("helpers.submit.edit"), admin_edit_guidance_group_path(guidance_gr), :class => "dmp_table_link"%>
+        <% end %>
+        <% if can?(:admin_destroy,guidance_gr) %>
         <%= link_to t("helpers.submit.delete"), admin_destroy_guidance_group_path(guidance_gr),
           :confirm => t("org_admin.guidance_group.delete_message", :guidance_group_name => guidance_gr.name ), :method => :delete, :class => "dmp_table_link"%>
+        <% end %>
       </td>
     </tr>
   <% end %>
@@ -75,9 +81,11 @@
 <div class="div_right">
   <!-- link button to add new guidance -->
   <div class="move_2_right">
+  <% if can?(:admin_new,Guidance) %>
     <%= link_to t("org_admin.guidance.add_guidance"),
                 admin_new_guidance_path(),
                 :class => 'btn btn-primary' %>
+  <% end %>
   </div>
 </div>
 
@@ -136,10 +144,16 @@
           <%= l guidance.updated_at.to_date, :formats => :short %>
         </td>
         <td class="dmp_td_medium">
+        <% if can?(:admin_show,guidance) %>
           <%= link_to t("helpers.view"), admin_show_guidance_path(guidance), :class => "dmp_table_link"%><br/>
+        <% end %>
+        <% if can?(:admin_edit,guidance) %>
           <%= link_to t("helpers.submit.edit"), admin_edit_guidance_path(guidance), :class => "dmp_table_link"%><br/>
+        <% end %>
+        <% if can?(:admin_destroy,guidance) %>
           <%= link_to t("helpers.submit.delete"), admin_destroy_guidance_path(guidance),
         :confirm => t("org_admin.guidance.delete_message_html", :guidance_summary => sanitize(guidance.text,:tags => []).truncate(20)), :method => :delete, :class => "dmp_table_link" %>
+        <% end %>
         </td>
       </tr>
     <% end %>
