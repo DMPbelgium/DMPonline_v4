@@ -126,11 +126,7 @@ class Question < ActiveRecord::Base
 
     self.options.all.each do |option|
 
-      option2 = option.dup
-      question2.options << option2
-
-      Rails.logger.info("[CLONE] COPIED Option[#{option.id}] to Option[#{option2.id}]")
-      Rails.logger.info("[CLONE] ADDED Option[#{option2.id}] to Question[#{question2.id}].questions")
+      option.clone_to(question2)
 
     end
 

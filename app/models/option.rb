@@ -20,4 +20,22 @@ class Option < ActiveRecord::Base
 	def to_s
 		"#{text}"
 	end
+
+  def clone_to(q)
+
+    raise ArgumentError.new( "should be instance of Question" ) unless q.instance_of?(::Question)
+
+    raise ArgumentError.new( "Question instance should be persisted" ) unless q.persisted?
+
+    option2 = self.dup
+    q.options << option2
+
+    Rails.logger.info("[CLONE] COPIED Option[#{self.id}] to Option[#{option2.id}]")
+    Rails.logger.info("[CLONE] ADDED Option[#{option2.id}] to Question[#{q.id}].options")
+
+    option2.theme_ids = self.theme_ids
+
+    Rails.logger.info("[CLONE] ADDED #{self.theme_ids} to Option[#{option2.id}].theme_ids")
+
+  end
 end
