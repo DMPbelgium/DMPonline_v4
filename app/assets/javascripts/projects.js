@@ -181,20 +181,18 @@ $( document ).ready(function() {
 		});
 		select_element = $("#project_dmptemplate_id");
 		select_element.find("option").remove();
-		var count = 0;
+    select_element.append("<option value=''>--Select your template--</option>");
 		for (var id in options) {
-			if (count == 0) {
-				select_element.append("<option value='"+id+"' selected='selected'>"+options[id]+"</option>");
-			}
-			else {
-				select_element.append("<option value='"+id+"'>"+options[id]+"</option>");
-			}
-			count++;
+			select_element.append("<option value='"+id+"'>"+options[id]+"</option>");
 		}
-		if (count >= 2) {
+    //more than one template: select none
+		if (Object.keys(options).length >= 2) {
+      select_element.find("option").first().attr("selected","selected");
 			$("#template-control-group").show();
 		}
+    //only one template: select and hide box
 		else {
+      select_element.find("option").last().attr("selected","selected");
 			$("#template-control-group").hide();
 		}
 		$("#confirm-template").text("");
