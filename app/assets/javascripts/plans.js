@@ -82,13 +82,17 @@ $( document ).ready(function() {
 		var submit_button = $(this).find('input[type="submit"]');
 		var saving_message = $(this).find('.saving-message');
 		submit_button.parent().hide();
-		q_id = $(this).find(".question_id").val();
+		var q_id = $(this).find(".question_id").val();
 		saving_message.show();
 		s_status = $(this).closest(".accordion-group").find(".section-status:first");
 		s_status.toggle_dirty(q_id, false);
 		// Allow quarter of a second for database to update
 		timeout = setTimeout(function(){
-			$.getJSON("status.json", function(data) {
+      $.ajax({
+        cache: false,
+        dataType: "json",
+        url: "status.json"
+      }).done(function(data){
 				$.fn.update_plan_progress(data);
 				$.fn.update_timestamp(q_id, data);
 				s_status.update_section_progress(data);
@@ -146,7 +150,11 @@ $( document ).ready(function() {
       }
 
       // check for updated answers
-      $.getJSON("status.json", function(data) {
+      $.ajax({
+        cache: false,
+        dataType: "json",
+        url: "status.json"
+      }).done(function(data) {
 
     	  $.fn.update_plan_progress(data);
     	  $(".section-status").each(function(){
@@ -499,7 +507,7 @@ $.fn.update_plan_progress = function(data) {
 };
 
 $.fn.update_timestamp = function(question_id, data) {
-	q_status = $('#'+question_id+'-status');
+	var q_status = $('#'+question_id+'-status');
 	var t = q_status.children("abbr:first");
 	var current_timestamp = new Date(t.attr('data-time'));
 	var timestamp = data.questions[question_id]["answer_updated_at"];
