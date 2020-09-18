@@ -290,6 +290,7 @@ class Ability
         end
 
         #GuidanceGroup - start
+        can [:admin_new,:admin_create], GuidanceGroup
         can [:admin_show,:admin_edit,:admin_update,:admin_destroy], GuidanceGroup do |gg|
           gg.organisation_id == user.organisation_id
         end
