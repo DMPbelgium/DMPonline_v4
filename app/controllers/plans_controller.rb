@@ -151,7 +151,9 @@ class PlansController < ApplicationController
 		respond_to do |format|
       #format.html
       #format.xml
-      #format.json
+      format.json {
+        render :json => @plan.ld, :disposition => "inline"
+      }
       #format.csv  { send_data @exported_plan.as_csv, filename: "#{file_name}.csv" }
       format.text { send_data @exported_plan.as_txt, filename: "#{file_name}.txt" }
 			format.docx do
