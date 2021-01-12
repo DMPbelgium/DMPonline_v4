@@ -306,7 +306,7 @@ Devise.setup do |config|
       :connection_opts => {
         #cf. https://github.com/lostisland/faraday/blob/9e4fa7451559514a67dbf81bac0e53a2fa7d590b/lib/faraday/options/request_options.rb
         :request => {
-          :timeout => 10
+          :timeout => 180
         }
       }
     }
