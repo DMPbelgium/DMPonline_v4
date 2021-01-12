@@ -405,6 +405,228 @@ class Plan < ActiveRecord::Base
  		return section_questions
 	end
 
+  def ld_uri
+
+    self.project.ld_uri + "/plans/" + self.id.to_s + "/edit"
+
+  end
+
+  def ld
+
+    pl = {
+      :version => {
+        :type => "Version",
+        :id => self.version.id,
+        :title => self.version.phase.title
+      },
+      :id => self.id,
+      :type => "Plan",
+      :url => self.ld_uri,
+      :sections => []
+    }
+
+    #preload plan related records - start
+    plan_answers = self.answers.all.sort { |a,b| b.created_at <=> a.created_at }
+    plan_comments = self.comments.all.sort { |a,b| a.created_at <=> b.created_at }
+
+    plan_user_ids = []
+    plan_user_ids += plan_comments.map { |c| c.archived_by }.select { |i| !i.nil? }
+    plan_user_ids += plan_comments.map { |c| c.user_id }.select { |i| !i.nil? }
+    plan_user_ids += plan_answers.map {|a| a.user_id }.select { |i| !i.nil? }
+    plan_user_ids.uniq!
+
+    plan_users = plan_user_ids.size > 0 ?
+      User.where( :id => plan_user_ids ).all : []
+    #preload plan related records - end
+
+    #preload question formats
+    question_formats = QuestionFormat.all
+
+    #we have to specify this again as plan.sections returns an array!
+    model_question = Question.includes(
+      :suggested_answers,
+      { :options => :themes },
+      :guidances,
+      :themes
+    )
+
+    self.sections.each do |section|
+
+      sc = {
+        :id => section.id,
+        :type => "Section",
+        :number => section.number,
+        :title => section.title,
+        :questions => []
+      }
+  
+      model_question
+        .where( :section_id => section.id )
+        .order("number ASC")
+        .each do |question|
+
+        question_format = question_formats.select { |qf| qf.id == question.question_format_id }.first
+
+        q = {
+          :id => question.id,
+          :type => "Question",
+          :text => question.text,
+          :default_value => question.default_value,
+          :number => question.number,
+          :question_format => {
+            :id => question_format.id,
+            :type => "QuestionFormat",
+            :title => question_format.title,
+            :description => question_format.description,
+            :created_at => question_format.created_at.utc.strftime("%FT%TZ"),
+            :updated_at => question_format.updated_at.utc.strftime("%FT%TZ")
+          },
+          :suggested_answers => question.suggested_answers.map { |sa|
+            {
+              :id => sa.id,
+              :type => "SuggestedAnswer",
+              :text => sa.text,
+              :is_example => sa.is_example,
+              :created_at => sa.created_at.utc.strftime("%FT%TZ"),
+              :updated_at => sa.created_at.utc.strftime("%FT%TZ")
+            }
+          }.select { |sa| sa[:text].present? },
+          :answer => nil,
+          :themes => question.themes.map { |theme|
+            {
+              :id => theme.id,
+              :type => "Theme",
+              :title => theme.title,
+              :created_at => theme.created_at.utc.strftime("%FT%TZ"),
+              :updated_at => theme.updated_at.utc.strftime("%FT%TZ")
+            }
+          }
+        }
+
+        answer = plan_answers.find { |a| a.question_id == question.id }
+
+        has_options = question_format.title == "Check box" || question_format.title == "Multi select box" ||
+            question_format.title == "Radio buttons" || question_format.title == "Dropdown"
+
+        if has_options
+
+          q[:options] = question.options.sort_by(&:number).map do |op|
+            {
+              :id => op.id,
+              :type => "Option",
+              :text => op.text,
+              :number => op.number,
+              :is_default => op.is_default,
+              :created_at => op.created_at.utc.strftime("%FT%TZ"),
+              :updated_at => op.created_at.utc.strftime("%FT%TZ"),
+              :themes => op.themes.map { |theme|
+                {
+                  :id => theme.id,
+                  :type => "Theme",
+                  :title => theme.title,
+                  :created_at => theme.created_at.utc.strftime("%FT%TZ"),
+                  :updated_at => theme.updated_at.utc.strftime("%FT%TZ")
+                }
+              }
+            }
+          end
+
+        end
+
+
+        if answer.present? && has_options
+
+          q[:selected] = {}
+
+          answer.options.each do |o|
+
+            q[:selected][o.number] = o.text
+
+          end
+
+        end
+
+        if answer.present?
+
+          au = plan_users.find {|u| u.id == answer.user_id }
+          q[:answer] = {
+            :id => answer.id,
+            :type => "Answer",
+            :text => answer.text,
+            :user => nil,
+            :created_at => answer.created_at.utc.strftime("%FT%TZ"),
+            :updated_at => answer.updated_at.utc.strftime("%FT%TZ")
+          }
+          unless au.nil?
+
+            q[:answer][:user] = {
+              :id => au.id,
+              :type => "User",
+              :email => au.email,
+              :orcid => au.orcid_id
+            }
+
+          end
+
+        end
+
+        q[:comments] = []
+
+        plan_comments.select { |comment| comment.question_id == question.id }.each do |comment|
+
+          c = {
+            :id => comment.id,
+            :type => "Comment",
+            :created_at => comment.created_at.utc.strftime("%FT%TZ"),
+            :updated_at => comment.updated_at.utc.strftime("%FT%TZ"),
+            :text => comment.text,
+            :created_by => nil,
+            :archived_by => nil,
+            :archived => comment.archived ? true : false
+          }
+
+          created_by = plan_users.find {|u| u.id == comment.user_id }
+
+          if created_by.present?
+
+            c[:created_by] = {
+              :id => created_by.id,
+              :type => "User",
+              :email => created_by.email,
+              :orcid => created_by.orcid_id
+            }
+
+          end
+
+          archived_by = plan_users.find { |u| u.id == comment.archived_by }
+
+          if archived_by.present?
+
+            c[:archived_by] = {
+              :id => archived_by.id,
+              :type => "User",
+              :email => archived_by.email,
+              :orcid => archived_by.orcid_id
+            }
+
+          end
+
+          q[:comments] << c
+
+        end
+
+        sc[:questions] << q
+
+      end
+
+      pl[:sections] << sc
+
+    end
+
+    pl
+
+  end
+
 private
 
 	# Based on the height of the text gathered so far and the available vertical

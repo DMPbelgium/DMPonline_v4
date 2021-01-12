@@ -252,6 +252,101 @@ class Project < ActiveRecord::Base
 		self.dmptemplate.try(:organisation).try(:abbreviation)
 	end
 
+  def ld_uri
+
+    Rails.application.routes.url_helpers.project_url(self, :host => ENV['DMP_HOST'], :protocol => ENV['DMP_PROTOCOL'])
+
+  end
+
+  def ld
+
+    pr = {
+      :id => self.id,
+      :type => "Project",
+      :url => self.ld_uri,
+      :created_at => self.created_at.utc.strftime("%FT%TZ"),
+      :updated_at => self.updated_at.utc.strftime("%FT%TZ"),
+      :title => self.title,
+      :description => self.description,
+      :identifier => self.identifier,
+      :grant_number => self.grant_number,
+      :collaborators => self.project_groups.map { |pg|
+        u = pg.user
+        pg_r = {
+          :type => "ProjectGroup",
+          :user => nil,
+          :access_level => pg.code_access_level,
+          :created_at => pg.created_at.utc.strftime("%FT%TZ"),
+          :updated_at => pg.updated_at.utc.strftime("%FT%TZ")
+        }
+        unless u.nil?
+
+          pg_r[:user] = {
+            :id => u.id,
+            :type => "User",
+            :created_at => u.created_at.utc.strftime("%FT%TZ"),
+            :updated_at => u.updated_at.utc.strftime("%FT%TZ"),
+            :email => u.email,
+            :orcid => u.orcid_id
+          }
+
+        end
+        pg_r
+      },
+      :organisation => nil,
+      :plans => []
+    }
+
+    if self.organisation.present?
+
+      pr[:organisation] = {
+        :type => "Organisation",
+        :id => self.organisation.id,
+        :name => self.organisation.name
+      }
+
+    end
+
+    dmptemplate = self.dmptemplate
+
+    pr[:template] = dmptemplate.attributes
+    pr[:template][:type] = "Template"
+
+    funder = self.funder
+    funder_name = self.read_attribute(:funder_name)
+
+    if funder
+
+      pr[:funder] = {
+        :type => "Organisation",
+        :id => funder.id,
+        :name => funder.name
+      }
+
+    elsif funder_name.present?
+
+      pr[:funder] = {
+        :type => nil,
+        :id => nil,
+        :name => funder_name
+      }
+
+    else
+
+      pr[:funder] = nil
+
+    end
+
+    self.plans.each do |plan|
+
+      pr[:plans] << plan.ld
+
+    end
+
+    pr
+
+  end
+
 	private
 
 	def create_plans
