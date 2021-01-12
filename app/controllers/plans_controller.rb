@@ -131,7 +131,7 @@ class PlansController < ApplicationController
       }
     ).find(params[:id])
 
-    authorize! :edit, @plan
+    authorize! :export, @plan
 
 		@exported_plan = ExportedPlan.new.tap do |ep|
 			ep.plan_id = @plan.id
